@@ -10,14 +10,14 @@ export default function Menu() {
   const open = () => setOpen(true);
   const close = () => setOpen(false);
   return (
-    <div>
+    <div className={style.wrapper}>
       <nav className={cx(style.nav, isOpen && style.open)}>
         <ul className={style.items}>
           <li>
-            <Link href="/news">ニュース</Link>
+            <Link href="/news">出来事</Link>
           </li>
           <li>
-            <Link href="/members">メンバー</Link>
+            <Link href="/members">自己紹介</Link>
           </li>
           <li>
             <Link href="/contact">お問い合わせ</Link>

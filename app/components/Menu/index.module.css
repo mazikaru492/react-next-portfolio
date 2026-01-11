@@ -1,3 +1,7 @@
+.wrapper {
+  pointer-events: auto;
+}
+
 .nav {
   pointer-events: auto;
 }
@@ -24,15 +28,59 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--color-background);
-    color: var(--color-text-unpainted);
+    background-color: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #fff;
     padding: 24px 16px;
+    z-index: 9999;
     pointer-events: auto;
+    animation: fadeIn 0.3s ease-out forwards;
   }
+
   .items {
     flex-direction: column;
-    gap: 24px;
+    gap: 48px;
     align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .items li {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 0.5s ease-out forwards;
+  }
+
+  .items li:nth-child(1) { animation-delay: 0.1s; }
+  .items li:nth-child(2) { animation-delay: 0.2s; }
+  .items li:nth-child(3) { animation-delay: 0.3s; }
+
+  .items a {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 8px;
+  }
+
+  /* Underline animation for links */
+  .items a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: #3b82f6; /* Accent color */
+    transition: width 0.3s ease;
+  }
+
+  .items a:hover::after {
+    width: 100%;
   }
 
   .button {
@@ -40,10 +88,41 @@
     background: none;
     border: none;
     cursor: pointer;
+    transition: transform 0.2s ease;
   }
+
+  .button:active {
+    transform: scale(0.95);
+  }
+
   .close {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: 24px;
+    right: 24px;
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUpFade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
