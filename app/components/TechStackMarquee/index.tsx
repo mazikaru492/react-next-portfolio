@@ -78,7 +78,7 @@ const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
 
 type TechItem = {
   label: string;
-  Icon?: ComponentType<{ className?: string }>;
+  Icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
   imageSrc?: string;  // PNG画像のパス
   color: string;
   url: string;
