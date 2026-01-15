@@ -9,6 +9,7 @@ import {
   SiCss3,
   SiKalilinux,
 } from "react-icons/si";
+import Image from "next/image";
 import type { ComponentType, SVGProps } from "react";
 
 // ==========================================
@@ -39,69 +40,18 @@ const OpenAIIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Sora 2 AI - 公式ロゴ（雲アイコン＋目）
-const SoraIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    {/* 丸い背景 */}
-    <circle cx="12" cy="12" r="11" fill="#3B82F6" />
-    {/* 雲の形 */}
-    <ellipse cx="12" cy="12" rx="7" ry="4.5" fill="white" />
-    <circle cx="8" cy="10" r="2.5" fill="white" />
-    <circle cx="16" cy="10" r="2" fill="white" />
-    <circle cx="12" cy="9" r="3" fill="white" />
-    {/* 左目 */}
-    <circle cx="9.5" cy="12" r="1" fill="#1E3A5F" />
-    {/* 右目 */}
-    <circle cx="14.5" cy="12" r="1" fill="#1E3A5F" />
-  </svg>
-);
-
-// NotebookLM - 公式ロゴ（3つの同心円アーチ/虹型）
-const NotebookLMIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    {/* 外側のアーチ */}
-    <path
-      d="M4 20 A10 10 0 0 1 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.8"
-      strokeLinecap="round"
-    />
-    {/* 中間のアーチ */}
-    <path
-      d="M7 20 A7 7 0 0 1 17 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    {/* 内側のアーチ */}
-    <path
-      d="M10 20 A4 4 0 0 1 14 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
 // Nmap - 公式ロゴ（目＋レーダー）
 const NmapIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    {/* 目の外枠 */}
     <path
       d="M12 4C5.5 4 1 12 1 12s4.5 8 11 8 11-8 11-8-4.5-8-11-8z"
       fill="none"
       stroke="#51A0D5"
       strokeWidth="1.5"
     />
-    {/* 虹彩（レーダー） */}
     <circle cx="12" cy="12" r="5" fill="none" stroke="#51A0D5" strokeWidth="1.2" />
     <circle cx="12" cy="12" r="3" fill="none" stroke="#51A0D5" strokeWidth="1" />
-    {/* 瞳孔 */}
     <circle cx="12" cy="12" r="1.5" fill="#51A0D5" />
-    {/* 十字線 */}
     <path d="M12 5v14M5 12h14" stroke="#51A0D5" strokeWidth="0.5" opacity="0.6" />
   </svg>
 );
@@ -109,7 +59,6 @@ const NmapIcon = (props: SVGProps<SVGSVGElement>) => (
 // Napkin AI - 公式ロゴ（3つの斜めバー）
 const NapkinIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    {/* 3つの平行な斜めバー */}
     <rect x="4" y="4" width="4" height="14" rx="1" transform="rotate(-15 6 11)" fill="#6366F1" />
     <rect x="10" y="6" width="4" height="12" rx="1" transform="rotate(-15 12 12)" fill="#8B5CF6" />
     <rect x="16" y="8" width="4" height="10" rx="1" transform="rotate(-15 18 13)" fill="#A78BFA" />
@@ -129,7 +78,8 @@ const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
 
 type TechItem = {
   label: string;
-  Icon: ComponentType<{ className?: string }>;
+  Icon?: ComponentType<{ className?: string }>;
+  imageSrc?: string;  // PNG画像のパス
   color: string;
   url: string;
 };
@@ -138,13 +88,13 @@ type TechItem = {
 const ROW_1: TechItem[] = [
   {
     label: "NotebookLM",
-    Icon: NotebookLMIcon as ComponentType<{ className?: string }>,
-    color: "#000000",
+    imageSrc: "/notebooklm.png",  // PNG画像を使用
+    color: "#ffffff",
     url: "https://notebooklm.google.com",
   },
   {
     label: "Sora 2",
-    Icon: SoraIcon as ComponentType<{ className?: string }>,
+    imageSrc: "/sora.png",  // PNG画像を使用
     color: "#3B82F6",
     url: "https://sora-2.org",
   },
@@ -260,11 +210,21 @@ function MarqueeRow({ items, reverse }: { items: TechItem[]; reverse?: boolean }
             rel="noopener noreferrer"
             className="shrink-0 flex flex-col items-center gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300"
           >
-            <item.Icon
-              className="h-8 w-8 md:h-11 md:w-11"
-              style={{ color: item.color }}
-              aria-hidden
-            />
+            {item.imageSrc ? (
+              <Image
+                src={item.imageSrc}
+                alt={item.label}
+                width={44}
+                height={44}
+                className="h-8 w-8 md:h-11 md:w-11 object-contain"
+              />
+            ) : item.Icon ? (
+              <item.Icon
+                className="h-8 w-8 md:h-11 md:w-11"
+                style={{ color: item.color }}
+                aria-hidden
+              />
+            ) : null}
             <span className="text-[10px] md:text-xs font-medium text-gray-400">
               {item.label}
             </span>
