@@ -67,6 +67,7 @@ export const getMembers = async (queries?: MicroCMSQueries) => {
   });
   return listData;
 };
+
 export const getNewsList = async (queries?: MicroCMSQueries) => {
   const c = getClient();
   if (!c) return emptyList<News>();
@@ -76,6 +77,7 @@ export const getNewsList = async (queries?: MicroCMSQueries) => {
   });
   return listData;
 };
+
 export const getNewsDetail = async (
   contentId: string,
   queries?: MicroCMSQueries

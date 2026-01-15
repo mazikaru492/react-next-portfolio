@@ -11,32 +11,9 @@ import {
 } from "react-icons/si";
 import type { ComponentType, SVGProps } from "react";
 
-type Item = {
-  label: string;
-  Icon: ComponentType<{ className?: string }>;
-  colorClass: string;
-  url: string;
-};
-
-// NotebookLM - Google公式スタイルのノートブックアイコン
-const NotebookLMIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" />
-    <path d="M7 7h10v2H7zM7 11h10v2H7zM7 15h7v2H7z" opacity="0.6" />
-    <circle cx="18" cy="18" r="4" fill="#4285F4" />
-    <path d="M17.2 16.8l1.6 2.4M18.8 16.8l-1.6 2.4" stroke="white" strokeWidth="0.8" fill="none" />
-  </svg>
-);
-
-// Sora 2 - OpenAI公式スタイルのビデオ生成アイコン
-const Sora2Icon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="12" cy="12" r="2" />
-    <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.5" />
-  </svg>
-);
+// ==========================================
+// 公式アイコン（公式サイトから再現）
+// ==========================================
 
 // Google Gemini - 公式スパークルロゴ
 const GeminiIcon = (props: SVGProps<SVGSVGElement>) => (
@@ -48,10 +25,8 @@ const GeminiIcon = (props: SVGProps<SVGSVGElement>) => (
     <defs>
       <linearGradient id="gemini-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#4285F4" />
-        <stop offset="25%" stopColor="#9B72CB" />
-        <stop offset="50%" stopColor="#D96570" />
-        <stop offset="75%" stopColor="#D96570" />
-        <stop offset="100%" stopColor="#4285F4" />
+        <stop offset="50%" stopColor="#9B72CB" />
+        <stop offset="100%" stopColor="#D96570" />
       </linearGradient>
     </defs>
   </svg>
@@ -64,173 +39,237 @@ const OpenAIIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Nmap - ネットワークスキャンロゴ
+// Sora 2 AI - 公式ロゴ（雲アイコン＋目）
+const SoraIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    {/* 丸い背景 */}
+    <circle cx="12" cy="12" r="11" fill="#3B82F6" />
+    {/* 雲の形 */}
+    <ellipse cx="12" cy="12" rx="7" ry="4.5" fill="white" />
+    <circle cx="8" cy="10" r="2.5" fill="white" />
+    <circle cx="16" cy="10" r="2" fill="white" />
+    <circle cx="12" cy="9" r="3" fill="white" />
+    {/* 左目 */}
+    <circle cx="9.5" cy="12" r="1" fill="#1E3A5F" />
+    {/* 右目 */}
+    <circle cx="14.5" cy="12" r="1" fill="#1E3A5F" />
+  </svg>
+);
+
+// NotebookLM - 公式ロゴ（3つの同心円アーチ/虹型）
+const NotebookLMIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    {/* 外側のアーチ */}
+    <path
+      d="M4 20 A10 10 0 0 1 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.8"
+      strokeLinecap="round"
+    />
+    {/* 中間のアーチ */}
+    <path
+      d="M7 20 A7 7 0 0 1 17 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+    />
+    {/* 内側のアーチ */}
+    <path
+      d="M10 20 A4 4 0 0 1 14 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+// Nmap - 公式ロゴ（目＋レーダー）
 const NmapIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-    <circle cx="12" cy="12" r="3" />
-    <path d="M12 6v2M12 16v2M6 12h2M16 12h2" stroke="currentColor" strokeWidth="2" />
-    <path d="M8.46 8.46l1.42 1.42M14.12 14.12l1.42 1.42M8.46 15.54l1.42-1.42M14.12 9.88l1.42-1.42" stroke="currentColor" strokeWidth="1.5" />
+    {/* 目の外枠 */}
+    <path
+      d="M12 4C5.5 4 1 12 1 12s4.5 8 11 8 11-8 11-8-4.5-8-11-8z"
+      fill="none"
+      stroke="#51A0D5"
+      strokeWidth="1.5"
+    />
+    {/* 虹彩（レーダー） */}
+    <circle cx="12" cy="12" r="5" fill="none" stroke="#51A0D5" strokeWidth="1.2" />
+    <circle cx="12" cy="12" r="3" fill="none" stroke="#51A0D5" strokeWidth="1" />
+    {/* 瞳孔 */}
+    <circle cx="12" cy="12" r="1.5" fill="#51A0D5" />
+    {/* 十字線 */}
+    <path d="M12 5v14M5 12h14" stroke="#51A0D5" strokeWidth="0.5" opacity="0.6" />
   </svg>
 );
 
-// NaokinAI - モダンAIロゴ
-const NaokinAIIcon = (props: SVGProps<SVGSVGElement>) => (
+// Napkin AI - 公式ロゴ（3つの斜めバー）
+const NapkinIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.18l6.5 3.64v7.27L12 18.73l-6.5-3.64V7.82L12 4.18z" />
-    <circle cx="12" cy="12" r="3" />
-    <path d="M12 6v2M12 16v2M6.5 9l1.73 1M15.77 14l1.73 1M6.5 15l1.73-1M15.77 10l1.73-1" stroke="currentColor" strokeWidth="1.2" />
+    {/* 3つの平行な斜めバー */}
+    <rect x="4" y="4" width="4" height="14" rx="1" transform="rotate(-15 6 11)" fill="#6366F1" />
+    <rect x="10" y="6" width="4" height="12" rx="1" transform="rotate(-15 12 12)" fill="#8B5CF6" />
+    <rect x="16" y="8" width="4" height="10" rx="1" transform="rotate(-15 18 13)" fill="#A78BFA" />
   </svg>
 );
 
-// Perplexity.ai - 公式アスタリスクロゴ
+// Perplexity AI - 公式ロゴ（Simple Icons）
 const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12 2v8.5M12 13.5V22M2 12h8.5M13.5 12H22M4.93 4.93l6.01 6.01M13.06 13.06l6.01 6.01M4.93 19.07l6.01-6.01M13.06 10.94l6.01-6.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
-    <circle cx="12" cy="12" r="2.5" />
+    <path d="M22.3977 7.0896h-2.3106V.0676l-7.5094 6.3542V.1577h-1.1554v6.1966L4.4904 0v7.0896H1.6023v10.3976h2.8882V24l6.932-6.3591v6.2005h1.1554v-6.0469l6.9318 6.1807v-6.4879h2.8882V7.0896zm-3.4657-4.531v4.531h-5.355l5.355-4.531zm-13.2862.0676 4.8691 4.4634H5.6458V2.6262zM2.7576 16.332V8.245h7.8476l-6.1149 6.1147v1.9723H2.7576zm2.8882 5.0404v-3.8852h.0001v-2.6488l5.7763-5.7764v7.0111l-5.7764 5.2993zm12.7086.0248-5.7766-5.1509V9.0618l5.7766 5.7766v6.5588zm2.8882-5.0652h-1.733v-1.9723L13.3948 8.245h7.8478v8.087z" />
   </svg>
 );
 
-// 全16項目のTech Stack
-// ROW_1: NotebookLM, Sora 2, Gemini, GPT, MySQL, Next.js, Python, Kali Linux
-const ROW_1: Item[] = [
+// ==========================================
+// Tech Stack データ
+// ==========================================
+
+type TechItem = {
+  label: string;
+  Icon: ComponentType<{ className?: string }>;
+  color: string;
+  url: string;
+};
+
+// ROW 1: AI & Development Tools
+const ROW_1: TechItem[] = [
   {
     label: "NotebookLM",
     Icon: NotebookLMIcon as ComponentType<{ className?: string }>,
-    colorClass: "text-[#4285F4]", // Google Blue
+    color: "#000000",
     url: "https://notebooklm.google.com",
   },
   {
     label: "Sora 2",
-    Icon: Sora2Icon as ComponentType<{ className?: string }>,
-    colorClass: "text-[#10A37F]", // OpenAI Green
-    url: "https://openai.com/sora",
+    Icon: SoraIcon as ComponentType<{ className?: string }>,
+    color: "#3B82F6",
+    url: "https://sora-2.org",
   },
   {
     label: "Gemini",
     Icon: GeminiIcon as ComponentType<{ className?: string }>,
-    colorClass: "text-white", // Gradient inside
+    color: "#8E75B2",
     url: "https://gemini.google.com",
   },
   {
     label: "GPT",
     Icon: OpenAIIcon as ComponentType<{ className?: string }>,
-    colorClass: "text-[#10A37F]", // OpenAI Green
+    color: "#10A37F",
     url: "https://openai.com/gpt-4",
   },
   {
     label: "MySQL",
     Icon: SiMysql,
-    colorClass: "text-[#4479A1]", // MySQL Blue
+    color: "#4479A1",
     url: "https://www.mysql.com",
   },
   {
     label: "Next.js",
     Icon: SiNextdotjs,
-    colorClass: "text-white",
+    color: "#ffffff",
     url: "https://nextjs.org",
   },
   {
     label: "Python",
     Icon: SiPython,
-    colorClass: "text-[#3776AB]", // Python Blue
+    color: "#3776AB",
     url: "https://www.python.org",
   },
   {
     label: "Kali Linux",
     Icon: SiKalilinux,
-    colorClass: "text-[#557C94]", // Kali Blue
+    color: "#557C94",
     url: "https://www.kali.org",
   },
 ];
 
-// ROW_2: HTML5, CSS, Notion, GitHub, Linux, Nmap, NaokinAI, PerplexityAI
-const ROW_2: Item[] = [
+// ROW 2: Web & Security Tools
+const ROW_2: TechItem[] = [
   {
     label: "HTML5",
     Icon: SiHtml5,
-    colorClass: "text-[#E34F26]", // HTML5 Orange
-    url: "https://developer.mozilla.org/en-US/docs/Web/HTML",
+    color: "#E34F26",
+    url: "https://developer.mozilla.org/docs/Web/HTML",
   },
   {
-    label: "CSS",
+    label: "CSS3",
     Icon: SiCss3,
-    colorClass: "text-[#1572B6]", // CSS3 Blue
-    url: "https://developer.mozilla.org/en-US/docs/Web/CSS",
+    color: "#1572B6",
+    url: "https://developer.mozilla.org/docs/Web/CSS",
   },
   {
     label: "Notion",
     Icon: SiNotion,
-    colorClass: "text-white",
+    color: "#ffffff",
     url: "https://www.notion.so",
   },
   {
     label: "GitHub",
     Icon: SiGithub,
-    colorClass: "text-white",
+    color: "#ffffff",
     url: "https://github.com",
   },
   {
     label: "Linux",
     Icon: SiLinux,
-    colorClass: "text-[#FCC624]", // Tux Yellow
+    color: "#FCC624",
     url: "https://www.linux.org",
   },
   {
     label: "Nmap",
     Icon: NmapIcon as ComponentType<{ className?: string }>,
-    colorClass: "text-[#00A86B]", // Nmap Green
+    color: "#51A0D5",
     url: "https://nmap.org",
   },
   {
-    label: "NaokinAI",
-    Icon: NaokinAIIcon as ComponentType<{ className?: string }>,
-    colorClass: "text-[#8B5CF6]", // Violet
-    url: "#",
+    label: "Napkin AI",
+    Icon: NapkinIcon as ComponentType<{ className?: string }>,
+    color: "#8B5CF6",
+    url: "https://app.napkin.ai",
   },
   {
-    label: "PerplexityAI",
+    label: "Perplexity",
     Icon: PerplexityIcon as ComponentType<{ className?: string }>,
-    colorClass: "text-[#20808D]", // Perplexity Teal
+    color: "#20808D",
     url: "https://www.perplexity.ai",
   },
 ];
 
-function MarqueeRow({ items, reverse }: { items: Item[]; reverse?: boolean }) {
-  const repeated = Array(20).fill(items).flat();
+// ==========================================
+// コンポーネント
+// ==========================================
+
+function MarqueeRow({ items, reverse }: { items: TechItem[]; reverse?: boolean }) {
+  const repeated = [...items, ...items, ...items, ...items];
 
   return (
     <div className="w-full overflow-hidden">
       <div
-        className={
-          "flex w-max items-center gap-3 md:gap-16 will-change-transform hover:[animation-play-state:paused] " +
-          (reverse ? "animate-marquee-reverse" : "animate-marquee")
-        }
+        className={`flex w-max items-center gap-6 md:gap-16 will-change-transform hover:[animation-play-state:paused] ${
+          reverse ? "animate-marquee-reverse" : "animate-marquee"
+        }`}
       >
-        {repeated.map((item, index) => {
-          if (!item.Icon) {
-            console.warn(`Icon is undefined for item: ${item.label}`);
-            return null;
-          }
-
-          return (
-            <a
-              key={`${item.label}-${index}`}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shrink-0 flex flex-col items-center justify-center no-underline opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300"
-            >
-              <item.Icon
-                className={`h-9 w-9 md:h-12 md:w-12 ${item.colorClass}`}
-                aria-hidden
-              />
-              <span className="text-[10px] md:text-sm font-medium text-gray-300 mt-1 md:mt-2">
-                {item.label}
-              </span>
-            </a>
-          );
-        })}
+        {repeated.map((item, i) => (
+          <a
+            key={`${item.label}-${i}`}
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 flex flex-col items-center gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300"
+          >
+            <item.Icon
+              className="h-8 w-8 md:h-11 md:w-11"
+              style={{ color: item.color }}
+              aria-hidden
+            />
+            <span className="text-[10px] md:text-xs font-medium text-gray-400">
+              {item.label}
+            </span>
+          </a>
+        ))}
       </div>
     </div>
   );
@@ -238,21 +277,19 @@ function MarqueeRow({ items, reverse }: { items: Item[]; reverse?: boolean }) {
 
 export default function TechStackMarquee() {
   return (
-    <section className="w-full max-w-none py-4 md:py-10">
-      <div className="mx-auto w-full max-w-none px-4 md:px-6">
-        <div className="text-center">
-          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
-            Tech Stack
-          </h2>
-          <p className="mt-2 text-sm text-white/60"></p>
-          <br></br>
-        </div>
+    <section className="w-full py-6 md:py-12">
+      <div className="text-center mb-6 md:mb-10">
+        <h2 className="text-2xl md:text-3xl font-bold text-white">
+          Tech Stack
+        </h2>
+        <p className="mt-2 text-sm text-white/50">
+          日々使用している技術・ツール
+        </p>
+      </div>
 
-        <div className="mt-4 md:mt-8 w-full max-w-none space-y-3 md:space-y-6">
-          <MarqueeRow items={ROW_1} />
-          <br></br>
-          <MarqueeRow items={ROW_2} reverse />
-        </div>
+      <div className="space-y-4 md:space-y-8">
+        <MarqueeRow items={ROW_1} />
+        <MarqueeRow items={ROW_2} reverse />
       </div>
     </section>
   );
