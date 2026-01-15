@@ -1,5 +1,7 @@
 .container {
   padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .text {
@@ -8,57 +10,51 @@
 }
 
 /* ==========================================
-   PC向け - プレミアムなカード + ジグザグレイアウト
+   共通 - プレミアムなプロフィールカード
+   PCでもモバイルでも同じカードスタイル
    ========================================== */
 .list {
   display: flex;
-  align-items: stretch;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 0;
   margin: 0 auto 40px;
-  max-width: 900px;
+  max-width: 100%;
 
-  /* グラスモーフィズムカード */
+  /* グレー枠付きカード */
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 100%
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.list:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+  padding: 40px 48px;
+  text-align: center;
 }
 .list:last-child {
   margin-bottom: 0;
 }
+
+/* PC版のジグザグ（row-reverse）を無効化 - 常にシングルカラム */
 .list:nth-child(even) {
-  flex-direction: row-reverse;
-}
-.list:nth-child(even) .item {
-  border-radius: 0 20px 20px 0;
+  flex-direction: column;
 }
 
+/* 丸形プロフィール画像 */
 .item {
-  width: 280px;
-  height: 280px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-  border-radius: 20px 0 0 20px;
+  margin-bottom: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .list dl {
-  flex: 1;
-  padding: 32px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 100%;
 }
 
 .name {
@@ -70,16 +66,15 @@
 
 .position {
   font-size: 0.95rem;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  margin-bottom: 20px;
   color: rgba(255, 255, 255, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .profile {
   font-size: 0.95rem;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: left;
 }
 
 .footer {
@@ -102,7 +97,7 @@
 }
 
 /* ==========================================
-   スマホ向け - プレミアムなプロフィールカード
+   スマホ向け - 余白とサイズの調整
    ========================================== */
 @media (max-width: 640px) {
   .container {
@@ -110,62 +105,28 @@
   }
 
   .list {
-    /* シングルカラム化 */
-    flex-direction: column !important;
-    align-items: center;
-    gap: 0;
-    margin: 0 auto 32px;
-    max-width: 100%;
     padding: 28px 24px;
-    text-align: center;
-  }
-  .list:hover {
-    transform: none;
-    box-shadow: none;
+    margin-bottom: 32px;
   }
 
-  /* 偶数要素のrow-reverseを無効化 */
-  .list:nth-child(even) {
-    flex-direction: column !important;
-  }
-  .list:nth-child(even) .item {
-    border-radius: 50%;
-  }
-
-  .list:last-child {
-    margin-bottom: 0;
-  }
-
-  /* 画像を常に上に表示 - 丸形プロフィール写真 */
   .item {
     width: 120px;
     height: 120px;
-    border-radius: 50%;
     margin-bottom: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    order: -1; /* 常に最初に表示 */
-  }
-
-  /* 説明リスト（dl）の順序制御 */
-  .list dl {
-    order: 0;
-    width: 100%;
-    padding: 0;
   }
 
   .name {
     font-size: 1.3rem;
-    font-weight: 700;
     margin-bottom: 6px;
   }
 
   .position {
     font-size: 0.9rem;
+    margin-bottom: 16px;
   }
 
   .profile {
     font-size: 0.9rem;
-    text-align: left;
+    line-height: 1.8;
   }
 }
