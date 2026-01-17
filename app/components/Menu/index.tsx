@@ -20,7 +20,7 @@ export default function Menu() {
             <Link href="/members" onClick={close}>メンバー</Link>
           </li>
           <li>
-            <Link href="/contact" onClick={close}>Contact</Link>
+            <Link href="/contact" onClick={close}>お問い合わせ</Link>
           </li>
         </ul>
         <button className={cx(style.button, style.close)} onClick={close}>
