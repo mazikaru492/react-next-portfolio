@@ -10,10 +10,10 @@ export default async function MembersPage() {
   const data = await getMembers({ limit: MEMBERS_LIST_LIMIT });
   return (
     <div>
-      <Hero title="print('Members')" sub=":)" />
+      <Hero title="自己紹介" sub=":)" />
       <div className={style.container}>
         {data.contents.length === 0 ? (
-          <p className={style.empty}>No members registered.</p>
+          <p className={style.empty}>自己紹介がありません。</p>
         ) : (
           <ul>
             {data.contents.map((member) => (
