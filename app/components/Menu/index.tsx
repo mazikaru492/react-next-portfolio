@@ -17,7 +17,7 @@ export default function Menu() {
             <Link href="/news" onClick={close}>ニュース</Link>
           </li>
           <li>
-            <Link href="/members" onClick={close}>メンバー</Link>
+            <Link href="/members" onClick={close}>自己紹介</Link>
           </li>
           <li>
             <Link href="/contact" onClick={close}>お問い合わせ</Link>
