@@ -66,7 +66,7 @@ export default function Profile() {
               href="/contact"
               className={`${styles.button} ${styles.primaryButton}`}
             >
-              📄 履歴書
+              📄 経歴
             </Link>
             <Link
               href="/contact"

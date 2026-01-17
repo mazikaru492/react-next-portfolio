@@ -5,12 +5,12 @@ export default function Page() {
   return (
     <div className={styles.container}>
       <p className={styles.text}>
-        ご質問、ご相談は下記フォームよりお問い合わせください。
+        ご質問やご相談は下記フォームよりご連絡ください。
         <br />
-        内容確認後、担当者より通常3営業以内にご連絡いたします。
+        内容を確認後、通常3営業日以内にご連絡させていただきます。
       </p>
       <p className={styles.email}>
-        連絡先：
+        Contact:
         <a className={styles.emailLink} href="mailto:ktc25a31e0014@edu.ac.jp">
           ktc25a31e0014@edu.ac.jp
         </a>

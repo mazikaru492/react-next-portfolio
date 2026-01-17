@@ -11,7 +11,7 @@ type Props = {
 
 export default function NewsList({ news }: Props) {
   if (news.length === 0) {
-    return <p>記事がありません。</p>;
+    return <p>No articles available.</p>;
   }
   return (
     <ul>

@@ -29,7 +29,7 @@ export default async function Page({ params, searchParams }: Props) {
     <>
       <Article data={data} />
       <div className={style.footer}>
-        <ButtonLink href="/news">ニュース一覧へ</ButtonLink>
+        <ButtonLink href="/news">Back to News List</ButtonLink>
       </div>
     </>
   );
