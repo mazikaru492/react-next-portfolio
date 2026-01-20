@@ -2,7 +2,18 @@
   position: relative;
   background-color: var(--color-bg-sub);
   width: 840px;
+  max-width: 100%;
   margin: -40px auto 0;
   padding: 80px;
   border-radius: 8px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: 100%;
+    margin: -20px auto 0;
+    padding: 24px 16px;
+    border-radius: 0;
+  }
 }

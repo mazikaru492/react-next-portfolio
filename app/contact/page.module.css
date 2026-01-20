@@ -17,6 +17,13 @@
 
 .emailLink {
   text-decoration: underline;
+  color: #60a5fa;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.emailLink:hover {
+  opacity: 0.7;
 }
 
 .container :global(.hs-form-frame) {
@@ -33,11 +40,23 @@
 }
 
 @media (max-width: 640px) {
+  .container {
+    padding: 24px 16px;
+  }
+
   .text {
     text-align: left;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .email {
-    text-align: left;
+    text-align: center;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+
+  .emailLink {
+    word-break: break-all;
   }
 }

@@ -10,7 +10,7 @@ export default function Page() {
         内容を確認後、通常3営業日以内にご連絡させていただきます。
       </p>
       <p className={styles.email}>
-        Contact:
+
         <a className={styles.emailLink} href="mailto:ktc25a31e0014@edu.ac.jp">
           ktc25a31e0014@edu.ac.jp
         </a>
