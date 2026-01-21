@@ -72,21 +72,40 @@ const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Jupyter - 公式ロゴ（オレンジの円弧とグレーのリング）
+// Jupyter - 公式ロゴ（オレンジの円弧と3つの惑星）
 const JupyterIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 1.5c5.8 0 10.5 4.7 10.5 10.5S17.8 22.5 12 22.5 1.5 17.8 1.5 12 6.2 1.5 12 1.5z" fill="#767677" />
-    <path d="M12 2.5c-1.5 0-2.9.35-4.15.97l.85 1.47A8.02 8.02 0 0112 4c1.17 0 2.28.25 3.3.69l.85-1.47A9.47 9.47 0 0012 2.5z" fill="#F37726" />
-    <circle cx="4.5" cy="5" r="1.2" fill="#767677" />
-    <circle cx="19" cy="18" r="1" fill="#767677" />
-    <circle cx="17" cy="6" r=".8" fill="#767677" />
+    {/* オレンジの円弧（上部） */}
+    <path
+      d="M19.5 12c0-4.14-3.36-7.5-7.5-7.5S4.5 7.86 4.5 12"
+      fill="none"
+      stroke="#F37726"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    {/* 3つの惑星（グレー） */}
+    <circle cx="4" cy="5" r="1.5" fill="#767677" />
+    <circle cx="20" cy="18" r="1.2" fill="#767677" />
+    <circle cx="18" cy="5.5" r="1" fill="#767677" />
   </svg>
 );
 
-// GitHub Copilot - 公式ロゴ（メガネをかけたロボット顔）
+// GitHub Copilot - 公式ロゴ（VRゴーグル付きロボット顔）
 const CopilotIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12 1C7.03 1 3 5.03 3 10v4c0 2.21 1.79 4 4 4h1.5c.28 0 .5.22.5.5v2.5c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-2.5c0-.28.22-.5.5-.5H17c2.21 0 4-1.79 4-4v-4c0-4.97-4.03-9-9-9zm-4 11.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm5 3c-.83 0-1.5-.45-1.5-1s.67-1 1.5-1 1.5.45 1.5 1-.67 1-1.5 1zm3-3c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+    {/* 頭部外形（丸みのある四角） */}
+    <path
+      d="M12 2C8 2 5 4 4 7v6c0 3 2 5 5 5h1v2c0 1 .5 2 2 2s2-1 2-2v-2h1c3 0 5-2 5-5V7c-1-3-4-5-8-5z"
+      fill="currentColor"
+    />
+    {/* 目（VRゴーグル風の2つの丸） */}
+    <circle cx="8.5" cy="10" r="2" fill="#1a1a1a" />
+    <circle cx="15.5" cy="10" r="2" fill="#1a1a1a" />
+    {/* 目のハイライト */}
+    <circle cx="8.5" cy="10" r="0.8" fill="#444" />
+    <circle cx="15.5" cy="10" r="0.8" fill="#444" />
+    {/* 口（横線） */}
+    <rect x="9" y="14" width="6" height="1.5" rx="0.75" fill="#1a1a1a" />
   </svg>
 );
 
