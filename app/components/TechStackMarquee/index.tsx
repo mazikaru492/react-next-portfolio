@@ -72,63 +72,7 @@ const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Jupyter - 公式ロゴ（オレンジの円弧と3つの惑星）
-const JupyterIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    {/* オレンジの円弧（上部） */}
-    <path
-      d="M19.5 12c0-4.14-3.36-7.5-7.5-7.5S4.5 7.86 4.5 12"
-      fill="none"
-      stroke="#F37726"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-    {/* 3つの惑星（グレー） */}
-    <circle cx="4" cy="5" r="1.5" fill="#767677" />
-    <circle cx="20" cy="18" r="1.2" fill="#767677" />
-    <circle cx="18" cy="5.5" r="1" fill="#767677" />
-  </svg>
-);
 
-// GitHub Copilot - 公式ロゴ（VRゴーグル付きロボット顔）
-const CopilotIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    {/* 頭部外形（丸みのある四角） */}
-    <path
-      d="M12 2C8 2 5 4 4 7v6c0 3 2 5 5 5h1v2c0 1 .5 2 2 2s2-1 2-2v-2h1c3 0 5-2 5-5V7c-1-3-4-5-8-5z"
-      fill="currentColor"
-    />
-    {/* 目（VRゴーグル風の2つの丸） */}
-    <circle cx="8.5" cy="10" r="2" fill="#1a1a1a" />
-    <circle cx="15.5" cy="10" r="2" fill="#1a1a1a" />
-    {/* 目のハイライト */}
-    <circle cx="8.5" cy="10" r="0.8" fill="#444" />
-    <circle cx="15.5" cy="10" r="0.8" fill="#444" />
-    {/* 口（横線） */}
-    <rect x="9" y="14" width="6" height="1.5" rx="0.75" fill="#1a1a1a" />
-  </svg>
-);
-
-// VSCode - 公式ロゴ（青い折れ曲がったライン）
-const VSCodeIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M17.583 0L8.958 8.25 3.5 4l-2.5 1.5v13l2.5 1.5 5.458-4.25L17.583 24l5.417-2.5V2.5L17.583 0zM6.375 15.25l-3.25-2.5v-1.5l3.25 2.5v1.5zm9.083-3.25L7 17.75v-2.5L13.5 12 7 8.75v-2.5l8.458 5.75z" fill="#007ACC" />
-  </svg>
-);
-
-// Antigravity - カスタムロゴ（上向き矢印または浮遊するAマーク）
-const AntigravityIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="none" {...props}>
-    <defs>
-      <linearGradient id="antigravity-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#6366F1" />
-        <stop offset="100%" stopColor="#A855F7" />
-      </linearGradient>
-    </defs>
-    <path d="M12 2L3 20h4l1.5-4h7l1.5 4h4L12 2zm0 6l2.5 6h-5L12 8z" fill="url(#antigravity-grad)" />
-    <path d="M12 2L9 6l3-1 3 1-3-4z" fill="#A855F7" opacity="0.6" />
-  </svg>
-);
 
 // ==========================================
 // Tech Stack データ
@@ -246,25 +190,25 @@ const ROW_2: TechItem[] = [
   },
   {
     label: "ジュピター",
-    Icon: JupyterIcon as ComponentType<{ className?: string }>,
+    imageSrc: "/jupyter.png",
     color: "#F37726",
     url: "https://jupyter.org",
   },
   {
     label: "GitHubコパイロット",
-    Icon: CopilotIcon as ComponentType<{ className?: string }>,
+    imageSrc: "/copilot.png",
     color: "#ffffff",
     url: "https://github.com/features/copilot",
   },
   {
     label: "VSCode",
-    Icon: VSCodeIcon as ComponentType<{ className?: string }>,
+    imageSrc: "/vscode.png",
     color: "#007ACC",
     url: "https://code.visualstudio.com",
   },
   {
     label: "Antigravity",
-    Icon: AntigravityIcon as ComponentType<{ className?: string }>,
+    imageSrc: "/antigravity.png",
     color: "#A855F7",
     url: "https://blog.google/products/gemini/google-antigravity/",
   },
