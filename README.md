@@ -1,57 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# react-next-portfolio
 
-## Getting Started
+Next.js と React で構築されたポートフォリオサイトです。microCMS をヘッドレス CMS として使用し、GitHub の貢献（草）表示、Tech Stack のマーキー表示などの機能を備えています。
 
-First, run the development server:
+## 技術スタック
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- microCMS（ヘッドレス CMS）
+- Vercel Analytics
+
+## 主な機能
+
+- プロフィール表示
+- GitHub Contributions（草）の表示
+- Tech Stack のマーキーアニメーション
+- ニュース記事一覧（microCMS から取得）
+- お問い合わせフォーム
+- レスポンシブデザイン対応
+
+## 必要条件
+
+- Node.js 20 以上 25 未満
+
+## セットアップ
+
+### 1. 依存関係のインストール
+
+```bash
+npm install
+```
+
+### 2. 環境変数の設定
+
+`.env.example` を参考に `.env.local` ファイルを作成してください。
+
+```bash
+cp .env.example .env.local
+```
+
+### 環境変数一覧
+
+| 変数名                  | 説明                                               | 必須                            |
+| ----------------------- | -------------------------------------------------- | ------------------------------- |
+| MICROCMS_SERVICE_DOMAIN | microCMS のサービスドメイン                        | 本番環境では必須                |
+| MICROCMS_API_KEY        | microCMS の API キー                               | 本番環境では必須                |
+| GITHUB_USERNAME         | GitHub のユーザー名                                | 任意（デフォルト: mazikaru492） |
+| GITHUB_TOKEN            | GitHub Personal Access Token（read:user スコープ） | 任意                            |
+
+ローカル開発では microCMS の設定がなくても起動できます（空データでフォールバック表示）。
+
+GitHub トークンが未設定の場合は、外部 SVG による軽量なフォールバック表示が行われます。
+
+## 開発
+
+### 開発サーバーの起動
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Turbopack を使用する場合:
 
-## GitHub の貢献（草）表示
+```bash
+npm run dev:turbo
+```
 
-トップページに「GitHub への貢献」セクションを表示します。
+ブラウザで http://localhost:3000 を開いて確認できます。
 
-- 推奨（年間の貢献数 + カレンダーを正確に表示）
-  - `GITHUB_USERNAME`: GitHub のユーザー名（未設定なら `mazikaru492`）
-  - `GITHUB_TOKEN`: GitHub Personal Access Token（`read:user` で OK）
-- トークン未設定の場合
-  - 外部 SVG（軽量）でフォールバック表示します
+### ビルド
 
-## microCMS
+```bash
+npm run build
+```
 
-本番環境では microCMS の設定が必須です。
+### 本番サーバーの起動
 
-- `MICROCMS_SERVICE_DOMAIN`: サービスドメイン
-- `MICROCMS_API_KEY`: API キー
+```bash
+npm start
+```
 
-ローカル開発では未設定でも起動できます（空データでフォールバックします）。
+### Lint
 
-設定する場合は `.env.local` を作成し、[.env.example](.env.example) を参考に値を入れてください。
+```bash
+npm run lint
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ディレクトリ構成
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+my-next-project/
+├── app/
+│   ├── components/     # 再利用可能なコンポーネント
+│   │   ├── Article/
+│   │   ├── Footer/
+│   │   ├── GitHubContributions/
+│   │   ├── Header/
+│   │   ├── Hero/
+│   │   ├── NewsList/
+│   │   ├── Profile/
+│   │   ├── TechStackMarquee/
+│   │   └── ...
+│   ├── contact/        # お問い合わせページ
+│   ├── news/           # ニュースページ
+│   ├── members/        # メンバーページ
+│   ├── lids/           # API ユーティリティ
+│   ├── constants/      # 定数定義
+│   ├── globals.css     # グローバルスタイル
+│   ├── layout.tsx      # ルートレイアウト
+│   └── page.tsx        # トップページ
+├── public/             # 静的ファイル
+└── ...
+```
 
-## Learn More
+## デプロイ
 
-To learn more about Next.js, take a look at the following resources:
+Vercel へのデプロイを推奨します。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Vercel にプロジェクトをインポート
+2. 環境変数を設定
+3. デプロイ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+詳細は Next.js のデプロイドキュメントを参照してください:
+https://nextjs.org/docs/app/building-your-application/deploying
 
-## Deploy on Vercel
+## ライセンス
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+このプロジェクトはプライベートリポジトリです。

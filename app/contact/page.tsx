@@ -11,8 +11,8 @@ export default function Page() {
       </p>
       <p className={styles.email}>
 
-        <a className={styles.emailLink} href="mailto:ktc25a31e0014@edu.ac.jp">
-          ktc25a31e0014@edu.ac.jp
+        <a className={styles.emailLink} href="mailto:ktc25a31e0014@edu.kyoto-tech.ac.jp">
+          ktc25a31e0014@edu.kyoto-tech.ac.jp
         </a>
       </p>
       <HubSpotForm
