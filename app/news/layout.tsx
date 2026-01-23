@@ -11,7 +11,7 @@ type Props = {
 export default function NewsLayout({ children }: Props) {
   return (
     <>
-      <Hero title="News" sub="ニュース" />
+      <Hero title="ニュース" sub="News" />
       <Sheet>
         <SearchField />
         {children}

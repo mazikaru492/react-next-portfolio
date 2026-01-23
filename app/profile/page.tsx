@@ -8,7 +8,7 @@ export default async function ProfilePage() {
 
   return (
     <div className={styles.wrapper}>
-      <Hero title="プロフィール・経歴" sub="Profile &amp; Career" />
+      <Hero title="プロフィール・経歴" sub="Profile & Career" />
 
       <div className={styles.container}>
         {/* プロフィールカード */}
