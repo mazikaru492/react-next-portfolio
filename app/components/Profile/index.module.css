@@ -37,8 +37,8 @@
   height: 200px;
   border-radius: 50%;
   overflow: visible;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 4px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
   display: block;
 }
 
@@ -54,6 +54,13 @@
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .statusBadge {
