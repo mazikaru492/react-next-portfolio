@@ -49,19 +49,62 @@ const NmapIcon = (props: SVGProps<SVGSVGElement>) => (
       stroke="#51A0D5"
       strokeWidth="1.5"
     />
-    <circle cx="12" cy="12" r="5" fill="none" stroke="#51A0D5" strokeWidth="1.2" />
-    <circle cx="12" cy="12" r="3" fill="none" stroke="#51A0D5" strokeWidth="1" />
+    <circle
+      cx="12"
+      cy="12"
+      r="5"
+      fill="none"
+      stroke="#51A0D5"
+      strokeWidth="1.2"
+    />
+    <circle
+      cx="12"
+      cy="12"
+      r="3"
+      fill="none"
+      stroke="#51A0D5"
+      strokeWidth="1"
+    />
     <circle cx="12" cy="12" r="1.5" fill="#51A0D5" />
-    <path d="M12 5v14M5 12h14" stroke="#51A0D5" strokeWidth="0.5" opacity="0.6" />
+    <path
+      d="M12 5v14M5 12h14"
+      stroke="#51A0D5"
+      strokeWidth="0.5"
+      opacity="0.6"
+    />
   </svg>
 );
 
 // Napkin AI - 公式ロゴ（3つの斜めバー）
 const NapkinIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <rect x="4" y="4" width="4" height="14" rx="1" transform="rotate(-15 6 11)" fill="#6366F1" />
-    <rect x="10" y="6" width="4" height="12" rx="1" transform="rotate(-15 12 12)" fill="#8B5CF6" />
-    <rect x="16" y="8" width="4" height="10" rx="1" transform="rotate(-15 18 13)" fill="#A78BFA" />
+    <rect
+      x="4"
+      y="4"
+      width="4"
+      height="14"
+      rx="1"
+      transform="rotate(-15 6 11)"
+      fill="#6366F1"
+    />
+    <rect
+      x="10"
+      y="6"
+      width="4"
+      height="12"
+      rx="1"
+      transform="rotate(-15 12 12)"
+      fill="#8B5CF6"
+    />
+    <rect
+      x="16"
+      y="8"
+      width="4"
+      height="10"
+      rx="1"
+      transform="rotate(-15 18 13)"
+      fill="#A78BFA"
+    />
   </svg>
 );
 
@@ -72,8 +115,6 @@ const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-
-
 // ==========================================
 // Tech Stack データ
 // ==========================================
@@ -81,7 +122,7 @@ const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
 type TechItem = {
   label: string;
   Icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  imageSrc?: string;  // PNG画像のパス
+  imageSrc?: string; // PNG画像のパス
   color: string;
   url: string;
 };
@@ -90,13 +131,13 @@ type TechItem = {
 const ROW_1: TechItem[] = [
   {
     label: "NotebookLM",
-    imageSrc: "/notebooklm.png",  // PNG画像を使用
+    imageSrc: "/notebooklm.png", // PNG画像を使用
     color: "#ffffff",
     url: "https://notebooklm.google.com",
   },
   {
     label: "Sora 2",
-    imageSrc: "/sora.png",  // PNG画像を使用
+    imageSrc: "/sora.png", // PNG画像を使用
     color: "#3B82F6",
     url: "https://sora-2.org",
   },
@@ -212,13 +253,25 @@ const ROW_2: TechItem[] = [
     color: "#A855F7",
     url: "https://blog.google/products/gemini/google-antigravity/",
   },
+  {
+    label: "Youware",
+    imageSrc: "/youware.png",
+    color: "#5C7C51", // ロゴの緑色に近い色
+    url: "#", // URL不明のためプレースホルダー
+  },
 ];
 
 // ==========================================
 // コンポーネント
 // ==========================================
 
-function MarqueeRow({ items, reverse }: { items: TechItem[]; reverse?: boolean }) {
+function MarqueeRow({
+  items,
+  reverse,
+}: {
+  items: TechItem[];
+  reverse?: boolean;
+}) {
   const repeated = [...items, ...items, ...items, ...items];
 
   return (
