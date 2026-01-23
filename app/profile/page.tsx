@@ -50,23 +50,13 @@ export default async function ProfilePage() {
               <p className={styles.title}>{profile.title}</p>
               <p className={styles.subtitle}>{profile.subtitle}</p>
               <div className={styles.tags}>
-                <a href="#skills" className={styles.tag}>
-                  🛡️ ホワイトハッカー
-                </a>
-                <a href="#career" className={styles.tag}>
-                  🎓 kyoto-tech
-                </a>
-                <a href="#skills" className={styles.tag}>
-                  💻 セキュリティ
-                </a>
+                <span className={styles.tag}>🛡️ ホワイトハッカー</span>
+                <span className={styles.tag}>🎓 kyoto-tech</span>
+                <span className={styles.tag}>💻 セキュリティ</span>
               </div>
               <div className={styles.tags}>
-                <a href="#career" className={styles.tag}>
-                  📄 経歴
-                </a>
-                <a href="/contact" className={styles.tag}>
-                  📧 お問い合わせ
-                </a>
+                <span className={styles.tag}>📄 経歴</span>
+                <span className={styles.tag}>📧 お問い合わせ</span>
               </div>
             </div>
           </div>
@@ -118,8 +108,10 @@ export default async function ProfilePage() {
             <div className={styles.timelineItem}>
               <div className={styles.timelineDot}></div>
               <div className={styles.timelineContent}>
-                <div className={styles.timelinePeriod}>2023年 - 現在</div>
-                <h4 className={styles.timelineTitle}>kyoto-tech 在学中</h4>
+                <div className={styles.timelinePeriod}>2025年4月 - 現在</div>
+                <h4 className={styles.timelineTitle}>
+                  京都デザイン＆テクノロジー専門学校 在学中
+                </h4>
                 <p className={styles.timelineDesc}>
                   ホワイトハッカー専攻で、サイバーセキュリティ、ネットワークセキュリティ、
                   倫理的ハッキングなどの専門知識を習得中。
@@ -130,11 +122,25 @@ export default async function ProfilePage() {
             <div className={styles.timelineItem}>
               <div className={styles.timelineDot}></div>
               <div className={styles.timelineContent}>
-                <div className={styles.timelinePeriod}>2022年 - 2023年</div>
-                <h4 className={styles.timelineTitle}>プログラミング学習開始</h4>
+                <div className={styles.timelinePeriod}>2025年4月</div>
+                <h4 className={styles.timelineTitle}>
+                  京都デザイン＆テクノロジー専門学校 入学
+                </h4>
                 <p className={styles.timelineDesc}>
-                  Web開発やプログラミングの基礎を独学で学び、
-                  セキュリティ分野への興味を深める。
+                  ホワイトハッカー専攻に入学し、サイバーセキュリティの専門的な学習を開始。
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>
+                <div className={styles.timelinePeriod}>2025年3月</div>
+                <h4 className={styles.timelineTitle}>
+                  彦根工業高等学校 機械科 卒業
+                </h4>
+                <p className={styles.timelineDesc}>
+                  高校卒業後、興味があったセキュリティ分野を志し、専門学校への進学を決意。
                 </p>
               </div>
             </div>
