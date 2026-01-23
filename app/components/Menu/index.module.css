@@ -36,7 +36,7 @@
 
 /* Underline animation */
 .items li a::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -53,10 +53,14 @@
 
 /* Glow effect */
 .items li a::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -4px -8px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.15),
+    rgba(118, 75, 162, 0.15)
+  );
   border-radius: 8px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -69,6 +73,11 @@
 
 .button {
   display: none;
+  /* Touch target optimization */
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
 }
 @media (max-width: 640px) {
   .nav {
@@ -88,7 +97,11 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     color: #fff;
-    padding: 24px 16px;
+    /* Safe Area対応 */
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 16px
+      calc(24px + env(safe-area-inset-bottom, 0px));
+    padding-left: calc(16px + env(safe-area-inset-left, 0px));
+    padding-right: calc(16px + env(safe-area-inset-right, 0px));
     z-index: 9999;
     pointer-events: auto;
     animation: fadeIn 0.3s ease-out forwards;
@@ -109,9 +122,15 @@
     animation: slideUpFade 0.5s ease-out forwards;
   }
 
-  .items li:nth-child(1) { animation-delay: 0.1s; }
-  .items li:nth-child(2) { animation-delay: 0.2s; }
-  .items li:nth-child(3) { animation-delay: 0.3s; }
+  .items li:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .items li:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .items li:nth-child(3) {
+    animation-delay: 0.3s;
+  }
 
   .items li a {
     font-size: 24px;
@@ -133,7 +152,7 @@
 
   /* Centered underline animation for mobile */
   .items li a::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -173,12 +192,21 @@
 
   .close {
     position: absolute;
-    top: 24px;
-    right: 24px;
-    padding: 8px;
+    /* Safe Area対応: ノッチを避けて配置 */
+    top: calc(24px + env(safe-area-inset-top, 0px));
+    right: calc(24px + env(safe-area-inset-right, 0px));
+    /* 44x44px touch target */
+    width: 44px;
+    height: 44px;
+    padding: 10px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition:
+      background 0.3s ease,
+      transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .close:hover {
@@ -187,8 +215,12 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes slideUpFade {

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Hero from "@/app/components/Hero";
 import styles from "./page.module.css";
 
@@ -35,22 +34,29 @@ export default function ProfilePage() {
                 <span className={styles.verified}>✓</span>
               </h2>
               <p className={styles.title}>学生・ホワイトハッカー専攻</p>
+              <p className={styles.subtitle}>
+                サイバーセキュリティの専門知識を活かし、より安全なデジタル社会の実現を目指しています
+              </p>
               <div className={styles.tags}>
-                <span className={styles.tag}>🛡️ ホワイトハッカー</span>
-                <span className={styles.tag}>🎓 kyoto-tech</span>
-                <span className={styles.tag}>💻 セキュリティ</span>
+                <a href="#skills" className={styles.tag}>
+                  🛡️ ホワイトハッカー
+                </a>
+                <a href="#career" className={styles.tag}>
+                  🎓 kyoto-tech
+                </a>
+                <a href="#skills" className={styles.tag}>
+                  💻 セキュリティ
+                </a>
+              </div>
+              <div className={styles.tags}>
+                <a href="#career" className={styles.tag}>
+                  📄 経歴
+                </a>
+                <a href="/contact" className={styles.tag}>
+                  📧 お問い合わせ
+                </a>
               </div>
             </div>
-          </div>
-
-          <div className={styles.bio}>
-            <h3 className={styles.sectionTitle}>自己紹介</h3>
-            <p className={styles.bioText}>
-              私はkyoto-techで学生をしておりホワイトハッカー専攻で学業を学んでいます。
-              サイバーセキュリティに強い関心を持ち、日々新しい技術や手法を学んでいます。
-              倫理的ハッキングとセキュリティの専門知識を活かして、
-              より安全なデジタル社会の実現に貢献したいと考えています。
-            </p>
           </div>
 
           <div className={styles.socials}>
@@ -90,7 +96,7 @@ export default function ProfilePage() {
         </section>
 
         {/* 経歴セクション */}
-        <section className={styles.section}>
+        <section className={styles.section} id="career">
           <h3 className={styles.sectionTitle}>経歴</h3>
           <div className={styles.timeline}>
             <div className={styles.timelineItem}>
@@ -120,7 +126,7 @@ export default function ProfilePage() {
         </section>
 
         {/* スキルセクション */}
-        <section className={styles.section}>
+        <section className={styles.section} id="skills">
           <h3 className={styles.sectionTitle}>スキル・専門分野</h3>
           <div className={styles.skillsGrid}>
             <div className={styles.skillCard}>
@@ -153,17 +159,6 @@ export default function ProfilePage() {
               </ul>
             </div>
           </div>
-        </section>
-
-        {/* CTAセクション */}
-        <section className={styles.ctaSection}>
-          <h3 className={styles.ctaTitle}>お仕事のご依頼・ご相談</h3>
-          <p className={styles.ctaText}>
-            セキュリティ診断やWeb開発のご相談など、お気軽にお問い合わせください。
-          </p>
-          <Link href="/contact" className={styles.ctaButton}>
-            お問い合わせはこちら
-          </Link>
         </section>
       </div>
     </div>

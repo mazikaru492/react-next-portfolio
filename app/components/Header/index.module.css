@@ -2,7 +2,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding: 16px 24px 8px;
+  /* Safe Area対応: ノッチの下にヘッダーを配置 */
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 24px 8px;
+  padding-left: calc(24px + env(safe-area-inset-left, 0px));
+  padding-right: calc(24px + env(safe-area-inset-right, 0px));
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -13,6 +16,11 @@
 .logoLink {
   display: flex;
   pointer-events: auto;
+  /* 44x44px minimum touch target */
+  min-height: 44px;
+  min-width: 44px;
+  align-items: center;
+  justify-content: center;
 }
 .logo {
   height: 32px;
@@ -29,6 +37,8 @@
 
 @media (max-width: 640px) {
   .header {
-    padding: 24px 16px 8px;
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 16px 8px;
+    padding-left: calc(16px + env(safe-area-inset-left, 0px));
+    padding-right: calc(16px + env(safe-area-inset-right, 0px));
   }
 }
