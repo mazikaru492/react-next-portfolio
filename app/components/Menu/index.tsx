@@ -14,11 +14,6 @@ export default function Menu() {
       <nav className={cx(style.nav, isOpen && style.open)}>
         <ul className={style.items}>
           <li>
-            <Link href="/entry" onClick={close}>
-              エントリー
-            </Link>
-          </li>
-          <li>
             <Link href="/profile" onClick={close}>
               プロフィール
             </Link>
