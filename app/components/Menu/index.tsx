@@ -29,11 +29,6 @@ export default function Menu() {
             </Link>
           </li>
           <li>
-            <Link href="/members" onClick={close}>
-              自己紹介
-            </Link>
-          </li>
-          <li>
             <Link href="/contact" onClick={close}>
               お問い合わせ
             </Link>
