@@ -146,59 +146,6 @@
   border-bottom: 2px solid rgba(0, 200, 83, 0.3);
 }
 
-/* メンバー情報（microCMS） */
-.membersGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.memberCard {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.memberCard:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(0, 200, 83, 0.3);
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 200, 83, 0.15);
-}
-
-.memberImage {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  aspect-ratio: 16 / 9;
-}
-
-.memberInfo {
-  padding: 1.5rem;
-}
-
-.memberName {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--color-text-main);
-}
-
-.memberPosition {
-  font-size: 0.9rem;
-  color: #00e676;
-  font-weight: 500;
-  margin-bottom: 1rem;
-}
-
-.memberProfile {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--color-text-sub);
-}
-
 /* タイムライン */
 .timeline {
   position: relative;

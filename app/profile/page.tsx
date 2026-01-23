@@ -1,13 +1,7 @@
-import Image from "next/image";
 import Hero from "@/app/components/Hero";
-import { getMembers } from "@/app/lids/microcms";
 import styles from "./page.module.css";
 
-export const revalidate = 60;
-
-export default async function ProfilePage() {
-  const membersData = await getMembers({ limit: 10 });
-
+export default function ProfilePage() {
   return (
     <div className={styles.wrapper}>
       <Hero title="プロフィール・経歴" sub="Profile &amp; Career" />
@@ -100,31 +94,6 @@ export default async function ProfilePage() {
             </a>
           </div>
         </section>
-
-        {/* microCMSからのメンバー情報 */}
-        {membersData.contents.length > 0 && (
-          <section className={styles.section} id="introduction">
-            <h3 className={styles.sectionTitle}>自己紹介</h3>
-            <div className={styles.membersGrid}>
-              {membersData.contents.map((member) => (
-                <div key={member.id} className={styles.memberCard}>
-                  <Image
-                    src={member.image.url}
-                    alt={member.name}
-                    width={member.image.width}
-                    height={member.image.height}
-                    className={styles.memberImage}
-                  />
-                  <div className={styles.memberInfo}>
-                    <h4 className={styles.memberName}>{member.name}</h4>
-                    <p className={styles.memberPosition}>{member.position}</p>
-                    <p className={styles.memberProfile}>{member.profile}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* 経歴セクション */}
         <section className={styles.section} id="career">
