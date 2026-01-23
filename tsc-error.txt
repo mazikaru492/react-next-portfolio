@@ -1,7 +1,0 @@
-﻿app/components/TechStackMarquee/index.tsx(224,17): error TS2769: No overload matches this call.
-  Overload 1 of 2, '(props: { className?: string | undefined; }, context?: any): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | ... 4 more ... | undefined', gave the following error.
-    Type '{ className: string; style: { color: string; }; "aria-hidden": true; }' is not assignable to type 'IntrinsicAttributes & { className?: string | undefined; }'.
-      Property 'style' does not exist on type 'IntrinsicAttributes & { className?: string | undefined; }'.
-  Overload 2 of 2, '(props: { className?: string | undefined; }): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | ... 4 more ... | undefined', gave the following error.
-    Type '{ className: string; style: { color: string; }; "aria-hidden": true; }' is not assignable to type 'IntrinsicAttributes & { className?: string | undefined; }'.
-      Property 'style' does not exist on type 'IntrinsicAttributes & { className?: string | undefined; }'.

@@ -5,7 +5,10 @@ function validateEmail(email: string) {
   return pattern.test(email);
 }
 
-export async function createContactData(_prevState: any, formData: FormData) {
+export async function createContactData(
+  _prevState: { status: string; message: string },
+  formData: FormData,
+) {
   const rawFormData = {
     lastname: formData.get("lastname") as string,
     firstname: formData.get("firstname") as string,
@@ -87,13 +90,12 @@ export async function createContactData(_prevState: any, formData: FormData) {
           },
         ],
       }),
-    }
+    },
   );
 
   try {
     await result.json();
-  } catch (e) {
-    console.log(e);
+  } catch {
     return {
       status: "error",
       message: "お問い合わせに失敗しました",
