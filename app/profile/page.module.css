@@ -1,0 +1,359 @@
+.wrapper {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+/* プロフィールカード */
+.profileCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 3rem;
+  margin-bottom: 3rem;
+  backdrop-filter: blur(10px);
+}
+
+.profileHeader {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.avatarWrapper {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+  padding: 3px;
+  box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3);
+}
+
+.profileInfo {
+  flex: 1;
+  min-width: 250px;
+}
+
+.name {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.verified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #00c853;
+  color: #000;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.title {
+  font-size: 1.1rem;
+  color: var(--color-text-sub);
+  margin-bottom: 1rem;
+}
+
+.tags {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(0, 200, 83, 0.1);
+  border: 1px solid rgba(0, 200, 83, 0.3);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  color: #00e676;
+}
+
+.bio {
+  margin-bottom: 2rem;
+}
+
+.bioText {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--color-text-sub);
+}
+
+.socials {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: var(--color-text-main);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.socialLink:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 200, 83, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 200, 83, 0.2);
+}
+
+/* セクション */
+.section {
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(0, 200, 83, 0.3);
+}
+
+/* タイムライン */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 200, 83, 0.5),
+    rgba(0, 200, 83, 0.1)
+  );
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -2.4rem;
+  top: 0.3rem;
+  width: 12px;
+  height: 12px;
+  background: #00c853;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(0, 200, 83, 0.2);
+}
+
+.timelineContent {
+  padding-left: 1.5rem;
+}
+
+.timelinePeriod {
+  font-size: 0.9rem;
+  color: #00e676;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.timelineTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-main);
+}
+
+.timelineDesc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-text-sub);
+}
+
+/* スキルグリッド */
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.skillCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.skillCard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 200, 83, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 200, 83, 0.15);
+}
+
+.skillIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.skillTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--color-text-main);
+}
+
+.skillList {
+  list-style: none;
+  padding: 0;
+}
+
+.skillList li {
+  font-size: 0.95rem;
+  color: var(--color-text-sub);
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.skillList li::before {
+  content: "▹";
+  position: absolute;
+  left: 0;
+  color: #00c853;
+  font-weight: bold;
+}
+
+/* CTAセクション */
+.ctaSection {
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 200, 83, 0.1),
+    rgba(0, 230, 118, 0.1)
+  );
+  border: 1px solid rgba(0, 200, 83, 0.3);
+  border-radius: 1.5rem;
+  padding: 3rem 2rem;
+  margin-top: 4rem;
+}
+
+.ctaTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-text-main);
+}
+
+.ctaText {
+  font-size: 1rem;
+  color: var(--color-text-sub);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+  color: #000;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 200, 83, 0.3);
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(0, 200, 83, 0.5);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+
+  .profileCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .profileHeader {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .name {
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .tags {
+    justify-content: center;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+
+  .timeline {
+    padding-left: 1.5rem;
+  }
+
+  .timelineDot {
+    left: -1.9rem;
+  }
+
+  .timelineContent {
+    padding-left: 1rem;
+  }
+
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaSection {
+    padding: 2rem 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+}
