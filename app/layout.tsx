@@ -14,11 +14,6 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "HURUYA Portfolio",
   description: "ホワイトハッカーを目指す学生のポートフォリオサイト",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "HURUYA",
-  },
   formatDetection: {
     telephone: false,
   },

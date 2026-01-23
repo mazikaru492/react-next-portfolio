@@ -6,7 +6,7 @@
   justify-content: center;
   background-color: var(--color-bg-overlay);
   color: #fff;
-  overflow: hidden;
+  overflow: visible;
   padding: 120px 40px;
   min-height: 600px;
 }
