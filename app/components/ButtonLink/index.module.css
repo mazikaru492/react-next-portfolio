@@ -3,13 +3,19 @@
   padding: 20px 40px;
   border-radius: var(--border-radius);
   width: 300px;
-  background: url("/arrow-right.svg") no-repeat right 20px center,
+  background:
+    url("/arrow-right.svg") no-repeat right 20px center,
     var(--color-button-primary);
   color: var(--color-text-unpainted);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition:
+    opacity 0.3s,
+    border-color 0.3s;
 }
 
 .button:hover {
   opacity: 0.9;
+  border-color: rgba(255, 255, 255, 0.6);
 }
 @media (max-width: 640px) {
   .button {

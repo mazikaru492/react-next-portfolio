@@ -81,8 +81,8 @@ export default async function Profile() {
 
           <div className={styles.actions}>
             <Link
-              href="/contact"
-              className={`${styles.button} ${styles.primaryButton}`}
+              href="/profile"
+              className={`${styles.button} ${styles.secondaryButton}`}
             >
               📄 経歴
             </Link>
