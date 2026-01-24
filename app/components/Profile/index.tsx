@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
 import styles from "./index.module.css";
-import OnlineStatusDot from "@/app/components/OnlineStatusDot";
 import { getProfile } from "@/app/lids/microcms";
 
 export default async function Profile() {
@@ -10,43 +8,6 @@ export default async function Profile() {
   return (
     <section className={styles.container}>
       <div className={styles.content}>
-        <a
-          href={profile.githubUrl || "https://github.com/mazikaru492"}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHubプロフィールを開く"
-          className={styles.avatarWrapper}
-        >
-          <div className={styles.avatar}>
-            {profile.avatar ? (
-              <Image
-                src={profile.avatar.url}
-                alt={profile.name}
-                width={200}
-                height={200}
-                className={styles.avatarImage}
-              />
-            ) : (
-              <svg
-                viewBox="0 0 200 200"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="100" cy="70" r="35" fill="white" opacity="0.9" />
-                <ellipse
-                  cx="100"
-                  cy="160"
-                  rx="60"
-                  ry="50"
-                  fill="white"
-                  opacity="0.9"
-                />
-              </svg>
-            )}
-          </div>
-          <OnlineStatusDot className={styles.statusBadge} />
-        </a>
-
         <div className={styles.textContent}>
           <h1 className={styles.name}>
             <span className={styles.verified}>
@@ -58,41 +19,6 @@ export default async function Profile() {
           <p className={styles.bio}>
             私はkyoto-techで学生をしておりホワイトハッカー専攻で学業を学んでいます。
           </p>
-
-          <div className={styles.tags}>
-            <span className={styles.tag}>
-              <span className={styles.tagIcon}>🛡️</span>
-              ホワイトハッカー
-            </span>
-            <a
-              href="https://kyoto-tech.ac.jp/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.tag}
-            >
-              <span className={styles.tagIcon}>🎓</span>
-              kyoto-tech
-            </a>
-            <span className={styles.tag}>
-              <span className={styles.tagIcon}>💻</span>
-              セキュリティ
-            </span>
-          </div>
-
-          <div className={styles.actions}>
-            <Link
-              href="/profile"
-              className={`${styles.button} ${styles.secondaryButton}`}
-            >
-              📄 経歴
-            </Link>
-            <Link
-              href="/contact"
-              className={`${styles.button} ${styles.secondaryButton}`}
-            >
-              ✉️ ご連絡ください
-            </Link>
-          </div>
 
           <div className={styles.socials}>
             {profile.githubUrl && (
@@ -134,15 +60,6 @@ export default async function Profile() {
           </div>
         </div>
       </div>
-
-      <Image
-        className={styles.bgimg}
-        src="/img-mv.jpg"
-        alt=""
-        width={4000}
-        height={1200}
-        priority
-      />
     </section>
   );
 }

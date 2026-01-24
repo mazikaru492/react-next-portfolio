@@ -49,15 +49,6 @@ export default async function ProfilePage() {
               </h2>
               <p className={styles.title}>{profile.title}</p>
               <p className={styles.subtitle}>{profile.subtitle}</p>
-              <div className={styles.tags}>
-                <span className={styles.tag}>🛡️ ホワイトハッカー</span>
-                <span className={styles.tag}>🎓 kyoto-tech</span>
-                <span className={styles.tag}>💻 セキュリティ</span>
-              </div>
-              <div className={styles.tags}>
-                <span className={styles.tag}>📄 経歴</span>
-                <span className={styles.tag}>📧 お問い合わせ</span>
-              </div>
             </div>
           </div>
 
@@ -143,42 +134,6 @@ export default async function ProfilePage() {
                   高校卒業後、興味があったセキュリティ分野を志し、専門学校への進学を決意。
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* スキルセクション */}
-        <section className={styles.section} id="skills">
-          <h3 className={styles.sectionTitle}>スキル・専門分野</h3>
-          <div className={styles.skillsGrid}>
-            <div className={styles.skillCard}>
-              <div className={styles.skillIcon}>🛡️</div>
-              <h4 className={styles.skillTitle}>セキュリティ</h4>
-              <ul className={styles.skillList}>
-                <li>脆弱性診断</li>
-                <li>ペネトレーションテスト</li>
-                <li>セキュリティ監査</li>
-              </ul>
-            </div>
-
-            <div className={styles.skillCard}>
-              <div className={styles.skillIcon}>💻</div>
-              <h4 className={styles.skillTitle}>開発</h4>
-              <ul className={styles.skillList}>
-                <li>Next.js / React</li>
-                <li>TypeScript</li>
-                <li>Python</li>
-              </ul>
-            </div>
-
-            <div className={styles.skillCard}>
-              <div className={styles.skillIcon}>🔧</div>
-              <h4 className={styles.skillTitle}>ツール</h4>
-              <ul className={styles.skillList}>
-                <li>Nmap</li>
-                <li>Wireshark</li>
-                <li>Git / GitHub</li>
-              </ul>
             </div>
           </div>
         </section>
