@@ -148,7 +148,7 @@ const ROW_1: TechItem[] = [
     url: "https://gemini.google.com",
   },
   {
-    label: "GPT",
+    label: "ChatGPT",
     Icon: OpenAIIcon as ComponentType<{ className?: string }>,
     color: "#10A37F",
     url: "https://openai.com/gpt-4",
