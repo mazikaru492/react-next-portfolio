@@ -50,7 +50,7 @@
 }
 
 .container :global(.hs-form-frame label) {
-  color: var(--color-text-main) !important;
+  color: #fff !important;
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
 }
