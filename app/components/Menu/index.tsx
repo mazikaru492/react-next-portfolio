@@ -19,6 +19,9 @@ export default function Menu() {
             </Link>
           </li>
           <li>
+            <Link href="/作ったもの" onClick={close}>
+              制作
+            </Link>
             <Link href="/news" onClick={close}>
               ブログ
             </Link>
