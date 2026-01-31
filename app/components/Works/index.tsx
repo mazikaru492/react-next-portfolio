@@ -1,18 +1,37 @@
 import styles from "./index.module.css";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import type { FC, ReactNode } from "react";
 
-type Work = {
-  id: string;
-  title: string;
-  description: string;
-  image?: string;
-  technologies: string[];
-  githubUrl?: string;
-  demoUrl?: string;
-};
+// ==========================================
+// Type Definitions
+// ==========================================
 
-// ここに作品データを追加してください
-const works: Work[] = [
+interface Work {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly image?: string;
+  readonly technologies: readonly string[];
+  readonly githubUrl?: string;
+  readonly demoUrl?: string;
+}
+
+interface ExternalLinkProps {
+  readonly href: string;
+  readonly label: string;
+  readonly icon: ReactNode;
+  readonly text: string;
+}
+
+interface WorkCardProps {
+  readonly work: Work;
+}
+
+// ==========================================
+// Constants
+// ==========================================
+
+const WORKS_DATA: readonly Work[] = [
   {
     id: "1",
     title: "サンプルプロジェクト1",
@@ -39,59 +58,87 @@ const works: Work[] = [
     githubUrl: "https://github.com/username/project3",
     demoUrl: "https://demo3.example.com",
   },
-];
+] as const;
 
-export default function Works() {
+const SECTION_CONTENT = {
+  title: "Works",
+  subtitle: "制作したプログラム・プロジェクト",
+} as const;
+
+// ==========================================
+// Sub Components
+// ==========================================
+
+const ExternalLink: FC<ExternalLinkProps> = ({ href, label, icon, text }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={styles.link}
+    aria-label={label}
+  >
+    {icon}
+    <span>{text}</span>
+  </a>
+);
+
+const TechBadge: FC<{ tech: string }> = ({ tech }) => (
+  <span className={styles.techBadge}>{tech}</span>
+);
+
+const WorkCard: FC<WorkCardProps> = ({ work }) => {
+  const { title, description, technologies, githubUrl, demoUrl } = work;
+
   return (
-    <section className={styles.container}>
-      <h2 className={styles.title}>Works</h2>
-      <p className={styles.subtitle}>制作したプログラム・プロジェクト</p>
+    <article className={styles.card}>
+      <div className={styles.cardContent}>
+        <h3 className={styles.cardTitle}>{title}</h3>
+        <p className={styles.cardDescription}>{description}</p>
 
-      <div className={styles.grid}>
-        {works.map((work) => (
-          <article key={work.id} className={styles.card}>
-            <div className={styles.cardContent}>
-              <h3 className={styles.cardTitle}>{work.title}</h3>
-              <p className={styles.cardDescription}>{work.description}</p>
+        <div className={styles.technologies}>
+          {technologies.map((tech) => (
+            <TechBadge key={tech} tech={tech} />
+          ))}
+        </div>
 
-              <div className={styles.technologies}>
-                {work.technologies.map((tech) => (
-                  <span key={tech} className={styles.techBadge}>
-                    {tech}
-                  </span>
-                ))}
-              </div>
-
-              <div className={styles.links}>
-                {work.githubUrl && (
-                  <a
-                    href={work.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.link}
-                    aria-label={`${work.title}のGitHubリポジトリ`}
-                  >
-                    <FaGithub />
-                    <span>GitHub</span>
-                  </a>
-                )}
-                {work.demoUrl && (
-                  <a
-                    href={work.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.link}
-                    aria-label={`${work.title}のデモサイト`}
-                  >
-                    <FaExternalLinkAlt />
-                    <span>Demo</span>
-                  </a>
-                )}
-              </div>
-            </div>
-          </article>
-        ))}
+        <div className={styles.links}>
+          {githubUrl && (
+            <ExternalLink
+              href={githubUrl}
+              label={`${title}のGitHubリポジトリ`}
+              icon={<FaGithub aria-hidden />}
+              text="GitHub"
+            />
+          )}
+          {demoUrl && (
+            <ExternalLink
+              href={demoUrl}
+              label={`${title}のデモサイト`}
+              icon={<FaExternalLinkAlt aria-hidden />}
+              text="Demo"
+            />
+          )}
+        </div>
       </div>
-    </section>
+    </article>
   );
-}
+};
+
+// ==========================================
+// Main Component
+// ==========================================
+
+const Works: FC = () => (
+  <section className={styles.container}>
+    <h2 className={styles.title}>{SECTION_CONTENT.title}</h2>
+    <p className={styles.subtitle}>{SECTION_CONTENT.subtitle}</p>
+
+    <div className={styles.grid}>
+      {WORKS_DATA.map((work) => (
+        <WorkCard key={work.id} work={work} />
+      ))}
+    </div>
+  </section>
+);
+
+export default Works;

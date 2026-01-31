@@ -1,3 +1,5 @@
+"use client";
+
 import {
   SiNextdotjs,
   SiGithub,
@@ -10,14 +12,64 @@ import {
   SiKalilinux,
 } from "react-icons/si";
 import Image from "next/image";
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentType, FC, SVGProps } from "react";
+import { memo } from "react";
 
 // ==========================================
-// 公式アイコン（公式サイトから再現）
+// Types & Interfaces
 // ==========================================
 
-// Google Gemini - 公式スパークルロゴ
-const GeminiIcon = (props: SVGProps<SVGSVGElement>) => (
+interface TechItem {
+  readonly label: string;
+  readonly Icon?: ComponentType<{
+    className?: string;
+    style?: React.CSSProperties;
+  }>;
+  readonly imageSrc?: string;
+  readonly color: string;
+  readonly url: string;
+}
+
+interface MarqueeRowProps {
+  readonly items: readonly TechItem[];
+  readonly reverse?: boolean;
+}
+
+interface TechIconProps {
+  readonly item: TechItem;
+}
+
+type SvgIconProps = SVGProps<SVGSVGElement>;
+
+// ==========================================
+// Constants
+// ==========================================
+
+const ICON_SIZE = {
+  mobile: "h-8 w-8",
+  desktop: "md:h-11 md:w-11",
+} as const;
+
+const ICON_DIMENSIONS = {
+  width: 44,
+  height: 44,
+} as const;
+
+const MARQUEE_CONFIG = {
+  repeatCount: 4,
+  gap: "gap-6 md:gap-16",
+} as const;
+
+const SECTION_CONTENT = {
+  title: "Tech Stack",
+  subtitle: "日々使用している技術・ツール",
+} as const;
+
+// ==========================================
+// SVG Icon Components
+// ==========================================
+
+const GeminiIcon: FC<SvgIconProps> = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
     <path
       d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z"
@@ -33,15 +85,13 @@ const GeminiIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// OpenAI GPT - 公式ロゴ
-const OpenAIIcon = (props: SVGProps<SVGSVGElement>) => (
+const OpenAIIcon: FC<SvgIconProps> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.896zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" />
   </svg>
 );
 
-// Nmap - 公式ロゴ（目＋レーダー）
-const NmapIcon = (props: SVGProps<SVGSVGElement>) => (
+const NmapIcon: FC<SvgIconProps> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path
       d="M12 4C5.5 4 1 12 1 12s4.5 8 11 8 11-8 11-8-4.5-8-11-8z"
@@ -75,8 +125,7 @@ const NmapIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Napkin AI - 公式ロゴ（3つの斜めバー）
-const NapkinIcon = (props: SVGProps<SVGSVGElement>) => (
+const NapkinIcon: FC<SvgIconProps> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <rect
       x="4"
@@ -108,36 +157,26 @@ const NapkinIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// Perplexity AI - 公式ロゴ（Simple Icons）
-const PerplexityIcon = (props: SVGProps<SVGSVGElement>) => (
+const PerplexityIcon: FC<SvgIconProps> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M22.3977 7.0896h-2.3106V.0676l-7.5094 6.3542V.1577h-1.1554v6.1966L4.4904 0v7.0896H1.6023v10.3976h2.8882V24l6.932-6.3591v6.2005h1.1554v-6.0469l6.9318 6.1807v-6.4879h2.8882V7.0896zm-3.4657-4.531v4.531h-5.355l5.355-4.531zm-13.2862.0676 4.8691 4.4634H5.6458V2.6262zM2.7576 16.332V8.245h7.8476l-6.1149 6.1147v1.9723H2.7576zm2.8882 5.0404v-3.8852h.0001v-2.6488l5.7763-5.7764v7.0111l-5.7764 5.2993zm12.7086.0248-5.7766-5.1509V9.0618l5.7766 5.7766v6.5588zm2.8882-5.0652h-1.733v-1.9723L13.3948 8.245h7.8478v8.087z" />
   </svg>
 );
 
 // ==========================================
-// Tech Stack データ
+// Tech Stack Data
 // ==========================================
 
-type TechItem = {
-  label: string;
-  Icon?: ComponentType<{ className?: string; style?: React.CSSProperties }>;
-  imageSrc?: string; // PNG画像のパス
-  color: string;
-  url: string;
-};
-
-// ROW 1: AI & Development Tools
-const ROW_1: TechItem[] = [
+const TECH_STACK_ROW_1: readonly TechItem[] = [
   {
     label: "NotebookLM",
-    imageSrc: "/notebooklm.png", // PNG画像を使用
+    imageSrc: "/notebooklm.png",
     color: "#ffffff",
     url: "https://notebooklm.google.com",
   },
   {
     label: "Sora 2",
-    imageSrc: "/sora.png", // PNG画像を使用
+    imageSrc: "/sora.png",
     color: "#3B82F6",
     url: "https://sora-2.org",
   },
@@ -177,10 +216,9 @@ const ROW_1: TechItem[] = [
     color: "#557C94",
     url: "https://www.kali.org",
   },
-];
+] as const;
 
-// ROW 2: Web & Security Tools
-const ROW_2: TechItem[] = [
+const TECH_STACK_ROW_2: readonly TechItem[] = [
   {
     label: "HTML5",
     Icon: SiHtml5,
@@ -256,80 +294,114 @@ const ROW_2: TechItem[] = [
   {
     label: "Youware",
     imageSrc: "/youware.png",
-    color: "#5C7C51", // ロゴの緑色に近い色
-    url: "#", // URL不明のためプレースホルダー
+    color: "#5C7C51",
+    url: "#",
   },
-];
+] as const;
 
 // ==========================================
-// コンポーネント
+// Sub-Components
 // ==========================================
 
-function MarqueeRow({
-  items,
-  reverse,
-}: {
-  items: TechItem[];
-  reverse?: boolean;
-}) {
-  const repeated = [...items, ...items, ...items, ...items];
+const TechIcon: FC<TechIconProps> = memo(({ item }) => {
+  const iconClassName = `${ICON_SIZE.mobile} ${ICON_SIZE.desktop}`;
+
+  if (item.imageSrc) {
+    return (
+      <Image
+        src={item.imageSrc}
+        alt={item.label}
+        width={ICON_DIMENSIONS.width}
+        height={ICON_DIMENSIONS.height}
+        className={`${iconClassName} object-contain`}
+      />
+    );
+  }
+
+  if (item.Icon) {
+    return (
+      <item.Icon
+        className={iconClassName}
+        style={{ color: item.color }}
+        aria-hidden="true"
+      />
+    );
+  }
+
+  return null;
+});
+
+TechIcon.displayName = "TechIcon";
+
+const TechLink: FC<{ item: TechItem; index: number }> = memo(
+  ({ item, index }) => (
+    <a
+      key={`${item.label}-${index}`}
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="shrink-0 flex flex-col items-center gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300"
+      aria-label={`${item.label}のサイトへ移動`}
+    >
+      <TechIcon item={item} />
+      <span className="text-[10px] md:text-xs font-medium text-gray-400">
+        {item.label}
+      </span>
+    </a>
+  ),
+);
+
+TechLink.displayName = "TechLink";
+
+const MarqueeRow: FC<MarqueeRowProps> = memo(({ items, reverse = false }) => {
+  const repeatedItems = Array.from(
+    { length: MARQUEE_CONFIG.repeatCount },
+    () => items,
+  ).flat();
+
+  const animationClass = reverse
+    ? "animate-marquee-reverse"
+    : "animate-marquee";
 
   return (
     <div className="w-full overflow-hidden">
       <div
-        className={`flex w-max items-center gap-6 md:gap-16 will-change-transform hover:[animation-play-state:paused] ${
-          reverse ? "animate-marquee-reverse" : "animate-marquee"
-        }`}
+        className={`flex w-max items-center ${MARQUEE_CONFIG.gap} will-change-transform hover:[animation-play-state:paused] ${animationClass}`}
       >
-        {repeated.map((item, i) => (
-          <a
-            key={`${item.label}-${i}`}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 flex flex-col items-center gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300"
-          >
-            {item.imageSrc ? (
-              <Image
-                src={item.imageSrc}
-                alt={item.label}
-                width={44}
-                height={44}
-                className="h-8 w-8 md:h-11 md:w-11 object-contain"
-              />
-            ) : item.Icon ? (
-              <item.Icon
-                className="h-8 w-8 md:h-11 md:w-11"
-                style={{ color: item.color }}
-                aria-hidden
-              />
-            ) : null}
-            <span className="text-[10px] md:text-xs font-medium text-gray-400">
-              {item.label}
-            </span>
-          </a>
+        {repeatedItems.map((item, index) => (
+          <TechLink key={`${item.label}-${index}`} item={item} index={index} />
         ))}
       </div>
     </div>
   );
-}
+});
 
-export default function TechStackMarquee() {
-  return (
-    <section className="w-full py-12 md:py-20 mt-8 md:mt-12">
-      <div className="text-center mb-10 md:mb-16">
-        <h2 className="text-2xl md:text-3xl font-bold text-white">
-          Tech Stack
-        </h2>
-        <p className="mt-3 text-sm text-white/50">
-          日々使用している技術・ツール
-        </p>
-      </div>
+MarqueeRow.displayName = "MarqueeRow";
 
-      <div className="space-y-6 md:space-y-10">
-        <MarqueeRow items={ROW_1} />
-        <MarqueeRow items={ROW_2} reverse />
-      </div>
-    </section>
-  );
-}
+// ==========================================
+// Main Component
+// ==========================================
+
+const TechStackMarquee: FC = () => (
+  <section
+    className="w-full py-12 md:py-20 mt-8 md:mt-12"
+    aria-labelledby="tech-stack-title"
+  >
+    <div className="text-center mb-10 md:mb-16">
+      <h2
+        id="tech-stack-title"
+        className="text-2xl md:text-3xl font-bold text-white"
+      >
+        {SECTION_CONTENT.title}
+      </h2>
+      <p className="mt-3 text-sm text-white/50">{SECTION_CONTENT.subtitle}</p>
+    </div>
+
+    <div className="space-y-6 md:space-y-10">
+      <MarqueeRow items={TECH_STACK_ROW_1} />
+      <MarqueeRow items={TECH_STACK_ROW_2} reverse />
+    </div>
+  </section>
+);
+
+export default TechStackMarquee;

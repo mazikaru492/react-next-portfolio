@@ -1,4 +1,4 @@
-import Hero from "@/app/components/Hero";
+import Hero from "@/app/components/Menu/Hero";
 import Image from "next/image";
 import { getProfile } from "@/app/lids/microcms";
 import styles from "./page.module.css";

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { getMembers } from "@/app/lids/microcms";
 import { MEMBERS_LIST_LIMIT } from "@/app/constants";
 import style from "./page.module.css";
-import Hero from "@/app/components/Hero";
+import Hero from "@/app/components/Menu/Hero";
 
 export const revalidate = 10;
 

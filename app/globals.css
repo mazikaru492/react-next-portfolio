@@ -48,6 +48,29 @@
   --safe-area-right: env(safe-area-inset-right, 0px);
 }
 
+/* Light Mode */
+:root.light-mode {
+  --color-text-main: #1a1a1a;
+  --color-text-sub: #5a5a5a;
+  --color-text-unpainted: #000;
+  --color-bg-main: #ffffff;
+  --color-bg-sub: #f8f8f8;
+  --color-bg-overlay: rgba(255, 255, 255, 0.95);
+  --color-bg-code: #f5f5f5;
+  --color-bg-painted: #000;
+  --color-border-dark: #c0c0c0;
+  --color-border: #d0d0d0;
+  --color-border-light: #e8e8e8;
+  --color-current: #f0f0f0;
+  --color-button-primary: #e8e8e8;
+
+  --color-contrib-0: #ebedf0;
+  --color-contrib-1: color-mix(in srgb, var(--color-accent-green) 25%, #ffffff);
+  --color-contrib-2: color-mix(in srgb, var(--color-accent-green) 45%, #ffffff);
+  --color-contrib-3: color-mix(in srgb, var(--color-accent-green) 65%, #ffffff);
+  --color-contrib-4: var(--color-accent-green);
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

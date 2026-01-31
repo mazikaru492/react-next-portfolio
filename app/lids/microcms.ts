@@ -6,42 +6,84 @@ import type {
   MicroCMSQueries,
 } from "microcms-js-sdk";
 
-export type Member = {
-  name: string;
-  position: string;
-  profile: string;
-  image: MicroCMSImage;
-} & MicroCMSListContent;
+// ==========================================
+// Types & Interfaces
+// ==========================================
 
-export type Category = {
-  name: string;
-} & MicroCMSListContent;
+export interface Member extends MicroCMSListContent {
+  readonly name: string;
+  readonly position: string;
+  readonly profile: string;
+  readonly image: MicroCMSImage;
+}
 
-export type News = {
-  title: string;
-  description: string;
-  content: string;
-  thumbnail?: MicroCMSImage;
-  category?: Category;
-} & MicroCMSListContent;
+export interface Category extends MicroCMSListContent {
+  readonly name: string;
+}
 
-export type Profile = {
-  name: string;
-  title: string;
-  subtitle: string;
-  avatar?: MicroCMSImage;
-  githubUrl?: string;
-  instagramUrl?: string;
-} & MicroCMSListContent;
+export interface News extends MicroCMSListContent {
+  readonly title: string;
+  readonly description: string;
+  readonly content: string;
+  readonly thumbnail?: MicroCMSImage;
+  readonly category?: Category;
+}
+
+export interface Profile extends MicroCMSListContent {
+  readonly name: string;
+  readonly title: string;
+  readonly subtitle: string;
+  readonly avatar?: MicroCMSImage;
+  readonly githubUrl?: string;
+  readonly instagramUrl?: string;
+}
+
+type MicroCMSClient = ReturnType<typeof createClient>;
+
+// ==========================================
+// Constants
+// ==========================================
+
+const ENDPOINTS = {
+  members: "members",
+  news: "news",
+  categories: "categories",
+  profile: "profile",
+} as const;
+
+const REVALIDATE_SECONDS = 60;
+
+const DEFAULT_PROFILE: Profile = {
+  id: "default",
+  name: "古家悠貴",
+  title: "学生・ホワイトハッカー専攻",
+  subtitle:
+    "サイバーセキュリティの専門知識を活かし、より安全なデジタル社会の実現を目指しています",
+  githubUrl: "https://github.com/mazikaru492",
+  instagramUrl: "https://www.instagram.com/mark_c2c/",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  publishedAt: new Date().toISOString(),
+  revisedAt: new Date().toISOString(),
+};
+
+// ==========================================
+// Configuration
+// ==========================================
 
 const serviceDomain = process.env.MICROCMS_SERVICE_DOMAIN;
 const apiKey = process.env.MICROCMS_API_KEY;
 const isConfigured = Boolean(serviceDomain && apiKey);
 
-let client: ReturnType<typeof createClient> | null = null;
+let clientInstance: MicroCMSClient | null = null;
 
-const getClient = () => {
-  if (client) return client;
+// ==========================================
+// Utility Functions
+// ==========================================
+
+const getClient = (): MicroCMSClient | null => {
+  if (clientInstance) return clientInstance;
+
   if (!isConfigured) {
     if (process.env.NODE_ENV === "production") {
       throw new Error(
@@ -53,136 +95,131 @@ const getClient = () => {
     );
     return null;
   }
-  client = createClient({
+
+  clientInstance = createClient({
     serviceDomain: serviceDomain!,
     apiKey: apiKey!,
   });
-  return client;
+
+  return clientInstance;
 };
 
-const emptyList = <T>(): MicroCMSListResponse<T> => ({
+const createEmptyListResponse = <T>(): MicroCMSListResponse<T> => ({
   contents: [],
   totalCount: 0,
   offset: 0,
   limit: 0,
 });
 
-export const getMembers = async (queries?: MicroCMSQueries) => {
-  const c = getClient();
-  if (!c) return emptyList<Member>();
-  const listData = await c.getList<Member>({
-    endpoint: "members",
+// ==========================================
+// API Functions - Members
+// ==========================================
+
+export const getMembers = async (
+  queries?: MicroCMSQueries,
+): Promise<MicroCMSListResponse<Member>> => {
+  const client = getClient();
+  if (!client) return createEmptyListResponse<Member>();
+
+  return client.getList<Member>({
+    endpoint: ENDPOINTS.members,
     queries,
   });
-  return listData;
 };
 
-export const getNewsList = async (queries?: MicroCMSQueries) => {
-  const c = getClient();
-  if (!c) return emptyList<News>();
-  const listData = await c.getList<News>({
-    endpoint: "news",
+// ==========================================
+// API Functions - News
+// ==========================================
+
+export const getNewsList = async (
+  queries?: MicroCMSQueries,
+): Promise<MicroCMSListResponse<News>> => {
+  const client = getClient();
+  if (!client) return createEmptyListResponse<News>();
+
+  return client.getList<News>({
+    endpoint: ENDPOINTS.news,
     queries,
   });
-  return listData;
 };
 
 export const getNewsDetail = async (
   contentId: string,
   queries?: MicroCMSQueries,
-) => {
-  const c = getClient();
-  if (!c) return null;
-  const detailData = await c.getListDetail<News>({
-    endpoint: "news",
+): Promise<News | null> => {
+  const client = getClient();
+  if (!client) return null;
+
+  const revalidateTime =
+    queries?.draftKey === undefined ? REVALIDATE_SECONDS : 0;
+
+  return client.getListDetail<News>({
+    endpoint: ENDPOINTS.news,
     contentId,
     queries,
     customRequestInit: {
-      next: {
-        revalidate: queries?.draftKey === undefined ? 60 : 0,
-      },
+      next: { revalidate: revalidateTime },
     },
   });
-  return detailData;
 };
 
-export const getCategories = async (queries?: MicroCMSQueries) => {
-  const c = getClient();
-  if (!c) return emptyList<Category>();
-  const listData = await c.getList<Category>({
-    endpoint: "categories",
+// ==========================================
+// API Functions - Categories
+// ==========================================
+
+export const getCategories = async (
+  queries?: MicroCMSQueries,
+): Promise<MicroCMSListResponse<Category>> => {
+  const client = getClient();
+  if (!client) return createEmptyListResponse<Category>();
+
+  return client.getList<Category>({
+    endpoint: ENDPOINTS.categories,
     queries,
   });
-  return listData;
 };
 
 export const getCategoryDetail = async (
   contentId: string,
   queries?: MicroCMSQueries,
-) => {
-  const c = getClient();
-  if (!c) {
-    return Promise.reject(
-      new Error(
-        "microCMS が未設定です（MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY）",
-      ),
+): Promise<Category> => {
+  const client = getClient();
+  if (!client) {
+    throw new Error(
+      "microCMS が未設定です（MICROCMS_SERVICE_DOMAIN / MICROCMS_API_KEY）",
     );
   }
-  const detailData = await c.getListDetail<Category>({
-    endpoint: "categories",
+
+  return client.getListDetail<Category>({
+    endpoint: ENDPOINTS.categories,
     contentId,
     queries,
   });
-  return detailData;
 };
 
+/** @deprecated Use getCategoryDetail instead */
 export const getCategorise = getCategoryDetail;
 
-export const getProfile = async () => {
-  const c = getClient();
-  if (!c) {
-    // microCMSが未設定の場合のフォールバック
-    return {
-      id: "default",
-      name: "古家悠貴",
-      title: "学生・ホワイトハッカー専攻",
-      subtitle:
-        "サイバーセキュリティの専門知識を活かし、より安全なデジタル社会の実現を目指しています",
-      githubUrl: "https://github.com/mazikaru492",
-      instagramUrl: "https://www.instagram.com/mark_c2c/",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      publishedAt: new Date().toISOString(),
-      revisedAt: new Date().toISOString(),
-    } as Profile;
-  }
+// ==========================================
+// API Functions - Profile
+// ==========================================
+
+export const getProfile = async (): Promise<Profile> => {
+  const client = getClient();
+  if (!client) return DEFAULT_PROFILE;
+
   try {
-    const profileData = await c.getObject<Profile>({
-      endpoint: "profile",
+    return await client.getObject<Profile>({
+      endpoint: ENDPOINTS.profile,
       customRequestInit: {
-        next: {
-          revalidate: 60,
-        },
+        next: { revalidate: REVALIDATE_SECONDS },
       },
     });
-    return profileData;
   } catch (error) {
     console.warn(
       "[microcms] プロフィール取得エラー、デフォルト値を返します",
       error,
     );
-    return {
-      id: "default",
-      name: "古家悠貴",
-      title: "学生・ホワイトハッカー専攻",
-      subtitle:
-        "サイバーセキュリティの専門知識を活かし、より安全なデジタル社会の実現を目指しています",
-      githubUrl: "https://github.com/mazikaru492",
-      instagramUrl: "https://www.instagram.com/mark_c2c/",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      publishedAt: new Date().toISOString(),
-      revisedAt: new Date().toISOString(),
-    } as Profile;
+    return DEFAULT_PROFILE;
   }
 };

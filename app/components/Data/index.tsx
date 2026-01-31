@@ -1,15 +1,41 @@
 import Image from "next/image";
-import style from "./index.module.css";
+import type { FC } from "react";
+import styles from "./index.module.css";
 import { formatDate } from "@/app/lids/utils";
 
-type Props = {
-  data: string;
-};
-export default function Data({ data }: Props) {
-  return (
-    <span className={style.data}>
-      <Image src="/clock.svg" alt="" width={16} height={16} loading="eager" />
-      {formatDate(data)}
-    </span>
-  );
+// ==========================================
+// Types & Interfaces
+// ==========================================
+
+interface DateDisplayProps {
+  readonly data: string;
 }
+
+// ==========================================
+// Constants
+// ==========================================
+
+const CLOCK_ICON = {
+  src: "/clock.svg",
+  alt: "公開日時",
+  size: 16,
+} as const;
+
+// ==========================================
+// Main Component
+// ==========================================
+
+const DateDisplay: FC<DateDisplayProps> = ({ data }) => (
+  <span className={styles.data}>
+    <Image
+      src={CLOCK_ICON.src}
+      alt={CLOCK_ICON.alt}
+      width={CLOCK_ICON.size}
+      height={CLOCK_ICON.size}
+      loading="eager"
+    />
+    <time dateTime={data}>{formatDate(data)}</time>
+  </span>
+);
+
+export default DateDisplay;

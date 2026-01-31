@@ -1,14 +1,35 @@
-import "./globals.css";
+import type { Metadata, Viewport } from "next";
+import type { FC, ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Analytics } from "@vercel/analytics/next";
-import type { Metadata, Viewport } from "next";
+import "./globals.css";
+
+// ==========================================
+// Types & Interfaces
+// ==========================================
+
+interface RootLayoutProps {
+  readonly children: ReactNode;
+}
+
+// ==========================================
+// Constants
+// ==========================================
+
+const THEME_COLOR = "#0b0b0b" as const;
+
+const MAIN_PADDING_TOP = "80px" as const;
+
+// ==========================================
+// Metadata Configuration
+// ==========================================
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0b0b0b",
+  themeColor: THEME_COLOR,
 };
 
 export const metadata: Metadata = {
@@ -24,19 +45,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="ja">
-      <body>
-        <Header />
-        <main style={{ paddingTop: "80px" }}>{children}</main>
-        <Footer />
-        <Analytics />
-      </body>
-    </html>
-  );
-}
+// ==========================================
+// Layout Component
+// ==========================================
+
+const RootLayout: FC<RootLayoutProps> = ({ children }) => (
+  <html lang="ja">
+    <body>
+      <Header />
+      <main style={{ paddingTop: MAIN_PADDING_TOP }}>{children}</main>
+      <Footer />
+      <Analytics />
+    </body>
+  </html>
+);
+
+export default RootLayout;

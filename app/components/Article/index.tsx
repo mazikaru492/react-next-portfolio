@@ -1,88 +1,133 @@
 import Link from "next/link";
 import Image from "next/image";
 import sanitizeHtml from "sanitize-html";
-import style from "./index.module.css";
-import { News } from "@/app/lids/microcms";
-import Date from "../Data";
+import type { FC } from "react";
+import styles from "./index.module.css";
+import type { News } from "@/app/lids/microcms";
+import DateDisplay from "../Data";
 import Category from "../Category";
 
-type Props = {
-  data: News;
+// ==========================================
+// Types & Interfaces
+// ==========================================
+
+interface ArticleProps {
+  readonly data: News;
+}
+
+// ==========================================
+// Constants
+// ==========================================
+
+const ALLOWED_TAGS = [
+  "p",
+  "br",
+  "strong",
+  "em",
+  "u",
+  "s",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "ul",
+  "ol",
+  "li",
+  "a",
+  "img",
+  "blockquote",
+  "pre",
+  "code",
+  "table",
+  "thead",
+  "tbody",
+  "tr",
+  "th",
+  "td",
+  "div",
+  "span",
+  "figure",
+  "figcaption",
+] as const;
+
+const ALLOWED_ATTRIBUTES = {
+  a: ["href", "name", "target", "rel"],
+  img: ["src", "alt", "width", "height"],
+  "*": ["class", "id", "style"],
+} as const;
+
+const SANITIZE_CONFIG = {
+  allowedTags: [...ALLOWED_TAGS],
+  allowedAttributes: ALLOWED_ATTRIBUTES,
+} as const;
+
+// ==========================================
+// Utility Functions
+// ==========================================
+
+const sanitizeContent = (content: string): string => {
+  return sanitizeHtml(content, SANITIZE_CONFIG);
 };
 
-// サニタイズ設定
-const sanitizeOption = {
-  allowedTags: [
-    "p",
-    "br",
-    "strong",
-    "em",
-    "u",
-    "s",
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "ul",
-    "ol",
-    "li",
-    "a",
-    "img",
-    "blockquote",
-    "pre",
-    "code",
-    "table",
-    "thead",
-    "tbody",
-    "tr",
-    "th",
-    "td",
-    "div",
-    "span",
-    "figure",
-    "figcaption",
-  ],
-  allowedAttributes: {
-    a: ["href", "name", "target", "rel"],
-    img: ["src", "alt", "width", "height"],
-    "*": ["class", "id", "style"],
-  },
+// ==========================================
+// Sub-Components
+// ==========================================
+
+const ArticleMeta: FC<{ data: News }> = ({ data }) => {
+  const publishDate = data.publishedAt ?? data.createdAt;
+
+  return (
+    <div className={styles.meta}>
+      {data.category && (
+        <Link
+          href={`/news/category/${data.category.id}`}
+          className={styles.categoryLink}
+        >
+          <Category category={data.category} />
+        </Link>
+      )}
+      <DateDisplay data={publishDate} />
+    </div>
+  );
 };
 
-export default function Article({ data }: Props) {
-  // CMSから取得したHTMLをサニタイズ（XSS対策）
-  const sanitizedContent = sanitizeHtml(data.content, sanitizeOption);
+const ArticleThumbnail: FC<{ thumbnail: News["thumbnail"] }> = ({
+  thumbnail,
+}) => {
+  if (!thumbnail) return null;
+
+  return (
+    <Image
+      src={thumbnail.url}
+      alt=""
+      className={styles.thumbnail}
+      width={thumbnail.width}
+      height={thumbnail.height}
+    />
+  );
+};
+
+// ==========================================
+// Main Component
+// ==========================================
+
+const Article: FC<ArticleProps> = ({ data }) => {
+  const sanitizedContent = sanitizeContent(data.content);
 
   return (
     <main>
-      <h1 className={style.title}>{data.title}</h1>
-      <p className={style.description}>{data.description}</p>
-      <div className={style.meta}>
-        {data.category && (
-          <Link
-            href={`/news/category/${data.category.id}`}
-            className={style.categoryLink}
-          >
-            <Category category={data.category} />
-          </Link>
-        )}
-        <Date data={data.publishedAt ?? data.createdAt} />
-      </div>
-      {data.thumbnail && (
-        <Image
-          src={data.thumbnail.url}
-          alt=""
-          className={style.thumbnail}
-          width={data.thumbnail.width}
-          height={data.thumbnail.height}
-        />
-      )}
+      <h1 className={styles.title}>{data.title}</h1>
+      <p className={styles.description}>{data.description}</p>
+      <ArticleMeta data={data} />
+      <ArticleThumbnail thumbnail={data.thumbnail} />
       <div
-        className={style.content}
+        className={styles.content}
         dangerouslySetInnerHTML={{ __html: sanitizedContent }}
       />
     </main>
   );
-}
+};
+
+export default Article;

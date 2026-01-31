@@ -5,12 +5,33 @@ import NewsList from "@/app/components/NewsList";
 import ButtonLink from "@/app/components/ButtonLink";
 import GitHubContributions from "@/app/components/GitHubContributions";
 import Profile from "@/app/components/Profile";
-import TechStackMarquee from "@/app/components/TechStackMarquee";
 
-export const revalidate = 60;
+// ==========================================
+// Constants
+// ==========================================
 
-export default async function Home() {
-  const data = await getNewsList({
+const REVALIDATE_SECONDS = 60;
+
+const SECTION_CONTENT = {
+  blog: {
+    title: "ブログ",
+    viewMoreLabel: "もっと見る",
+    viewMoreHref: "/news",
+  },
+} as const;
+
+// ==========================================
+// Configuration
+// ==========================================
+
+export const revalidate = REVALIDATE_SECONDS;
+
+// ==========================================
+// Page Component
+// ==========================================
+
+export default async function HomePage() {
+  const { contents: newsItems } = await getNewsList({
     limit: TOP_NEWS_LIMIT,
   });
 
@@ -18,19 +39,19 @@ export default async function Home() {
     <>
       <Profile />
 
-      <div className={styles.sectionDivider} aria-hidden />
+      <div className={styles.sectionDivider} aria-hidden="true" />
 
       <GitHubContributions />
 
-      <TechStackMarquee />
-
-      <div className={styles.sectionDivider} aria-hidden />
+      <div className={styles.sectionDivider} aria-hidden="true" />
 
       <section className={styles.news}>
-        <h2 className={styles.newsTitle}>ブログ</h2>
-        <NewsList news={data.contents} />
+        <h2 className={styles.newsTitle}>{SECTION_CONTENT.blog.title}</h2>
+        <NewsList news={newsItems} />
         <div className={styles.newsLink}>
-          <ButtonLink href="/news">もっと見る</ButtonLink>
+          <ButtonLink href={SECTION_CONTENT.blog.viewMoreHref}>
+            {SECTION_CONTENT.blog.viewMoreLabel}
+          </ButtonLink>
         </div>
       </section>
     </>

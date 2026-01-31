@@ -1,9 +1,20 @@
-import style from "./index.module.css";
+import type { FC, ReactNode } from "react";
+import styles from "./index.module.css";
 
-type Props = {
-  children: React.ReactNode;
-};
+// ==========================================
+// Types & Interfaces
+// ==========================================
 
-export default function Sheet({ children }: Props) {
-  return <div className={style.container}>{children}</div>;
+interface SheetProps {
+  readonly children: ReactNode;
 }
+
+// ==========================================
+// Main Component
+// ==========================================
+
+const Sheet: FC<SheetProps> = ({ children }) => (
+  <div className={styles.container}>{children}</div>
+);
+
+export default Sheet;

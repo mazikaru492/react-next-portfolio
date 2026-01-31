@@ -1,26 +1,43 @@
 import styles from "./index.module.css";
+import type { FC } from "react";
 import {
   getDefaultGitHubLogin,
   getGitHubContributionCalendar,
   type GitHubContributionCalendar,
 } from "@/app/lids/github";
 
-function getJapaneseMonthLabel(monthIndex: number): string {
-  return `${monthIndex + 1}月`;
-}
+// ==========================================
+// Constants
+// ==========================================
 
-function getLevelForCount(count: number): 0 | 1 | 2 | 3 | 4 {
+const CONTRIBUTION_LEVELS = [0, 1, 2, 3, 4] as const;
+const WEEKDAY_LABELS = ["", "月", "", "水", "", "金", ""] as const;
+const REVALIDATE_SECONDS = 60 * 60; // 1 hour
+
+const CONTRIBUTION_THRESHOLDS = {
+  level1: 3,
+  level2: 7,
+  level3: 12,
+} as const;
+
+// ==========================================
+// Utility Functions
+// ==========================================
+
+const getJapaneseMonthLabel = (monthIndex: number): string =>
+  `${monthIndex + 1}月`;
+
+const getLevelForCount = (count: number): 0 | 1 | 2 | 3 | 4 => {
   if (count <= 0) return 0;
-  if (count <= 3) return 1;
-  if (count <= 7) return 2;
-  if (count <= 12) return 3;
+  if (count <= CONTRIBUTION_THRESHOLDS.level1) return 1;
+  if (count <= CONTRIBUTION_THRESHOLDS.level2) return 2;
+  if (count <= CONTRIBUTION_THRESHOLDS.level3) return 3;
   return 4;
-}
+};
 
-function buildMonthLabels(calendar: GitHubContributionCalendar): Array<{
-  weekIndex: number;
-  label: string;
-}> {
+const buildMonthLabels = (
+  calendar: GitHubContributionCalendar,
+): ReadonlyArray<{ weekIndex: number; label: string }> => {
   const labels: Array<{ weekIndex: number; label: string }> = [];
   let lastMonth: number | null = null;
 
@@ -28,8 +45,7 @@ function buildMonthLabels(calendar: GitHubContributionCalendar): Array<{
     const firstDay = week.contributionDays[0];
     if (!firstDay) return;
 
-    const date = new Date(firstDay.date);
-    const month = date.getUTCMonth();
+    const month = new Date(firstDay.date).getUTCMonth();
 
     if (lastMonth === null || month !== lastMonth) {
       labels.push({ weekIndex, label: getJapaneseMonthLabel(month) });
@@ -38,12 +54,69 @@ function buildMonthLabels(calendar: GitHubContributionCalendar): Array<{
   });
 
   return labels;
+};
+
+const buildChartUrl = (login: string): string =>
+  `https://ghchart.rshah.org/${encodeURIComponent(login)}`;
+
+// ==========================================
+// Sub Components
+// ==========================================
+
+interface FallbackChartProps {
+  readonly login: string;
 }
 
-type Props = {
-  year?: number;
-  login?: string;
-};
+const FallbackChart: FC<FallbackChartProps> = ({ login }) => (
+  <section className={styles.container}>
+    <h2 className={styles.title}>GitHubのコントリビューション</h2>
+    <p className={styles.meta}>
+      詳細表示には <code>GITHUB_TOKEN</code>{" "}
+      の設定が必要です（未設定の場合は簡易表示になります）。
+    </p>
+    <div className={styles.graphWrap}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className={styles.fallbackImg}
+        src={buildChartUrl(login)}
+        alt={`${login} の GitHub コントリビューション`}
+        loading="lazy"
+        referrerPolicy="no-referrer"
+      />
+    </div>
+  </section>
+);
+
+const WeekdayColumn: FC = () => (
+  <div className={styles.weekdayCol} aria-hidden>
+    {WEEKDAY_LABELS.map((label, index) => (
+      <div key={index} className={styles.weekday}>
+        {label}
+      </div>
+    ))}
+  </div>
+);
+
+const ContributionLegend: FC = () => (
+  <div className={styles.legend} aria-hidden>
+    <span>少ない</span>
+    <div className={styles.legendSwatches}>
+      {CONTRIBUTION_LEVELS.map((level) => (
+        <span key={level} className={styles.legendSwatch} data-level={level} />
+      ))}
+    </div>
+    <span>多い</span>
+  </div>
+);
+
+// ==========================================
+// Main Component
+// ==========================================
+
+interface Props {
+  readonly year?: number;
+  readonly login?: string;
+}
 
 export default async function GitHubContributions({
   year = new Date().getFullYear(),
@@ -52,39 +125,15 @@ export default async function GitHubContributions({
   const resolvedLogin = login ?? getDefaultGitHubLogin();
   if (!resolvedLogin) return null;
 
-  const token = process.env.GITHUB_TOKEN;
-
   const calendar = await getGitHubContributionCalendar({
     login: resolvedLogin,
     year,
-    token,
-    revalidateSeconds: 60 * 60,
+    token: process.env.GITHUB_TOKEN,
+    revalidateSeconds: REVALIDATE_SECONDS,
   });
 
   if (!calendar) {
-    const chartUrl = `https://ghchart.rshah.org/${encodeURIComponent(
-      resolvedLogin
-    )}`;
-
-    return (
-      <section className={styles.container}>
-        <h2 className={styles.title}>GitHubのコントリビューション</h2>
-        <p className={styles.meta}>
-          詳細表示には <code>GITHUB_TOKEN</code>{" "}
-          の設定が必要です（未設定の場合は簡易表示になります）。
-        </p>
-        <div className={styles.graphWrap}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className={styles.fallbackImg}
-            src={chartUrl}
-            alt={`${resolvedLogin} の GitHub コントリビューション`}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-      </section>
-    );
+    return <FallbackChart login={resolvedLogin} />;
   }
 
   const monthLabels = buildMonthLabels(calendar);
@@ -109,15 +158,7 @@ export default async function GitHubContributions({
         </div>
 
         <div className={styles.gridRow}>
-          <div className={styles.weekdayCol} aria-hidden>
-            <div className={styles.weekday}></div>
-            <div className={styles.weekday}>月</div>
-            <div className={styles.weekday}></div>
-            <div className={styles.weekday}>水</div>
-            <div className={styles.weekday}></div>
-            <div className={styles.weekday}>金</div>
-            <div className={styles.weekday}></div>
-          </div>
+          <WeekdayColumn />
 
           <div
             className={styles.grid}
@@ -132,24 +173,12 @@ export default async function GitHubContributions({
                   data-level={getLevelForCount(day.contributionCount)}
                   title={`${day.date}: ${day.contributionCount}回`}
                 />
-              ))
+              )),
             )}
           </div>
         </div>
 
-        <div className={styles.legend} aria-hidden>
-          <span>少ない</span>
-          <div className={styles.legendSwatches}>
-            {([0, 1, 2, 3, 4] as const).map((level) => (
-              <span
-                key={level}
-                className={styles.legendSwatch}
-                data-level={level}
-              />
-            ))}
-          </div>
-          <span>多い</span>
-        </div>
+        <ContributionLegend />
       </div>
     </section>
   );

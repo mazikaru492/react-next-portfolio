@@ -1,4 +1,4 @@
-import Hero from "@/app/components/Hero";
+import Hero from "@/app/components/Menu/Hero";
 import Sheet from "@/app/components/sheet";
 
 type Props = {

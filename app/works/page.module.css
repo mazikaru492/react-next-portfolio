@@ -1,0 +1,7 @@
+.wrapper {
+  min-height: 100vh;
+}
+
+.container {
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+}
