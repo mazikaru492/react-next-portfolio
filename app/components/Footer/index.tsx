@@ -1,23 +1,18 @@
-import Link from "next/link";
+import Image from "next/image";
 import styles from "./index.module.css";
 
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <nav className={styles.nav}>
-        <ul className={styles.items}>
-          <li className={styles.item}>
-            <Link href="/news">ニュース</Link>
-          </li>
-          <li className={styles.item}>
-            <Link href="/members">自己紹介</Link>
-          </li>
-          <li className={styles.item}>
-            <Link href="/contact">お問い合わせ</Link>
-          </li>
-        </ul>
-      </nav>
-      <p className={styles.cr}>© HURUYA. All Rights Reserved. 2026</p>
+      <div className={styles.characterWrap}>
+        <Image
+          src="/footer-character.png"
+          alt="HURUYA character"
+          width={80}
+          height={80}
+          className={styles.character}
+        />
+      </div>
     </footer>
   );
 }

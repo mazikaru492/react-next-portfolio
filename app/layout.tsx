@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <Header />
-        {children}
+        <main style={{ paddingTop: "80px" }}>{children}</main>
         <Footer />
         <Analytics />
       </body>
