@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import { useState } from "react";
-import { FaCopy, FaCheck, FaGithub, FaPhone } from "react-icons/fa";
+import { FaCopy, FaCheck } from "react-icons/fa";
 
 export default function Page() {
   const [copied, setCopied] = useState(false);
@@ -48,41 +48,6 @@ export default function Page() {
               {copied ? <FaCheck /> : <FaCopy />}
             </button>
           </div>
-        </div>
-
-        <div className={styles.divider} />
-
-        <div className={styles.additionalInfo}>
-          <a
-            href="https://github.com/mazikaru"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.infoLink}
-          >
-            <FaGithub className={styles.icon} />
-            <span>github.com/mazikaru</span>
-          </a>
-
-          <div className={styles.infoItem}>
-            <Image
-              src="/kyoto-tech-logo.jpg"
-              alt="Kyoto Tech Logo"
-              width={32}
-              height={32}
-              className={styles.infoLogo}
-            />
-            <div className={styles.infoText}>
-              <span className={styles.infoLabel}>
-                京都デザイン＆テクノロジー専門学校
-              </span>
-              <span>〒600-8357 京都府京都市下京区五条通猪熊西入柿本町596</span>
-            </div>
-          </div>
-
-          <a href="tel:0120-109-525" className={styles.infoLink}>
-            <FaPhone className={styles.icon} />
-            <span>0120-109-525</span>
-          </a>
         </div>
       </div>
     </>

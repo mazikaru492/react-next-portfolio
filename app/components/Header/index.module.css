@@ -1,7 +1,9 @@
 .header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  background-color: #0b0b0b;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   /* Safe Area対応: ノッチの下にヘッダーを配置 */
   padding: calc(16px + env(safe-area-inset-top, 0px)) 24px 8px;
   padding-left: calc(24px + env(safe-area-inset-left, 0px));

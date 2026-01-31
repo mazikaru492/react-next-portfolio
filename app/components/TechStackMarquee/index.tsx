@@ -316,17 +316,17 @@ function MarqueeRow({
 
 export default function TechStackMarquee() {
   return (
-    <section className="w-full py-6 md:py-12">
-      <div className="text-center mb-6 md:mb-10">
+    <section className="w-full py-12 md:py-20 mt-8 md:mt-12">
+      <div className="text-center mb-10 md:mb-16">
         <h2 className="text-2xl md:text-3xl font-bold text-white">
           Tech Stack
         </h2>
-        <p className="mt-2 text-sm text-white/50">
+        <p className="mt-3 text-sm text-white/50">
           日々使用している技術・ツール
         </p>
       </div>
 
-      <div className="space-y-4 md:space-y-8">
+      <div className="space-y-6 md:space-y-10">
         <MarqueeRow items={ROW_1} />
         <MarqueeRow items={ROW_2} reverse />
       </div>
