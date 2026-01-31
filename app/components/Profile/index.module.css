@@ -8,7 +8,7 @@
   color: #fff;
   overflow: hidden;
   padding: 120px 40px;
-  min-height: 600px;
+  min-height: 100vh;
 }
 
 .bgimg {
