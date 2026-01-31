@@ -1,0 +1,191 @@
+.container {
+  position: relative;
+  background-color: var(--color-bg-sub);
+  width: min(100%, 1100px);
+  margin: 24px auto 0;
+  padding: 40px;
+  border-radius: var(--border-radius);
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--color-text-main);
+}
+
+.subtitle {
+  color: var(--color-text-sub);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--color-bg-main);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 255, 204, 0.3);
+}
+
+.cardContent {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.cardDescription {
+  color: var(--color-text-sub);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.techBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: rgba(0, 255, 204, 0.1);
+  border: 1px solid rgba(0, 255, 204, 0.2);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: var(--color-accent-green);
+  font-weight: 500;
+}
+
+.links {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--color-text-main);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.link svg {
+  font-size: 1rem;
+}
+
+/* タブレット用 */
+@media (max-width: 1000px) {
+  .container {
+    width: calc(100% - 160px);
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+/* モバイル用 */
+@media (max-width: 640px) {
+  .container {
+    width: calc(100% - 32px);
+    padding: 24px 20px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cardContent {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+
+  .cardDescription {
+    font-size: 0.9rem;
+  }
+
+  .technologies {
+    gap: 6px;
+  }
+
+  .techBadge {
+    padding: 3px 10px;
+    font-size: 0.75rem;
+  }
+
+  .links {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .link {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* 超小型デバイス用 */
+@media (max-width: 360px) {
+  .container {
+    width: calc(100% - 16px);
+    padding: 20px 16px;
+  }
+
+  .cardContent {
+    padding: 16px;
+  }
+}

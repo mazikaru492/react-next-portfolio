@@ -6,6 +6,7 @@ import ButtonLink from "@/app/components/ButtonLink";
 import GitHubContributions from "@/app/components/GitHubContributions";
 import Profile from "@/app/components/Profile";
 import TechStackMarquee from "@/app/components/TechStackMarquee";
+import Works from "@/app/components/Works";
 
 export const revalidate = 60;
 
@@ -23,6 +24,8 @@ export default async function Home() {
       <GitHubContributions />
 
       <TechStackMarquee />
+
+      <Works />
 
       <div className={styles.sectionDivider} aria-hidden />
 
