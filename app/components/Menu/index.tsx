@@ -20,7 +20,7 @@ export default function Menu() {
           </li>
           <li>
             <Link href="/news" onClick={close}>
-              ニュース
+              Blog
             </Link>
           </li>
           <li>

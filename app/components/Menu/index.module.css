@@ -8,7 +8,7 @@
 
 .items {
   display: flex;
-  gap: 40px;
+  gap: 12px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -22,33 +22,25 @@
   text-transform: uppercase;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.85);
-  padding: 8px 0;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
   transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Gradient text on hover */
+/* Hover effect with border */
 .items li a:hover {
-  color: transparent;
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Underline animation */
+/* Remove underline animation for button style */
 .items li a::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border-radius: 1px;
-}
-
-.items li a:hover::after {
-  width: 100%;
+  display: none;
 }
 
 /* Glow effect */
