@@ -59,7 +59,7 @@ const Menu: FC = () => {
         <button
           className={closeButtonClassName}
           onClick={handleClose}
-          aria-label="メニューを閉じる"
+          aria-label="メニューを閉じる、"
           type="button"
         >
           <Image

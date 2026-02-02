@@ -123,6 +123,9 @@
   .items li:nth-child(3) {
     animation-delay: 0.3s;
   }
+  .items li:nth-child(4) {
+    animation-delay: 0.4s;
+  }
 
   .items li a {
     font-size: 24px;
@@ -133,8 +136,11 @@
     color: rgba(255, 255, 255, 0.9);
     position: relative;
     padding: 8px 16px;
-    display: inline-block;
+    display: block;
+    width: 100%;
     text-align: center;
+    border: none;
+    background: transparent;
   }
 
   /* Reset PC glow effect */

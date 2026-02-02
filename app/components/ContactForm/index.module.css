@@ -48,6 +48,7 @@
     padding: 0.5rem;
     border-radius: 0.5rem;
     margin: 1.5rem auto 0;
+    display: block;
     /* モバイルでも光るエフェクトを維持 */
     box-shadow:
       0 0 15px rgba(255, 255, 255, 0.12),
@@ -57,6 +58,9 @@
   }
 
   .formWrapper iframe {
-    min-height: 1200px;
+    min-height: 1400px;
+    height: auto;
+    display: block;
+    width: 100%;
   }
 }
