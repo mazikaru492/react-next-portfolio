@@ -15,7 +15,7 @@ const REVALIDATE_SECONDS = 60;
 const SECTION_CONTENT = {
   blog: {
     title: "ブログ",
-    viewMoreLabel: "もっと見る",
+    viewMoreLabel: "記事一覧へ",
     viewMoreHref: "/news",
   },
 } as const;
