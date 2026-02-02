@@ -111,32 +111,17 @@
 .newsTitle {
   font-size: 2.5rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
   color: #fff;
   background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  width: fit-content;
-  margin-bottom: 40px;
-  padding: 0 40px;
+  background-clip: text;
+  margin: 0 auto 40px;
+  text-align: center;
   position: relative;
-  /* ネオン発光効果 */
-  text-shadow: 0 0 30px rgba(165, 180, 252, 0.3);
-}
-
-.newsTitle::before {
-  content: "BLOG";
-  position: absolute;
-  top: -1.8rem;
-  left: 36px;
-  font-size: 5rem;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.03);
-  z-index: -1;
-  letter-spacing: 0.05em;
-  line-height: 1;
-  font-family: var(--font-mono);
-  pointer-events: none;
+  display: block;
+  width: 100%;
 }
 
 .newsTitle::after {
@@ -145,20 +130,32 @@
   width: 60px;
   height: 4px;
   background: linear-gradient(90deg, #6366f1, #a855f7);
-  margin-top: 12px;
+  margin: 16px auto 0;
   border-radius: 2px;
   box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+/* タイトル内のspan（各文字）用 */
+.titleChar {
+  display: inline-block;
+  animation: waveFloat 2s ease-in-out infinite;
+  animation-delay: calc(var(--char-index) * 0.1s);
+}
+
+@keyframes waveFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @media (max-width: 640px) {
   .newsTitle {
     font-size: 1.75rem;
-    padding: 0 20px;
-  }
-  .newsTitle::before {
-    font-size: 3.5rem;
-    left: 16px;
-    top: -1.2rem;
+    letter-spacing: 0.1em;
   }
 }
 .newsLink {
