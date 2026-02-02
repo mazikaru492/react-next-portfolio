@@ -10,29 +10,32 @@
   font-weight: 800;
   letter-spacing: 0.1em;
   color: #fff;
-  background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
+  text-shadow: 0 0 40px rgba(251, 191, 36, 0.2);
 }
 
 .canvasWrapper {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(99, 102, 241, 0.3);
   box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.4),
-    0 0 80px rgba(99, 102, 241, 0.1);
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 100px rgba(99, 102, 241, 0.15),
+    inset 0 0 60px rgba(0, 0, 0, 0.3);
+  background: #050510;
 }
 
 .canvas {
   display: block;
   width: 100%;
   height: auto;
-  background: #0a0a0a;
+  background: #050510;
 }
 
 .overlay {
@@ -45,7 +48,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.9);
+  background: linear-gradient(
+    180deg,
+    rgba(5, 5, 16, 0.95) 0%,
+    rgba(30, 27, 75, 0.95) 100%
+  );
   backdrop-filter: blur(10px);
   gap: 20px;
   padding: 24px;
@@ -53,14 +60,23 @@
 
 .gameTitle,
 .clearTitle {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 900;
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-align: center;
-  text-shadow: 0 0 40px rgba(251, 191, 36, 0.3);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from {
+    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.3));
+  }
+  to {
+    filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.5));
+  }
 }
 
 .gameOverTitle {
@@ -74,20 +90,22 @@
 }
 
 .instructions {
-  font-size: 1rem;
-  color: var(--color-text-sub);
+  font-size: 1.1rem;
+  color: #a5b4fc;
   text-align: center;
   line-height: 2;
+  font-weight: 500;
 }
 
 .goal {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #fbbf24;
-  font-weight: 600;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
 }
 
 .finalScore {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #fff;
   text-align: center;
@@ -95,61 +113,132 @@
 }
 
 .startButton {
-  padding: 16px 48px;
-  font-size: 1.2rem;
+  padding: 18px 56px;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.5);
+  box-shadow:
+    0 4px 24px rgba(99, 102, 241, 0.5),
+    0 0 40px rgba(139, 92, 246, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.startButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.startButton:hover::before {
+  left: 100%;
 }
 
 .startButton:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 36px rgba(99, 102, 241, 0.7);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 8px 40px rgba(99, 102, 241, 0.6),
+    0 0 60px rgba(139, 92, 246, 0.3);
 }
 
 .startButton:active {
-  transform: translateY(0);
+  transform: translateY(-2px) scale(1);
 }
 
 .message {
   margin-top: 16px;
-  padding: 12px 24px;
-  background: rgba(99, 102, 241, 0.2);
+  padding: 14px 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.2),
+    rgba(139, 92, 246, 0.2)
+  );
   border: 1px solid rgba(99, 102, 241, 0.4);
-  border-radius: 8px;
+  border-radius: 10px;
   color: #fff;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   text-align: center;
+  animation: messageFadeIn 0.3s ease;
+}
+
+@keyframes messageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .mobileControls {
   display: none;
   justify-content: center;
+  align-items: center;
   margin-top: 20px;
-  gap: 16px;
+  gap: 20px;
+}
+
+.touchPad {
+  padding: 16px 24px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 12px;
+  color: #a5b4fc;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .attackButton {
-  padding: 16px 40px;
+  padding: 18px 36px;
   font-size: 1.2rem;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #ef4444, #dc2626, #b91c1c);
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+  box-shadow:
+    0 4px 20px rgba(239, 68, 68, 0.4),
+    0 0 30px rgba(220, 38, 38, 0.2);
   transition: all 0.2s ease;
+  animation: attackPulse 2s ease-in-out infinite;
+}
+
+@keyframes attackPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 20px rgba(239, 68, 68, 0.4),
+      0 0 30px rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 4px 30px rgba(239, 68, 68, 0.6),
+      0 0 50px rgba(220, 38, 38, 0.3);
+  }
 }
 
 .attackButton:active {
   transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(239, 68, 68, 0.5);
 }
 
 /* モバイル対応 */
@@ -161,40 +250,98 @@
 
   .sectionTitle {
     font-size: 1.75rem;
+    margin-bottom: 16px;
+  }
+
+  .canvasWrapper {
+    border-radius: 12px;
+    border-width: 1px;
   }
 
   .gameTitle,
-  .clearTitle,
+  .clearTitle {
+    font-size: 2.2rem;
+  }
+
   .gameOverTitle {
     font-size: 2rem;
   }
 
   .instructions {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .goal {
+    font-size: 1rem;
   }
 
   .startButton {
-    padding: 14px 36px;
+    padding: 14px 40px;
     font-size: 1.1rem;
+    border-radius: 12px;
   }
 
   .mobileControls {
     display: flex;
   }
-}
 
-@media (max-width: 480px) {
-  .sectionTitle {
-    font-size: 1.5rem;
-  }
-
-  .gameTitle,
-  .clearTitle,
-  .gameOverTitle {
-    font-size: 1.5rem;
+  .message {
+    font-size: 0.95rem;
+    padding: 12px 20px;
   }
 
   .finalScore {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 8px;
+  }
+
+  .sectionTitle {
+    font-size: 1.4rem;
+  }
+
+  .gameTitle,
+  .clearTitle {
+    font-size: 1.8rem;
+  }
+
+  .gameOverTitle {
+    font-size: 1.6rem;
+  }
+
+  .instructions {
+    font-size: 0.85rem;
+  }
+
+  .goal {
+    font-size: 0.9rem;
+  }
+
+  .startButton {
+    padding: 12px 32px;
+    font-size: 1rem;
+  }
+
+  .finalScore {
+    font-size: 1.1rem;
+  }
+
+  .touchPad {
+    padding: 12px 16px;
+    font-size: 0.8rem;
+  }
+
+  .attackButton {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+
+  .mobileControls {
+    gap: 12px;
   }
 }

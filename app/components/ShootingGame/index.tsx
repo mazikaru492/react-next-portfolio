@@ -15,7 +15,7 @@ interface Position {
 interface Player {
   x: number;
   y: number;
-  angle: number; // 向いている方向（ラジアン）
+  angle: number;
   health: number;
   maxHealth: number;
   level: number;
@@ -30,6 +30,7 @@ interface Enemy {
   maxHealth: number;
   type: "slime" | "skeleton" | "dragon";
   lastAttack: number;
+  animPhase: number;
 }
 
 interface Item {
@@ -58,11 +59,9 @@ const MAP_DATA = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const TILE_SIZE = 64;
-const MOVE_SPEED = 0.08;
-const ROTATION_SPEED = 0.06;
-const FOV = Math.PI / 3; // 60度の視野角
-const RAY_COUNT = 120;
+const MOVE_SPEED = 0.06;
+const ROTATION_SPEED = 0.04;
+const FOV = Math.PI / 3;
 
 const ENEMY_TYPES = {
   slime: { health: 30, damage: 5, exp: 20, color: "#22c55e", name: "スライム" },
@@ -70,7 +69,7 @@ const ENEMY_TYPES = {
     health: 50,
     damage: 10,
     exp: 40,
-    color: "#f8fafc",
+    color: "#e2e8f0",
     name: "スケルトン",
   },
   dragon: {
@@ -83,6 +82,69 @@ const ENEMY_TYPES = {
 };
 
 // ==========================================
+// Utility: Create brick texture pattern
+// ==========================================
+const createBrickPattern = (
+  ctx: CanvasRenderingContext2D,
+  baseColor: string,
+  isDark: boolean,
+): CanvasPattern | string => {
+  const patternCanvas = document.createElement("canvas");
+  patternCanvas.width = 32;
+  patternCanvas.height = 32;
+  const pCtx = patternCanvas.getContext("2d");
+  if (!pCtx) return baseColor;
+
+  // Base color
+  pCtx.fillStyle = baseColor;
+  pCtx.fillRect(0, 0, 32, 32);
+
+  // Brick pattern
+  pCtx.strokeStyle = isDark ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.15)";
+  pCtx.lineWidth = 1;
+
+  // Horizontal lines
+  pCtx.beginPath();
+  pCtx.moveTo(0, 8);
+  pCtx.lineTo(32, 8);
+  pCtx.moveTo(0, 16);
+  pCtx.lineTo(32, 16);
+  pCtx.moveTo(0, 24);
+  pCtx.lineTo(32, 24);
+  pCtx.stroke();
+
+  // Vertical lines (staggered)
+  pCtx.beginPath();
+  pCtx.moveTo(8, 0);
+  pCtx.lineTo(8, 8);
+  pCtx.moveTo(24, 0);
+  pCtx.lineTo(24, 8);
+  pCtx.moveTo(0, 8);
+  pCtx.lineTo(0, 16);
+  pCtx.moveTo(16, 8);
+  pCtx.lineTo(16, 16);
+  pCtx.moveTo(8, 16);
+  pCtx.lineTo(8, 24);
+  pCtx.moveTo(24, 16);
+  pCtx.lineTo(24, 24);
+  pCtx.moveTo(0, 24);
+  pCtx.lineTo(0, 32);
+  pCtx.moveTo(16, 24);
+  pCtx.lineTo(16, 32);
+  pCtx.stroke();
+
+  // Add noise for texture
+  for (let i = 0; i < 50; i++) {
+    const x = Math.random() * 32;
+    const y = Math.random() * 32;
+    pCtx.fillStyle = `rgba(${Math.random() > 0.5 ? 255 : 0}, ${Math.random() > 0.5 ? 255 : 0}, ${Math.random() > 0.5 ? 255 : 0}, 0.03)`;
+    pCtx.fillRect(x, y, 1, 1);
+  }
+
+  return ctx.createPattern(patternCanvas, "repeat") || baseColor;
+};
+
+// ==========================================
 // Main Component
 // ==========================================
 
@@ -92,12 +154,19 @@ const DungeonRPG = () => {
   const animationRef = useRef<number>(0);
   const keysRef = useRef<Set<string>>(new Set());
   const idCounterRef = useRef<number>(0);
+  const patternsRef = useRef<{
+    wall: CanvasPattern | string;
+    wallDark: CanvasPattern | string;
+    goal: CanvasPattern | string;
+  } | null>(null);
 
   const [canvasSize, setCanvasSize] = useState({ width: 1000, height: 500 });
   const [gameState, setGameState] = useState<
     "title" | "playing" | "gameover" | "clear"
   >("title");
   const [message, setMessage] = useState<string>("");
+  const [isMobile, setIsMobile] = useState(false);
+  const [finalStats, setFinalStats] = useState({ level: 1, exp: 0 });
 
   const playerRef = useRef<Player>({
     x: 1.5,
@@ -116,14 +185,33 @@ const DungeonRPG = () => {
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
-        const width = Math.min(containerRef.current.offsetWidth - 32, 1200);
-        const height = Math.min(600, width * 0.5);
+        const containerWidth = containerRef.current.offsetWidth - 32;
+        const mobile = window.innerWidth <= 768;
+        setIsMobile(mobile);
+
+        const width = Math.min(containerWidth, mobile ? 600 : 1200);
+        const height = mobile
+          ? Math.min(350, width * 0.6)
+          : Math.min(550, width * 0.5);
         setCanvasSize({ width, height });
       }
     };
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  // Initialize patterns
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (ctx && !patternsRef.current) {
+      patternsRef.current = {
+        wall: createBrickPattern(ctx, "#4338ca", false),
+        wallDark: createBrickPattern(ctx, "#312e81", true),
+        goal: createBrickPattern(ctx, "#b45309", false),
+      };
+    }
   }, []);
 
   // Initialize game
@@ -138,19 +226,14 @@ const DungeonRPG = () => {
       exp: 0,
     };
 
-    // 敵を配置
     enemiesRef.current = [];
     itemsRef.current = [];
 
     MAP_DATA.forEach((row, y) => {
       row.forEach((cell, x) => {
         if (cell === 2) {
-          const types: Array<"slime" | "skeleton" | "dragon"> = [
-            "slime",
-            "skeleton",
-            "dragon",
-          ];
-          const type = types[Math.floor(Math.random() * 2)]; // スライムかスケルトン
+          const types: Array<"slime" | "skeleton"> = ["slime", "skeleton"];
+          const type = types[Math.floor(Math.random() * 2)];
           enemiesRef.current.push({
             id: idCounterRef.current++,
             x: x + 0.5,
@@ -159,6 +242,7 @@ const DungeonRPG = () => {
             maxHealth: ENEMY_TYPES[type].health,
             type,
             lastAttack: 0,
+            animPhase: Math.random() * Math.PI * 2,
           });
         } else if (cell === 3) {
           itemsRef.current.push({
@@ -190,13 +274,13 @@ const DungeonRPG = () => {
     return MAP_DATA[mapY][mapX] === 1;
   }, []);
 
-  // Cast a single ray
+  // Cast a single ray with texture coordinate
   const castRay = useCallback(
     (
       startX: number,
       startY: number,
       angle: number,
-    ): { distance: number; wallType: number; side: number } => {
+    ): { distance: number; wallType: number; side: number; texX: number } => {
       const rayDirX = Math.cos(angle);
       const rayDirY = Math.sin(angle);
 
@@ -254,11 +338,16 @@ const DungeonRPG = () => {
       }
 
       let distance: number;
+      let wallX: number;
+
       if (side === 0) {
         distance = (mapX - startX + (1 - stepX) / 2) / rayDirX;
+        wallX = startY + distance * rayDirY;
       } else {
         distance = (mapY - startY + (1 - stepY) / 2) / rayDirY;
+        wallX = startX + distance * rayDirX;
       }
+      wallX -= Math.floor(wallX);
 
       const wallType =
         mapY >= 0 &&
@@ -268,7 +357,251 @@ const DungeonRPG = () => {
           ? MAP_DATA[mapY][mapX]
           : 1;
 
-      return { distance: Math.max(0.1, distance), wallType, side };
+      return { distance: Math.max(0.1, distance), wallType, side, texX: wallX };
+    },
+    [],
+  );
+
+  // Draw enemy sprite
+  const drawEnemy = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      enemy: Enemy,
+      screenX: number,
+      size: number,
+      fogFactor: number,
+      time: number,
+    ) => {
+      const enemyData = ENEMY_TYPES[enemy.type];
+      const bounce = Math.sin(time * 0.005 + enemy.animPhase) * 3;
+
+      ctx.save();
+      ctx.globalAlpha = fogFactor;
+
+      if (enemy.type === "slime") {
+        // Slime body with gradient
+        const gradient = ctx.createRadialGradient(
+          screenX,
+          ctx.canvas.height / 2 + bounce - size * 0.1,
+          size * 0.1,
+          screenX,
+          ctx.canvas.height / 2 + bounce,
+          size / 2,
+        );
+        gradient.addColorStop(0, "#4ade80");
+        gradient.addColorStop(0.5, "#22c55e");
+        gradient.addColorStop(1, "#15803d");
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.ellipse(
+          screenX,
+          ctx.canvas.height / 2 + bounce,
+          size / 2,
+          size / 2.5,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        // Shine
+        ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.beginPath();
+        ctx.ellipse(
+          screenX - size / 5,
+          ctx.canvas.height / 2 + bounce - size / 6,
+          size / 8,
+          size / 10,
+          -0.3,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        // Eyes
+        ctx.fillStyle = "#000";
+        ctx.beginPath();
+        ctx.ellipse(
+          screenX - size / 6,
+          ctx.canvas.height / 2 + bounce - size / 10,
+          size / 12,
+          size / 10,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.ellipse(
+          screenX + size / 6,
+          ctx.canvas.height / 2 + bounce - size / 10,
+          size / 12,
+          size / 10,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        // Eye shine
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(
+          screenX - size / 6 - 2,
+          ctx.canvas.height / 2 + bounce - size / 10 - 2,
+          size / 30,
+          0,
+          Math.PI * 2,
+        );
+        ctx.arc(
+          screenX + size / 6 - 2,
+          ctx.canvas.height / 2 + bounce - size / 10 - 2,
+          size / 30,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      } else if (enemy.type === "skeleton") {
+        // Skull
+        const gradient = ctx.createRadialGradient(
+          screenX,
+          ctx.canvas.height / 2 - size * 0.2,
+          size * 0.05,
+          screenX,
+          ctx.canvas.height / 2,
+          size / 2,
+        );
+        gradient.addColorStop(0, "#ffffff");
+        gradient.addColorStop(0.7, "#e2e8f0");
+        gradient.addColorStop(1, "#94a3b8");
+
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(
+          screenX,
+          ctx.canvas.height / 2 - size * 0.15,
+          size / 3,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        // Eye sockets
+        ctx.fillStyle = "#1e293b";
+        ctx.beginPath();
+        ctx.ellipse(
+          screenX - size / 8,
+          ctx.canvas.height / 2 - size * 0.2,
+          size / 10,
+          size / 8,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.ellipse(
+          screenX + size / 8,
+          ctx.canvas.height / 2 - size * 0.2,
+          size / 10,
+          size / 8,
+          0,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        // Red glowing eyes
+        ctx.fillStyle = "#ef4444";
+        ctx.shadowColor = "#ef4444";
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(
+          screenX - size / 8,
+          ctx.canvas.height / 2 - size * 0.2,
+          size / 20,
+          0,
+          Math.PI * 2,
+        );
+        ctx.arc(
+          screenX + size / 8,
+          ctx.canvas.height / 2 - size * 0.2,
+          size / 20,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Nose
+        ctx.fillStyle = "#475569";
+        ctx.beginPath();
+        ctx.moveTo(screenX, ctx.canvas.height / 2 - size * 0.1);
+        ctx.lineTo(screenX - size / 20, ctx.canvas.height / 2);
+        ctx.lineTo(screenX + size / 20, ctx.canvas.height / 2);
+        ctx.fill();
+
+        // Ribs/body
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = Math.max(2, size / 20);
+        for (let i = 0; i < 4; i++) {
+          const ribY = ctx.canvas.height / 2 + size * 0.1 + (i * size) / 10;
+          ctx.beginPath();
+          ctx.moveTo(screenX - size / 4, ribY);
+          ctx.quadraticCurveTo(
+            screenX,
+            ribY + size / 30,
+            screenX + size / 4,
+            ribY,
+          );
+          ctx.stroke();
+        }
+      }
+
+      // Health bar
+      const barWidth = size * 0.9;
+      const barHeight = Math.max(4, size / 15);
+      const barY = ctx.canvas.height / 2 - size / 2 - 20;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+      ctx.fillRect(
+        screenX - barWidth / 2 - 2,
+        barY - 2,
+        barWidth + 4,
+        barHeight + 4,
+      );
+      ctx.fillStyle = "#374151";
+      ctx.fillRect(screenX - barWidth / 2, barY, barWidth, barHeight);
+
+      const healthPercent = enemy.health / enemy.maxHealth;
+      const healthGradient = ctx.createLinearGradient(
+        screenX - barWidth / 2,
+        0,
+        screenX - barWidth / 2 + barWidth * healthPercent,
+        0,
+      );
+      healthGradient.addColorStop(
+        0,
+        healthPercent > 0.5
+          ? "#22c55e"
+          : healthPercent > 0.25
+            ? "#eab308"
+            : "#ef4444",
+      );
+      healthGradient.addColorStop(
+        1,
+        healthPercent > 0.5
+          ? "#16a34a"
+          : healthPercent > 0.25
+            ? "#ca8a04"
+            : "#dc2626",
+      );
+      ctx.fillStyle = healthGradient;
+      ctx.fillRect(
+        screenX - barWidth / 2,
+        barY,
+        barWidth * healthPercent,
+        barHeight,
+      );
+
+      ctx.restore();
     },
     [],
   );
@@ -277,7 +610,9 @@ const DungeonRPG = () => {
   useEffect(() => {
     if (gameState !== "playing") return;
 
-    const gameLoop = () => {
+    const rayCount = isMobile ? 80 : 120;
+
+    const gameLoop = (time: number) => {
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
       if (!canvas || !ctx) return;
@@ -286,45 +621,69 @@ const DungeonRPG = () => {
       const now = Date.now();
 
       // Handle input
+      const moveSpeed = MOVE_SPEED;
+      const rotSpeed = ROTATION_SPEED;
+
       if (keysRef.current.has("ArrowUp") || keysRef.current.has("KeyW")) {
-        const newX = player.x + Math.cos(player.angle) * MOVE_SPEED;
-        const newY = player.y + Math.sin(player.angle) * MOVE_SPEED;
+        const newX = player.x + Math.cos(player.angle) * moveSpeed;
+        const newY = player.y + Math.sin(player.angle) * moveSpeed;
         if (!checkWallCollision(newX, player.y)) player.x = newX;
         if (!checkWallCollision(player.x, newY)) player.y = newY;
       }
       if (keysRef.current.has("ArrowDown") || keysRef.current.has("KeyS")) {
-        const newX = player.x - Math.cos(player.angle) * MOVE_SPEED;
-        const newY = player.y - Math.sin(player.angle) * MOVE_SPEED;
+        const newX = player.x - Math.cos(player.angle) * moveSpeed;
+        const newY = player.y - Math.sin(player.angle) * moveSpeed;
         if (!checkWallCollision(newX, player.y)) player.x = newX;
         if (!checkWallCollision(player.x, newY)) player.y = newY;
       }
       if (keysRef.current.has("ArrowLeft") || keysRef.current.has("KeyA")) {
-        player.angle -= ROTATION_SPEED;
+        player.angle -= rotSpeed;
       }
       if (keysRef.current.has("ArrowRight") || keysRef.current.has("KeyD")) {
-        player.angle += ROTATION_SPEED;
+        player.angle += rotSpeed;
       }
 
       // Check goal
       const goalX = Math.floor(player.x);
       const goalY = Math.floor(player.y);
       if (MAP_DATA[goalY]?.[goalX] === 4) {
+        setFinalStats({
+          level: playerRef.current.level,
+          exp: playerRef.current.exp,
+        });
         setGameState("clear");
         return;
       }
 
       // Clear canvas
-      ctx.fillStyle = "#0a0a0a";
+      ctx.fillStyle = "#050510";
       ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
 
-      // Draw ceiling
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvasSize.height / 2);
-      gradient.addColorStop(0, "#1e1b4b");
-      gradient.addColorStop(1, "#312e81");
-      ctx.fillStyle = gradient;
+      // Draw sky with stars
+      const skyGradient = ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        canvasSize.height / 2,
+      );
+      skyGradient.addColorStop(0, "#0c0a1d");
+      skyGradient.addColorStop(0.5, "#1e1b4b");
+      skyGradient.addColorStop(1, "#312e81");
+      ctx.fillStyle = skyGradient;
       ctx.fillRect(0, 0, canvasSize.width, canvasSize.height / 2);
 
-      // Draw floor
+      // Animated stars
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      for (let i = 0; i < 30; i++) {
+        const x = (i * 73 + time * 0.002) % canvasSize.width;
+        const y = (i * 17) % (canvasSize.height / 2);
+        const size = 1 + Math.sin(time * 0.003 + i) * 0.5;
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw floor with perspective
       const floorGradient = ctx.createLinearGradient(
         0,
         canvasSize.height / 2,
@@ -332,6 +691,7 @@ const DungeonRPG = () => {
         canvasSize.height,
       );
       floorGradient.addColorStop(0, "#1f2937");
+      floorGradient.addColorStop(0.3, "#374151");
       floorGradient.addColorStop(1, "#111827");
       ctx.fillStyle = floorGradient;
       ctx.fillRect(
@@ -341,67 +701,123 @@ const DungeonRPG = () => {
         canvasSize.height / 2,
       );
 
-      // Raycasting for walls
-      const rayWidth = canvasSize.width / RAY_COUNT;
+      // Floor tiles pattern
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 20; i++) {
+        const y = canvasSize.height / 2 + i * 15 + ((time * 0.02) % 15);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvasSize.width, y);
+        ctx.stroke();
+      }
 
-      for (let i = 0; i < RAY_COUNT; i++) {
-        const rayAngle = player.angle - FOV / 2 + (i / RAY_COUNT) * FOV;
-        const { distance, wallType, side } = castRay(
+      // Raycasting for walls
+      const rayWidth = canvasSize.width / rayCount;
+      const zBuffer: number[] = [];
+
+      for (let i = 0; i < rayCount; i++) {
+        const rayAngle = player.angle - FOV / 2 + (i / rayCount) * FOV;
+        const { distance, wallType, side, texX } = castRay(
           player.x,
           player.y,
           rayAngle,
         );
 
-        // Fix fisheye effect
         const correctedDistance = distance * Math.cos(rayAngle - player.angle);
-        const wallHeight = Math.min(
-          canvasSize.height,
-          (canvasSize.height / correctedDistance) * 0.8,
-        );
+        zBuffer[i] = correctedDistance;
 
+        const wallHeight = Math.min(
+          canvasSize.height * 1.2,
+          (canvasSize.height / correctedDistance) * 0.9,
+        );
         const wallTop = (canvasSize.height - wallHeight) / 2;
 
-        // Wall colors
-        let baseColor: string;
+        // Wall shading based on distance and side
+        const fogFactor = Math.max(0.15, 1 - correctedDistance / 12);
+        const sideFactor = side === 0 ? 1 : 0.7;
+
+        let r: number, g: number, b: number;
         if (wallType === 4) {
-          baseColor = side === 0 ? "#fbbf24" : "#f59e0b"; // ゴール（金色）
+          // Goal - golden glow
+          r = 251;
+          g = 191;
+          b = 36;
+          ctx.shadowColor = "#fbbf24";
+          ctx.shadowBlur = 20;
         } else {
-          baseColor = side === 0 ? "#6366f1" : "#4f46e5"; // 通常の壁
+          // Stone wall
+          r = side === 0 ? 99 : 79;
+          g = side === 0 ? 102 : 70;
+          b = side === 0 ? 241 : 229;
         }
 
-        // Distance fog
-        const fogFactor = Math.max(0.2, 1 - correctedDistance / 10);
+        // Apply fog
+        r = Math.floor(r * fogFactor * sideFactor);
+        g = Math.floor(g * fogFactor * sideFactor);
+        b = Math.floor(b * fogFactor * sideFactor);
 
-        ctx.fillStyle = baseColor;
-        ctx.globalAlpha = fogFactor;
+        // Draw wall stripe with vertical gradient for depth
+        const wallGradient = ctx.createLinearGradient(
+          0,
+          wallTop,
+          0,
+          wallTop + wallHeight,
+        );
+        wallGradient.addColorStop(
+          0,
+          `rgb(${Math.min(255, r + 30)}, ${Math.min(255, g + 30)}, ${Math.min(255, b + 30)})`,
+        );
+        wallGradient.addColorStop(0.3, `rgb(${r}, ${g}, ${b})`);
+        wallGradient.addColorStop(0.7, `rgb(${r}, ${g}, ${b})`);
+        wallGradient.addColorStop(
+          1,
+          `rgb(${Math.max(0, r - 40)}, ${Math.max(0, g - 40)}, ${Math.max(0, b - 40)})`,
+        );
+
+        ctx.fillStyle = wallGradient;
         ctx.fillRect(i * rayWidth, wallTop, rayWidth + 1, wallHeight);
-        ctx.globalAlpha = 1;
 
-        // Wall edge highlight
-        if (i > 0) {
-          const prevRay = castRay(
-            player.x,
-            player.y,
-            player.angle - FOV / 2 + ((i - 1) / RAY_COUNT) * FOV,
-          );
-          if (Math.abs(prevRay.distance - distance) > 0.5) {
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-            ctx.lineWidth = 2;
+        // Add brick texture lines
+        if (correctedDistance < 5) {
+          ctx.strokeStyle = `rgba(0, 0, 0, ${0.1 * fogFactor})`;
+          ctx.lineWidth = 1;
+          const brickHeight = wallHeight / 8;
+          for (let j = 0; j < 8; j++) {
+            const y = wallTop + j * brickHeight;
             ctx.beginPath();
-            ctx.moveTo(i * rayWidth, wallTop);
-            ctx.lineTo(i * rayWidth, wallTop + wallHeight);
+            ctx.moveTo(i * rayWidth, y);
+            ctx.lineTo(i * rayWidth + rayWidth, y);
             ctx.stroke();
           }
         }
+
+        // Edge highlight
+        if (i > 0 && Math.abs(zBuffer[i - 1] - correctedDistance) > 0.3) {
+          ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * fogFactor})`;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(i * rayWidth, wallTop);
+          ctx.lineTo(i * rayWidth, wallTop + wallHeight);
+          ctx.stroke();
+        }
+
+        ctx.shadowBlur = 0;
       }
 
-      // Draw enemies (billboard sprites)
-      enemiesRef.current.forEach((enemy) => {
+      // Draw enemies (sorted by distance)
+      const enemiesWithDist = enemiesRef.current
+        .map((enemy) => {
+          const dx = enemy.x - player.x;
+          const dy = enemy.y - player.y;
+          return { enemy, distance: Math.sqrt(dx * dx + dy * dy) };
+        })
+        .sort((a, b) => b.distance - a.distance);
+
+      enemiesWithDist.forEach(({ enemy, distance }) => {
         const dx = enemy.x - player.x;
         const dy = enemy.y - player.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Check if enemy is in view
         let angle = Math.atan2(dy, dx) - player.angle;
         while (angle < -Math.PI) angle += Math.PI * 2;
         while (angle > Math.PI) angle -= Math.PI * 2;
@@ -409,62 +825,25 @@ const DungeonRPG = () => {
         if (Math.abs(angle) < FOV / 2 + 0.1 && distance < 10) {
           const screenX =
             canvasSize.width / 2 + (angle / (FOV / 2)) * (canvasSize.width / 2);
-          const size = Math.min(400, (canvasSize.height / distance) * 0.6);
+          const size = Math.min(350, (canvasSize.height / distance) * 0.55);
+          const fogFactor = Math.max(0.25, 1 - distance / 10);
 
-          const enemyData = ENEMY_TYPES[enemy.type];
-          const fogFactor = Math.max(0.3, 1 - distance / 8);
-
-          ctx.globalAlpha = fogFactor;
-          ctx.fillStyle = enemyData.color;
-          ctx.beginPath();
-          ctx.arc(screenX, canvasSize.height / 2, size / 2, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Enemy eyes
-          ctx.fillStyle = "#000";
-          const eyeSize = size / 8;
-          ctx.beginPath();
-          ctx.arc(
-            screenX - size / 5,
-            canvasSize.height / 2 - size / 8,
-            eyeSize,
-            0,
-            Math.PI * 2,
-          );
-          ctx.arc(
-            screenX + size / 5,
-            canvasSize.height / 2 - size / 8,
-            eyeSize,
-            0,
-            Math.PI * 2,
-          );
-          ctx.fill();
-
-          // Health bar
-          const barWidth = size * 0.8;
-          const barHeight = 6;
-          const barY = canvasSize.height / 2 - size / 2 - 15;
-          ctx.fillStyle = "#374151";
-          ctx.fillRect(screenX - barWidth / 2, barY, barWidth, barHeight);
-          ctx.fillStyle = "#ef4444";
-          ctx.fillRect(
-            screenX - barWidth / 2,
-            barY,
-            barWidth * (enemy.health / enemy.maxHealth),
-            barHeight,
-          );
-
-          ctx.globalAlpha = 1;
+          drawEnemy(ctx, enemy, screenX, size, fogFactor, time);
 
           // Enemy attacks player if close
           if (distance < 1.2 && now - enemy.lastAttack > 1000) {
             enemy.lastAttack = now;
+            const enemyData = ENEMY_TYPES[enemy.type];
             playerRef.current.health -= enemyData.damage;
             setMessage(
               `${enemyData.name}の攻撃！ ${enemyData.damage}ダメージ！`,
             );
 
             if (playerRef.current.health <= 0) {
+              setFinalStats({
+                level: playerRef.current.level,
+                exp: playerRef.current.exp,
+              });
               setGameState("gameover");
             }
           }
@@ -484,43 +863,83 @@ const DungeonRPG = () => {
         if (Math.abs(angle) < FOV / 2 && distance < 8 && distance > 0.3) {
           const screenX =
             canvasSize.width / 2 + (angle / (FOV / 2)) * (canvasSize.width / 2);
-          const size = Math.min(100, (canvasSize.height / distance) * 0.3);
+          const size = Math.min(80, (canvasSize.height / distance) * 0.25);
           const fogFactor = Math.max(0.3, 1 - distance / 6);
 
           ctx.globalAlpha = fogFactor;
-          ctx.fillStyle = item.type === "health" ? "#22c55e" : "#fbbf24";
+
+          // Floating animation
+          const floatY = Math.sin(time * 0.004 + item.id) * 5;
+
+          // Glow effect
+          const glowColor = item.type === "health" ? "#22c55e" : "#fbbf24";
+          ctx.shadowColor = glowColor;
+          ctx.shadowBlur = 15;
+
+          const itemGradient = ctx.createRadialGradient(
+            screenX,
+            canvasSize.height / 2 + size + floatY,
+            0,
+            screenX,
+            canvasSize.height / 2 + size + floatY,
+            size / 2,
+          );
+          itemGradient.addColorStop(
+            0,
+            item.type === "health" ? "#4ade80" : "#fcd34d",
+          );
+          itemGradient.addColorStop(1, glowColor);
+
+          ctx.fillStyle = itemGradient;
           ctx.beginPath();
           ctx.arc(
             screenX,
-            canvasSize.height / 2 + size,
+            canvasSize.height / 2 + size + floatY,
             size / 2,
             0,
             Math.PI * 2,
           );
           ctx.fill();
 
-          // ピックアップ
+          // Icon
+          ctx.fillStyle = "#fff";
+          ctx.font = `bold ${size / 2}px sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(
+            item.type === "health" ? "+" : "★",
+            screenX,
+            canvasSize.height / 2 + size + floatY,
+          );
+
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
+
+          // Pickup
           if (distance < 0.8) {
             if (item.type === "health") {
               playerRef.current.health = Math.min(
                 playerRef.current.maxHealth,
                 playerRef.current.health + 30,
               );
-              setMessage("体力を30回復した！");
+              setMessage("体力を 30 回復した");
             } else {
               playerRef.current.exp += 50;
-              setMessage("経験値を50獲得！");
+              setMessage("経験値を 50 獲得");
             }
             itemsRef.current.splice(index, 1);
           }
-
-          ctx.globalAlpha = 1;
         }
       });
 
       // Attack (space key)
       if (keysRef.current.has("Space")) {
         keysRef.current.delete("Space");
+
+        // Attack animation flash
+        ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+        ctx.fillRect(0, 0, canvasSize.width, canvasSize.height);
+
         enemiesRef.current.forEach((enemy, index) => {
           const dx = enemy.x - player.x;
           const dy = enemy.y - player.y;
@@ -529,66 +948,117 @@ const DungeonRPG = () => {
           if (distance < 1.5) {
             const damage = 20 + player.level * 5;
             enemy.health -= damage;
-            setMessage(`${ENEMY_TYPES[enemy.type].name}に${damage}ダメージ！`);
+            setMessage(`${ENEMY_TYPES[enemy.type].name}に ${damage} ダメージ`);
 
             if (enemy.health <= 0) {
               const exp = ENEMY_TYPES[enemy.type].exp;
               playerRef.current.exp += exp;
               setMessage(
-                `${ENEMY_TYPES[enemy.type].name}を倒した！ EXP+${exp}`,
+                `${ENEMY_TYPES[enemy.type].name}を倒した [EXP +${exp}]`,
               );
               enemiesRef.current.splice(index, 1);
 
-              // Level up check
               if (playerRef.current.exp >= playerRef.current.level * 100) {
                 playerRef.current.level++;
                 playerRef.current.maxHealth += 20;
                 playerRef.current.health = playerRef.current.maxHealth;
-                setMessage(`レベルアップ！ Lv.${playerRef.current.level}`);
+                setMessage(`LEVEL UP - Lv.${playerRef.current.level}`);
               }
             }
           }
         });
       }
 
-      // Draw UI overlay
-      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-      ctx.fillRect(10, 10, 200, 80);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-      ctx.strokeRect(10, 10, 200, 80);
+      // Draw UI
+      // Status panel
+      const panelWidth = isMobile ? 150 : 220;
+      const panelHeight = isMobile ? 70 : 90;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+      ctx.strokeStyle = "rgba(99, 102, 241, 0.5)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(10, 10, panelWidth, panelHeight, 8);
+      ctx.fill();
+      ctx.stroke();
 
       ctx.fillStyle = "#fff";
-      ctx.font = "bold 14px sans-serif";
+      ctx.font = `bold ${isMobile ? 12 : 16}px sans-serif`;
+      ctx.fillText(`Lv.${player.level}`, 20, isMobile ? 30 : 35);
+
+      ctx.fillStyle = "#a5b4fc";
+      ctx.font = `${isMobile ? 10 : 12}px sans-serif`;
       ctx.fillText(
-        `Lv.${player.level}  EXP: ${player.exp}/${player.level * 100}`,
-        20,
-        35,
+        `EXP: ${player.exp}/${player.level * 100}`,
+        isMobile ? 60 : 80,
+        isMobile ? 30 : 35,
       );
 
       // Health bar
-      ctx.fillStyle = "#374151";
-      ctx.fillRect(20, 50, 180, 16);
-      ctx.fillStyle = player.health > 30 ? "#22c55e" : "#ef4444";
-      ctx.fillRect(20, 50, 180 * (player.health / player.maxHealth), 16);
+      const barY = isMobile ? 42 : 50;
+      const barWidth = panelWidth - 20;
+      const barHeight = isMobile ? 14 : 20;
+
+      ctx.fillStyle = "#1f2937";
+      ctx.beginPath();
+      ctx.roundRect(20, barY, barWidth, barHeight, 4);
+      ctx.fill();
+
+      const healthPercent = player.health / player.maxHealth;
+      const hpGradient = ctx.createLinearGradient(
+        20,
+        0,
+        20 + barWidth * healthPercent,
+        0,
+      );
+      hpGradient.addColorStop(
+        0,
+        healthPercent > 0.5
+          ? "#22c55e"
+          : healthPercent > 0.25
+            ? "#eab308"
+            : "#ef4444",
+      );
+      hpGradient.addColorStop(
+        1,
+        healthPercent > 0.5
+          ? "#16a34a"
+          : healthPercent > 0.25
+            ? "#ca8a04"
+            : "#dc2626",
+      );
+
+      ctx.fillStyle = hpGradient;
+      ctx.beginPath();
+      ctx.roundRect(20, barY, barWidth * healthPercent, barHeight, 4);
+      ctx.fill();
+
       ctx.fillStyle = "#fff";
-      ctx.font = "bold 12px sans-serif";
-      ctx.fillText(`HP: ${player.health}/${player.maxHealth}`, 25, 63);
+      ctx.font = `bold ${isMobile ? 10 : 13}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.fillText(
+        `${player.health}/${player.maxHealth}`,
+        20 + barWidth / 2,
+        barY + barHeight / 2 + 4,
+      );
+      ctx.textAlign = "left";
 
       // Minimap
-      const mapSize = 120;
+      const mapSize = isMobile ? 80 : 120;
       const mapScale = mapSize / MAP_DATA.length;
-      ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-      ctx.fillRect(
-        canvasSize.width - mapSize - 20,
-        10,
-        mapSize + 10,
-        mapSize + 10,
-      );
+      const mapX = canvasSize.width - mapSize - 15;
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+      ctx.strokeStyle = "rgba(99, 102, 241, 0.5)";
+      ctx.beginPath();
+      ctx.roundRect(mapX - 5, 5, mapSize + 10, mapSize + 10, 8);
+      ctx.fill();
+      ctx.stroke();
 
       MAP_DATA.forEach((row, y) => {
         row.forEach((cell, x) => {
-          const mx = canvasSize.width - mapSize - 15 + x * mapScale;
-          const my = 15 + y * mapScale;
+          const mx = mapX + x * mapScale;
+          const my = 10 + y * mapScale;
           if (cell === 1) {
             ctx.fillStyle = "#4f46e5";
           } else if (cell === 4) {
@@ -596,54 +1066,87 @@ const DungeonRPG = () => {
           } else {
             ctx.fillStyle = "#1f2937";
           }
-          ctx.fillRect(mx, my, mapScale - 1, mapScale - 1);
+          ctx.fillRect(mx, my, mapScale - 0.5, mapScale - 0.5);
         });
       });
 
       // Player on minimap
-      const pmx = canvasSize.width - mapSize - 15 + player.x * mapScale;
-      const pmy = 15 + player.y * mapScale;
+      const pmx = mapX + player.x * mapScale;
+      const pmy = 10 + player.y * mapScale;
+
       ctx.fillStyle = "#22d3ee";
+      ctx.shadowColor = "#22d3ee";
+      ctx.shadowBlur = 5;
       ctx.beginPath();
-      ctx.arc(pmx, pmy, 3, 0, Math.PI * 2);
+      ctx.arc(pmx, pmy, isMobile ? 2 : 3, 0, Math.PI * 2);
       ctx.fill();
 
-      // Direction indicator
+      // Direction
       ctx.strokeStyle = "#22d3ee";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(pmx, pmy);
       ctx.lineTo(
-        pmx + Math.cos(player.angle) * 8,
-        pmy + Math.sin(player.angle) * 8,
+        pmx + Math.cos(player.angle) * (isMobile ? 6 : 10),
+        pmy + Math.sin(player.angle) * (isMobile ? 6 : 10),
       );
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
       // Enemies on minimap
       enemiesRef.current.forEach((enemy) => {
-        const emx = canvasSize.width - mapSize - 15 + enemy.x * mapScale;
-        const emy = 15 + enemy.y * mapScale;
+        const emx = mapX + enemy.x * mapScale;
+        const emy = 10 + enemy.y * mapScale;
         ctx.fillStyle = ENEMY_TYPES[enemy.type].color;
         ctx.beginPath();
-        ctx.arc(emx, emy, 2, 0, Math.PI * 2);
+        ctx.arc(emx, emy, isMobile ? 1.5 : 2, 0, Math.PI * 2);
         ctx.fill();
       });
+
+      // Crosshair
+      const cx = canvasSize.width / 2;
+      const cy = canvasSize.height / 2;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - 10, cy);
+      ctx.lineTo(cx - 4, cy);
+      ctx.moveTo(cx + 4, cy);
+      ctx.lineTo(cx + 10, cy);
+      ctx.moveTo(cx, cy - 10);
+      ctx.lineTo(cx, cy - 4);
+      ctx.moveTo(cx, cy + 4);
+      ctx.lineTo(cx, cy + 10);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.fill();
 
       animationRef.current = requestAnimationFrame(gameLoop);
     };
 
     animationRef.current = requestAnimationFrame(gameLoop);
     return () => cancelAnimationFrame(animationRef.current);
-  }, [gameState, canvasSize, checkWallCollision, castRay]);
+  }, [gameState, canvasSize, isMobile, checkWallCollision, castRay, drawEnemy]);
 
   // Keyboard handlers
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       keysRef.current.add(e.code);
       if (
-        ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Space"].includes(
-          e.code,
-        )
+        [
+          "ArrowUp",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowRight",
+          "Space",
+          "KeyW",
+          "KeyA",
+          "KeyS",
+          "KeyD",
+        ].includes(e.code)
       ) {
         e.preventDefault();
       }
@@ -679,10 +1182,10 @@ const DungeonRPG = () => {
     keysRef.current.delete("KeyA");
     keysRef.current.delete("KeyD");
 
-    if (dy < -30) keysRef.current.add("KeyW");
-    if (dy > 30) keysRef.current.add("KeyS");
-    if (dx < -30) keysRef.current.add("KeyA");
-    if (dx > 30) keysRef.current.add("KeyD");
+    if (dy < -20) keysRef.current.add("KeyW");
+    if (dy > 20) keysRef.current.add("KeyS");
+    if (dx < -20) keysRef.current.add("KeyA");
+    if (dx > 20) keysRef.current.add("KeyD");
   };
 
   const handleTouchEnd = () => {
@@ -711,43 +1214,49 @@ const DungeonRPG = () => {
 
         {gameState === "title" && (
           <div className={styles.overlay}>
-            <h3 className={styles.gameTitle}>ダンジョン RPG</h3>
+            <h3 className={styles.gameTitle}>DUNGEON QUEST</h3>
             <p className={styles.instructions}>
-              PC: WASD / 矢印キーで移動、スペースで攻撃
-              <br />
-              スマホ: スワイプで移動、攻撃ボタンで攻撃
+              {isMobile ? (
+                <>
+                  スワイプで移動・回転
+                  <br />
+                  攻撃ボタンで敵を攻撃
+                </>
+              ) : (
+                <>
+                  WASD / 矢印キーで移動
+                  <br />
+                  スペースキーで攻撃
+                </>
+              )}
             </p>
-            <p className={styles.goal}>
-              ゴールを目指して敵を倒しながら進もう！
-            </p>
+            <p className={styles.goal}>ゴールを目指して敵を倒せ</p>
             <button className={styles.startButton} onClick={initGame}>
-              冒険を始める
+              START
             </button>
           </div>
         )}
 
         {gameState === "gameover" && (
           <div className={styles.overlay}>
-            <h3 className={styles.gameOverTitle}>ゲームオーバー</h3>
-            <p className={styles.finalScore}>
-              到達レベル: {playerRef.current.level}
-            </p>
+            <h3 className={styles.gameOverTitle}>GAME OVER</h3>
+            <p className={styles.finalScore}>LEVEL: {finalStats.level}</p>
             <button className={styles.startButton} onClick={initGame}>
-              もう一度挑戦
+              RETRY
             </button>
           </div>
         )}
 
         {gameState === "clear" && (
           <div className={styles.overlay}>
-            <h3 className={styles.clearTitle}>クリア！</h3>
+            <h3 className={styles.clearTitle}>STAGE CLEAR</h3>
             <p className={styles.finalScore}>
-              最終レベル: {playerRef.current.level}
+              LEVEL: {finalStats.level}
               <br />
-              獲得EXP: {playerRef.current.exp}
+              EXP: {finalStats.exp}
             </p>
             <button className={styles.startButton} onClick={initGame}>
-              もう一度プレイ
+              PLAY AGAIN
             </button>
           </div>
         )}
@@ -757,8 +1266,11 @@ const DungeonRPG = () => {
         <>
           {message && <div className={styles.message}>{message}</div>}
           <div className={styles.mobileControls}>
+            <div className={styles.touchPad}>
+              <span>MOVE</span>
+            </div>
             <button className={styles.attackButton} onClick={handleAttack}>
-              ⚔️ 攻撃
+              ATTACK
             </button>
           </div>
         </>
