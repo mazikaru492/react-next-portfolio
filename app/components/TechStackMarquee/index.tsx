@@ -46,8 +46,8 @@ type SvgIconProps = SVGProps<SVGSVGElement>;
 // ==========================================
 
 const ICON_SIZE = {
-  mobile: "h-8 w-8",
-  desktop: "md:h-11 md:w-11",
+  mobile: "h-6 w-6 sm:h-8 sm:w-8",
+  desktop: "md:h-10 md:w-10 lg:h-11 lg:w-11",
 } as const;
 
 const ICON_DIMENSIONS = {
@@ -57,7 +57,7 @@ const ICON_DIMENSIONS = {
 
 const MARQUEE_CONFIG = {
   repeatCount: 4,
-  gap: "gap-6 md:gap-16",
+  gap: "gap-4 sm:gap-6 md:gap-10 lg:gap-16",
 } as const;
 
 const SECTION_CONTENT = {
@@ -340,11 +340,11 @@ const TechLink: FC<{ item: TechItem; index: number }> = memo(
       href={item.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="shrink-0 flex flex-col items-center gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300"
+      className="shrink-0 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 min-w-[50px] sm:min-w-[60px] md:min-w-[70px]"
       aria-label={`${item.label}のサイトへ移動`}
     >
       <TechIcon item={item} />
-      <span className="text-[10px] md:text-xs font-medium text-gray-400">
+      <span className="text-[8px] sm:text-[10px] md:text-xs font-medium text-gray-400 text-center leading-tight max-w-[60px] sm:max-w-[80px] md:max-w-none truncate">
         {item.label}
       </span>
     </a>
@@ -384,20 +384,22 @@ MarqueeRow.displayName = "MarqueeRow";
 
 const TechStackMarquee: FC = () => (
   <section
-    className="w-full py-12 md:py-20 mt-8 md:mt-12"
+    className="w-full py-8 sm:py-12 md:py-20 mt-6 sm:mt-8 md:mt-12"
     aria-labelledby="tech-stack-title"
   >
-    <div className="text-center mb-10 md:mb-16">
+    <div className="text-center mb-6 sm:mb-10 md:mb-16 px-4">
       <h2
         id="tech-stack-title"
-        className="text-2xl md:text-3xl font-bold text-white"
+        className="text-xl sm:text-2xl md:text-3xl font-bold text-white"
       >
         {SECTION_CONTENT.title}
       </h2>
-      <p className="mt-3 text-sm text-white/50">{SECTION_CONTENT.subtitle}</p>
+      <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-white/50">
+        {SECTION_CONTENT.subtitle}
+      </p>
     </div>
 
-    <div className="space-y-6 md:space-y-10">
+    <div className="space-y-4 sm:space-y-6 md:space-y-10">
       <MarqueeRow items={TECH_STACK_ROW_1} />
       <MarqueeRow items={TECH_STACK_ROW_2} reverse />
     </div>
