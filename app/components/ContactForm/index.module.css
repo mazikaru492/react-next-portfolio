@@ -1,73 +1,56 @@
-.form {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.item {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 8px 0;
-}
-
-.horizontal {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+.formWrapper {
   width: 100%;
-  gap: 24px;
+  max-width: 700px;
+  margin: 2rem auto 0;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  position: relative;
+
+  /* 白く光るエフェクト */
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.15),
+    0 0 40px rgba(255, 255, 255, 0.1),
+    0 0 60px rgba(255, 255, 255, 0.05),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
+  animation: formGlow 3s ease-in-out infinite;
 }
 
-.label {
-  font-size: 14px;
+@keyframes formGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(255, 255, 255, 0.15),
+      0 0 40px rgba(255, 255, 255, 0.1),
+      0 0 60px rgba(255, 255, 255, 0.05),
+      inset 0 0 30px rgba(255, 255, 255, 0.02);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(255, 255, 255, 0.25),
+      0 0 50px rgba(255, 255, 255, 0.15),
+      0 0 80px rgba(255, 255, 255, 0.08),
+      inset 0 0 40px rgba(255, 255, 255, 0.04);
+  }
 }
 
-.textfield {
-  border: 1px solid var(--color-border);
-  padding: 8px;
-  border-radius: 4px;
-  line-height: 1.5;
+.formWrapper iframe {
   width: 100%;
-}
-
-.textarea {
-  border: 1px solid var(--color-border);
-  padding: 8px;
-  border-radius: 4px;
-  line-height: 1.5;
-  width: 100%;
-}
-
-.actions {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.button {
   border: none;
-  background-color: var(--color-button-primary);
-  padding: 16px 40px;
-  font-size: 16px;
-  border-radius: 4px;
-  color: var(--color-text-unpainted);
-  cursor: pointer;
-}
-
-.success {
-  background-color: var(--color-bg-sub);
-  text-align: center;
-  padding: 40px;
-  border-radius: var(--border-radius);
-}
-
-.error {
-  color: var(--color-text-error);
-  font-size: 14px;
-  margin-bottom: 8px;
+  min-height: 1101px;
+  border-radius: 0.5rem;
 }
 
 @media (max-width: 640px) {
-  .success {
-    text-align: left;
+  .formWrapper {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    margin: 1.5rem auto 0;
+  }
+
+  .formWrapper iframe {
+    min-height: 1200px;
   }
 }

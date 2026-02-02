@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import { useState } from "react";
 import { FaCopy, FaCheck } from "react-icons/fa";
+import ContactForm from "@/app/components/ContactForm";
 
 export default function Page() {
   const [copied, setCopied] = useState(false);
@@ -22,7 +23,7 @@ export default function Page() {
   return (
     <>
       <p className={styles.text}>
-        ご質問やご相談がございましたら、下記メールアドレスまでご連絡ください。
+        ご質問やご相談がございましたら、下記フォームまたはメールアドレスまでご連絡ください。
         <br />
         内容を確認後、通常3営業日以内にご連絡させていただきます。
       </p>
@@ -50,6 +51,8 @@ export default function Page() {
           </div>
         </div>
       </div>
+
+      <ContactForm />
     </>
   );
 }
