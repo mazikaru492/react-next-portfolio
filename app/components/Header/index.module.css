@@ -15,6 +15,14 @@
   width: 100%;
   pointer-events: none;
 }
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+  flex: 1;
+}
+
 .logoLink {
   display: flex;
   pointer-events: auto;
@@ -24,6 +32,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .logo {
   height: 32px;
   width: auto;
@@ -34,6 +43,8 @@
   align-items: center;
   gap: 16px;
   pointer-events: auto;
+  flex: 1;
+  justify-content: flex-end;
 }
 
 .timeDisplay {
@@ -50,8 +61,10 @@
 }
 
 .flag {
-  font-size: 18px;
-  line-height: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  letter-spacing: 0.5px;
 }
 
 .time {
@@ -60,34 +73,10 @@
   letter-spacing: 0.5px;
 }
 
-.themeToggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 10px;
-  background: var(--color-bg-sub);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  color: var(--color-text-main);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.themeToggle:hover {
-  background: var(--color-current);
-  border-color: var(--color-border-dark);
-  transform: translateY(-2px);
-}
-
-.themeToggle:active {
-  transform: scale(0.95);
-}
-
 .nav {
   pointer-events: auto;
 }
+
 .item {
   display: flex;
   color: #fff;
@@ -101,7 +90,7 @@
     padding-right: calc(16px + env(safe-area-inset-right, 0px));
   }
 
-  .timeDisplay {
+  .leftSection {
     display: none;
   }
 

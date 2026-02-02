@@ -241,6 +241,12 @@
 
   .contactCard {
     padding: 1.5rem 1rem;
+    /* モバイルでも光るエフェクトを維持 */
+    box-shadow:
+      0 0 15px rgba(255, 255, 255, 0.12),
+      0 0 30px rgba(255, 255, 255, 0.08),
+      0 0 45px rgba(255, 255, 255, 0.04);
+    animation: cardGlow 3s ease-in-out infinite;
   }
 
   .contactInfo {

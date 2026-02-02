@@ -8,12 +8,40 @@
     rgba(255, 255, 255, 0.03) 0%,
     rgba(255, 255, 255, 0.01) 100%
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   margin-bottom: 24px;
   overflow: hidden;
   transition: all 0.3s ease;
+  position: relative;
+
+  /* 白く光るエフェクト */
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.15),
+    0 0 40px rgba(255, 255, 255, 0.1),
+    0 0 60px rgba(255, 255, 255, 0.05),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
+  animation: newsGlow 3s ease-in-out infinite;
 }
+
+@keyframes newsGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(255, 255, 255, 0.15),
+      0 0 40px rgba(255, 255, 255, 0.1),
+      0 0 60px rgba(255, 255, 255, 0.05),
+      inset 0 0 30px rgba(255, 255, 255, 0.02);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(255, 255, 255, 0.25),
+      0 0 50px rgba(255, 255, 255, 0.15),
+      0 0 80px rgba(255, 255, 255, 0.08),
+      inset 0 0 40px rgba(255, 255, 255, 0.04);
+  }
+}
+
 .newsItem:last-child {
   margin-bottom: 0;
 }
@@ -21,7 +49,11 @@
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(0, 200, 83, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 200, 83, 0.15);
+  box-shadow:
+    0 0 30px rgba(0, 200, 83, 0.3),
+    0 0 60px rgba(0, 200, 83, 0.2),
+    0 12px 40px rgba(0, 200, 83, 0.15);
+  animation: none;
 }
 
 .list {
@@ -76,13 +108,21 @@
 @media (max-width: 640px) {
   .newsItem {
     margin-bottom: 20px;
+    /* モバイルでも光るエフェクトを維持 */
+    box-shadow:
+      0 0 15px rgba(255, 255, 255, 0.12),
+      0 0 30px rgba(255, 255, 255, 0.08),
+      0 0 45px rgba(255, 255, 255, 0.04);
+    animation: newsGlow 3s ease-in-out infinite;
   }
   .newsItem:hover {
     transform: none;
-    box-shadow: none;
   }
   .newsItem:active {
     transform: scale(0.98);
+    box-shadow:
+      0 0 20px rgba(0, 200, 83, 0.25),
+      0 0 40px rgba(0, 200, 83, 0.15);
   }
 
   .link {
