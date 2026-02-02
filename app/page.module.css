@@ -124,34 +124,6 @@
   width: 100%;
 }
 
-.newsTitle::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, #6366f1, #a855f7);
-  margin: 16px auto 0;
-  border-radius: 2px;
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-}
-
-/* タイトル内のspan（各文字）用 */
-.titleChar {
-  display: inline-block;
-  animation: waveFloat 2s ease-in-out infinite;
-  animation-delay: calc(var(--char-index) * 0.1s);
-}
-
-@keyframes waveFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
 @media (max-width: 640px) {
   .newsTitle {
     font-size: 1.75rem;

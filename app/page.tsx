@@ -5,6 +5,7 @@ import NewsList from "@/app/components/NewsList";
 import ButtonLink from "@/app/components/ButtonLink";
 import GitHubTechShowcase from "@/app/components/GitHubTechShowcase";
 import Profile from "@/app/components/Profile";
+import ShootingGame from "@/app/components/ShootingGame";
 
 // ==========================================
 // Constants
@@ -54,6 +55,10 @@ export default async function HomePage() {
           </ButtonLink>
         </div>
       </section>
+
+      <div className={styles.sectionDivider} aria-hidden="true" />
+
+      <ShootingGame />
     </>
   );
 }
