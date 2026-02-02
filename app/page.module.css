@@ -37,13 +37,6 @@
   z-index: -1;
 }
 
-.sectionDivider {
-  width: 100%;
-  height: 1px;
-  margin: 24px 0 0;
-  background: var(--color-text-unpainted);
-  opacity: 0.22;
-}
 
 @media (max-width: 640px) {
   .top {
@@ -85,10 +78,6 @@
     padding: 0 20px;
   }
 
-  .sectionDivider {
-    width: 100%;
-    margin: 16px 0 0;
-  }
 
   .newsLink {
     position: relative;

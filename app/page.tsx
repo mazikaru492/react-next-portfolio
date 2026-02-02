@@ -5,7 +5,6 @@ import NewsList from "@/app/components/NewsList";
 import ButtonLink from "@/app/components/ButtonLink";
 import GitHubTechShowcase from "@/app/components/GitHubTechShowcase";
 import Profile from "@/app/components/Profile";
-import ShootingGame from "@/app/components/ShootingGame";
 import DesktopOnly from "@/app/components/DesktopOnly";
 
 // ==========================================
@@ -41,11 +40,7 @@ export default async function HomePage() {
     <>
       <Profile />
 
-      <div className={styles.sectionDivider} aria-hidden="true" />
-
       <GitHubTechShowcase />
-
-      <div className={styles.sectionDivider} aria-hidden="true" />
 
       <section className={styles.news}>
         <h2 className={styles.newsTitle}>{SECTION_CONTENT.blog.title}</h2>
@@ -58,8 +53,6 @@ export default async function HomePage() {
       </section>
 
       <DesktopOnly>
-        <div className={styles.sectionDivider} aria-hidden="true" />
-        <ShootingGame />
       </DesktopOnly>
     </>
   );
