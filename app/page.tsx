@@ -52,8 +52,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <DesktopOnly>
-      </DesktopOnly>
+      <DesktopOnly></DesktopOnly>
     </>
   );
 }

@@ -37,7 +37,6 @@
   z-index: -1;
 }
 
-
 @media (max-width: 640px) {
   .top {
     padding: 120px 20px;
@@ -77,7 +76,6 @@
 
     padding: 0 20px;
   }
-
 
   .newsLink {
     position: relative;
