@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { FC } from "react";
+import { FiClock, FiTag } from "react-icons/fi";
 import styles from "./index.module.css";
 import Category from "../Category";
 import Data from "../Data";
@@ -40,26 +41,19 @@ const EMPTY_MESSAGE = "記事がありません。" as const;
 // ==========================================
 
 const ArticleThumbnail: FC<ArticleThumbnailProps> = ({ thumbnail }) => {
-  if (thumbnail) {
-    return (
-      <Image
-        src={thumbnail.url}
-        alt=""
-        className={styles.image}
-        width={thumbnail.width}
-        height={thumbnail.height}
-      />
-    );
-  }
+  const imageProps = thumbnail
+    ? {
+        src: thumbnail.url,
+        width: thumbnail.width,
+        height: thumbnail.height,
+        alt: "",
+      }
+    : FALLBACK_IMAGE;
 
   return (
-    <Image
-      src={FALLBACK_IMAGE.src}
-      alt={FALLBACK_IMAGE.alt}
-      className={styles.image}
-      width={FALLBACK_IMAGE.width}
-      height={FALLBACK_IMAGE.height}
-    />
+    <div className={styles.imageWrapper}>
+      <Image {...imageProps} className={styles.image} />
+    </div>
   );
 };
 
@@ -67,18 +61,26 @@ const NewsItem: FC<NewsItemProps> = ({ article }) => {
   const publishDate = article.publishedAt ?? article.createdAt;
 
   return (
-    <li className={styles.newsItem}>
+    <article className={styles.newsItem}>
       <Link href={`/news/${article.id}`} className={styles.link}>
         <ArticleThumbnail thumbnail={article.thumbnail} />
-        <dl className={styles.contents}>
-          <dt className={styles.title}>{article.title}</dt>
-          <dd className={styles.meta}>
-            {article.category && <Category category={article.category} />}
-            <Data data={publishDate} />
-          </dd>
-        </dl>
+        <div className={styles.contents}>
+          <div className={styles.meta}>
+            <div className={styles.date}>
+              <FiClock aria-hidden="true" />
+              <Data data={publishDate} />
+            </div>
+            {article.category && (
+              <div className={styles.categoryItem}>
+                <FiTag aria-hidden="true" />
+                <Category category={article.category} />
+              </div>
+            )}
+          </div>
+          <h3 className={styles.title}>{article.title}</h3>
+        </div>
       </Link>
-    </li>
+    </article>
   );
 };
 
@@ -92,11 +94,11 @@ const NewsList: FC<NewsListProps> = ({ news }) => {
   }
 
   return (
-    <ul>
+    <div className={styles.container}>
       {news.map((article) => (
         <NewsItem key={article.id} article={article} />
       ))}
-    </ul>
+    </div>
   );
 };
 

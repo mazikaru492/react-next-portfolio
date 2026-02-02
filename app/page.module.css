@@ -73,14 +73,16 @@
 
   .news {
     width: calc(100% - 32px);
-    margin: 16px auto 0;
-    padding: 20px 16px;
-    border-radius: 12px;
+    margin: 32px auto 0;
+    padding: 0;
+    background-color: transparent;
   }
 
   .newsTitle {
     font-size: 1.25rem;
-    margin-bottom: 12px;
+    margin-bottom: 24px;
+
+    padding: 0 20px;
   }
 
   .sectionDivider {
@@ -92,40 +94,46 @@
     position: relative;
     right: auto;
     bottom: auto;
-    margin-top: 16px;
+    margin-top: 24px;
     justify-content: center;
   }
 }
 
 .news {
   position: relative;
-  background-color: var(--color-bg-sub);
-  width: 840px;
-  margin: 24px auto 0;
-  padding: 24px 40px;
-  border-radius: var(--border-radius);
+  width: min(100%, 1100px);
+  margin: 60px auto 0;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
 }
 
 .newsTitle {
   font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 32px;
+  padding: 0 40px;
 }
 .newsLink {
   position: static;
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: 32px;
+  padding: 0 40px;
 }
 @media (max-width: 1000px) {
   .news {
     width: calc(100% - 80px);
-    margin: 20px auto 0;
-    padding: 24px 32px;
+    margin: 40px auto 0;
   }
 }
 @media (max-width: 768px) {
   .news {
     width: calc(100% - 48px);
-    margin: 18px auto 0;
-    padding: 20px 24px;
+    margin: 32px auto 0;
   }
 }

@@ -3,9 +3,8 @@ import { getNewsList } from "@/app/lids/microcms";
 import { TOP_NEWS_LIMIT } from "@/app/constants";
 import NewsList from "@/app/components/NewsList";
 import ButtonLink from "@/app/components/ButtonLink";
-import GitHubContributions from "@/app/components/GitHubContributions";
+import GitHubTechShowcase from "@/app/components/GitHubTechShowcase";
 import Profile from "@/app/components/Profile";
-import TechStackMarquee from "@/app/components/TechStackMarquee";
 
 // ==========================================
 // Constants
@@ -42,11 +41,7 @@ export default async function HomePage() {
 
       <div className={styles.sectionDivider} aria-hidden="true" />
 
-      <GitHubContributions />
-
-      <div className={styles.sectionDivider} aria-hidden="true" />
-
-      <TechStackMarquee />
+      <GitHubTechShowcase />
 
       <div className={styles.sectionDivider} aria-hidden="true" />
 
