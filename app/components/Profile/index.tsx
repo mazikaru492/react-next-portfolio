@@ -15,8 +15,9 @@ const ICON_SIZE = 20;
 const BIO_TEXT =
   "私はkyoto-techで学生をしておりホワイトハッカー専攻で学業を学んでいます。";
 
+// cspell:ignore hosizora
 const BACKGROUND_IMAGE = {
-  src: "/img-mv.jpg",
+  src: "/hosizora.jpg",
   width: 4000,
   height: 1200,
 } as const;

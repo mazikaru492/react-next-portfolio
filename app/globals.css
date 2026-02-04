@@ -117,6 +117,16 @@ ul {
   list-style: none;
 }
 
+main {
+  padding-top: 80px;
+}
+
+@media (max-width: 640px) {
+  main {
+    padding-top: 40px;
+  }
+}
+
 /* Touch Target Minimum Size (44x44px for iOS) */
 button,
 [role="button"] {

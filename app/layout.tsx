@@ -19,8 +19,6 @@ interface RootLayoutProps {
 
 const THEME_COLOR = "#0b0b0b" as const;
 
-const MAIN_PADDING_TOP = "80px" as const;
-
 // ==========================================
 // Metadata Configuration
 // ==========================================
@@ -53,7 +51,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => (
   <html lang="ja">
     <body>
       <Header />
-      <main style={{ paddingTop: MAIN_PADDING_TOP }}>{children}</main>
+      <main>{children}</main>
       <Footer />
       <Analytics />
     </body>
