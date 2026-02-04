@@ -118,12 +118,12 @@ ul {
 }
 
 main {
-  padding-top: 80px;
+  padding-top: 48px;
 }
 
 @media (max-width: 640px) {
   main {
-    padding-top: 40px;
+    padding-top: 32px;
   }
 }
 
