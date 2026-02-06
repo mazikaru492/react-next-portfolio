@@ -50,18 +50,18 @@ const ALLOWED_TAGS = [
   "span",
   "figure",
   "figcaption",
-] as const;
+];
 
-const ALLOWED_ATTRIBUTES = {
+const ALLOWED_ATTRIBUTES: Record<string, string[]> = {
   a: ["href", "name", "target", "rel"],
   img: ["src", "alt", "width", "height"],
   "*": ["class", "id", "style"],
-} as const;
+};
 
 const SANITIZE_CONFIG = {
-  allowedTags: [...ALLOWED_TAGS],
+  allowedTags: ALLOWED_TAGS,
   allowedAttributes: ALLOWED_ATTRIBUTES,
-} as const;
+};
 
 // ==========================================
 // Utility Functions

@@ -5,7 +5,6 @@ import NewsList from "@/app/components/NewsList";
 import ButtonLink from "@/app/components/ButtonLink";
 import GitHubTechShowcase from "@/app/components/GitHubTechShowcase";
 import Profile from "@/app/components/Profile";
-import DesktopOnly from "@/app/components/DesktopOnly";
 
 // ==========================================
 // Constants
@@ -51,8 +50,6 @@ export default async function HomePage() {
           </ButtonLink>
         </div>
       </section>
-
-      <DesktopOnly></DesktopOnly>
     </>
   );
 }
