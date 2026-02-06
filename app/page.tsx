@@ -10,8 +10,6 @@ import Profile from "@/app/components/Profile";
 // Constants
 // ==========================================
 
-const REVALIDATE_SECONDS = 60;
-
 const SECTION_CONTENT = {
   blog: {
     title: "ブログ",
@@ -24,7 +22,7 @@ const SECTION_CONTENT = {
 // Configuration
 // ==========================================
 
-export const revalidate = REVALIDATE_SECONDS;
+export const revalidate = 60;
 
 // ==========================================
 // Page Component
