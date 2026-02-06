@@ -41,7 +41,7 @@ interface GetContributionParams {
 
 const GITHUB_GRAPHQL_ENDPOINT = "https://api.github.com/graphql";
 const DEFAULT_GITHUB_USERNAME = "mazikaru492";
-const DEFAULT_REVALIDATE_SECONDS = 60 * 60;
+const DEFAULT_REVALIDATE_SECONDS = 3600;
 
 const CONTRIBUTION_QUERY = `
   query($login: String!, $from: DateTime!, $to: DateTime!) {

@@ -12,7 +12,7 @@ import {
 
 const CONTRIBUTION_LEVELS = [0, 1, 2, 3, 4] as const;
 const WEEKDAY_LABELS = ["", "月", "", "水", "", "金", ""] as const;
-const REVALIDATE_SECONDS = 60 * 60; // 1 hour
+const REVALIDATE_SECONDS = 3600; // 1 hour
 
 const CONTRIBUTION_THRESHOLDS = {
   level1: 3,

@@ -10,7 +10,7 @@ import ContributionSection from "./ContributionSection";
 // Constants
 // ==========================================
 
-const REVALIDATE_SECONDS = 60 * 60; // 1 hour
+const REVALIDATE_SECONDS = 3600; // 1 hour
 
 const SECTION_CONTENT = {
   mainTitle: "Developer Profile",
