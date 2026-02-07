@@ -330,6 +330,7 @@ const TOOLS_AND_AI: readonly TechItem[] = [
 
 const TechIcon: FC<TechIconProps> = memo(({ item }) => {
   const iconClassName = `${ICON_SIZE.mobile} ${ICON_SIZE.desktop}`;
+  const imageCornerClass = item.label === "Claude" ? "rounded-[10px]" : "";
 
   if (item.imageSrc) {
     return (
@@ -338,7 +339,7 @@ const TechIcon: FC<TechIconProps> = memo(({ item }) => {
         alt={item.label}
         width={ICON_DIMENSIONS.width}
         height={ICON_DIMENSIONS.height}
-        className={`${iconClassName} object-contain`}
+        className={`${iconClassName} object-contain ${imageCornerClass}`}
         loading="lazy"
       />
     );
