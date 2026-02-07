@@ -73,7 +73,7 @@ const MARQUEE_CONFIG = {
 
 const SECTION_CONTENT = {
   title: "Tech Stack",
-  subtitle: "実務・個人開発で日常的に使用している技術とツール",
+  subtitle: "個人開発で日常的に使用している技術とツール",
 } as const;
 
 // ==========================================
