@@ -7,27 +7,40 @@ import {
   SiPython,
   SiMysql,
   SiNotion,
-  SiHtml5,
-  SiCss3,
   SiKalilinux,
+  SiTypescript,
+  SiReact,
+  SiDocker,
 } from "react-icons/si";
 import Image from "next/image";
 import type { ComponentType, FC, SVGProps } from "react";
-import { memo } from "react";
+import { memo, useSyncExternalStore } from "react";
 
 // ==========================================
 // Types & Interfaces
 // ==========================================
 
+/** Proficiency tier — controls visual emphasis in the marquee */
+type ProficiencyTier = "primary" | "secondary";
+
+type SvgIconProps = SVGProps<SVGSVGElement>;
+
+/**
+ * Flexible icon component type compatible with both
+ * react-icons and custom SVG components.
+ */
+type IconComponent = ComponentType<{
+  className?: string;
+  style?: React.CSSProperties;
+}>;
+
 interface TechItem {
   readonly label: string;
-  readonly Icon?: ComponentType<{
-    className?: string;
-    style?: React.CSSProperties;
-  }>;
+  readonly Icon?: IconComponent;
   readonly imageSrc?: string;
   readonly color: string;
   readonly url: string;
+  readonly tier: ProficiencyTier;
 }
 
 interface MarqueeRowProps {
@@ -38,8 +51,6 @@ interface MarqueeRowProps {
 interface TechIconProps {
   readonly item: TechItem;
 }
-
-type SvgIconProps = SVGProps<SVGSVGElement>;
 
 // ==========================================
 // Constants
@@ -62,8 +73,35 @@ const MARQUEE_CONFIG = {
 
 const SECTION_CONTENT = {
   title: "Tech Stack",
-  subtitle: "日々使用している技術・ツール",
+  subtitle: "実務・個人開発で日常的に使用している技術とツール",
 } as const;
+
+// ==========================================
+// Accessibility
+// ==========================================
+
+function subscribePrefersReducedMotion(callback: () => void): () => void {
+  const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+}
+
+function getReducedMotionSnapshot(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getReducedMotionServerSnapshot(): boolean {
+  return false;
+}
+
+/** Respects user's reduced-motion preference using React 18+ useSyncExternalStore */
+function usePrefersReducedMotion(): boolean {
+  return useSyncExternalStore(
+    subscribePrefersReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
+}
 
 // ==========================================
 // SVG Icon Components
@@ -125,38 +163,6 @@ const NmapIcon: FC<SvgIconProps> = (props) => (
   </svg>
 );
 
-const NapkinIcon: FC<SvgIconProps> = (props) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <rect
-      x="4"
-      y="4"
-      width="4"
-      height="14"
-      rx="1"
-      transform="rotate(-15 6 11)"
-      fill="#6366F1"
-    />
-    <rect
-      x="10"
-      y="6"
-      width="4"
-      height="12"
-      rx="1"
-      transform="rotate(-15 12 12)"
-      fill="#8B5CF6"
-    />
-    <rect
-      x="16"
-      y="8"
-      width="4"
-      height="10"
-      rx="1"
-      transform="rotate(-15 18 13)"
-      fill="#A78BFA"
-    />
-  </svg>
-);
-
 const PerplexityIcon: FC<SvgIconProps> = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M22.3977 7.0896h-2.3106V.0676l-7.5094 6.3542V.1577h-1.1554v6.1966L4.4904 0v7.0896H1.6023v10.3976h2.8882V24l6.932-6.3591v6.2005h1.1554v-6.0469l6.9318 6.1807v-6.4879h2.8882V7.0896zm-3.4657-4.531v4.531h-5.355l5.355-4.531zm-13.2862.0676 4.8691 4.4634H5.6458V2.6262zM2.7576 16.332V8.245h7.8476l-6.1149 6.1147v1.9723H2.7576zm2.8882 5.0404v-3.8852h.0001v-2.6488l5.7763-5.7764v7.0111l-5.7764 5.2993zm12.7086.0248-5.7766-5.1509V9.0618l5.7766 5.7766v6.5588zm2.8882-5.0652h-1.733v-1.9723L13.3948 8.245h7.8478v8.087z" />
@@ -164,138 +170,157 @@ const PerplexityIcon: FC<SvgIconProps> = (props) => (
 );
 
 // ==========================================
-// Tech Stack Data
+// Tech Stack Data — Organized by Proficiency
 // ==========================================
 
-const TECH_STACK_ROW_1: readonly TechItem[] = [
-  {
-    label: "NotebookLM",
-    imageSrc: "/notebooklm.png",
-    color: "#ffffff",
-    url: "https://notebooklm.google.com",
-  },
-  {
-    label: "Sora 2",
-    imageSrc: "/sora.png",
-    color: "#3B82F6",
-    url: "https://sora-2.org",
-  },
-  {
-    label: "Gemini",
-    Icon: GeminiIcon as ComponentType<{ className?: string }>,
-    color: "#8E75B2",
-    url: "https://gemini.google.com",
-  },
-  {
-    label: "ChatGPT",
-    Icon: OpenAIIcon as ComponentType<{ className?: string }>,
-    color: "#10A37F",
-    url: "https://openai.com/gpt-4",
-  },
-  {
-    label: "MySQL",
-    Icon: SiMysql,
-    color: "#4479A1",
-    url: "https://www.mysql.com",
-  },
+/**
+ * Primary: Daily-driver technologies with production experience.
+ * Secondary: Actively used in projects or learning with strong fundamentals.
+ */
+
+const CORE_STACK: readonly TechItem[] = [
   {
     label: "Next.js",
     Icon: SiNextdotjs,
     color: "#ffffff",
     url: "https://nextjs.org",
+    tier: "primary",
+  },
+  {
+    label: "TypeScript",
+    Icon: SiTypescript,
+    color: "#3178C6",
+    url: "https://www.typescriptlang.org",
+    tier: "primary",
+  },
+  {
+    label: "React",
+    Icon: SiReact,
+    color: "#61DAFB",
+    url: "https://react.dev",
+    tier: "primary",
   },
   {
     label: "Python",
     Icon: SiPython,
     color: "#3776AB",
     url: "https://www.python.org",
+    tier: "primary",
   },
   {
     label: "Kali Linux",
     Icon: SiKalilinux,
     color: "#557C94",
     url: "https://www.kali.org",
-  },
-] as const;
-
-const TECH_STACK_ROW_2: readonly TechItem[] = [
-  {
-    label: "HTML5",
-    Icon: SiHtml5,
-    color: "#E34F26",
-    url: "https://developer.mozilla.org/docs/Web/HTML",
+    tier: "primary",
   },
   {
-    label: "CSS3",
-    Icon: SiCss3,
-    color: "#1572B6",
-    url: "https://developer.mozilla.org/docs/Web/CSS",
-  },
-  {
-    label: "Notion",
-    Icon: SiNotion,
-    color: "#ffffff",
-    url: "https://www.notion.so",
-  },
-  {
-    label: "GitHub",
-    Icon: SiGithub,
-    color: "#ffffff",
-    url: "https://github.com",
+    label: "MySQL",
+    Icon: SiMysql,
+    color: "#4479A1",
+    url: "https://www.mysql.com",
+    tier: "secondary",
   },
   {
     label: "Linux",
     Icon: SiLinux,
     color: "#FCC624",
     url: "https://www.linux.org",
+    tier: "secondary",
   },
   {
     label: "Nmap",
-    Icon: NmapIcon as ComponentType<{ className?: string }>,
+    Icon: NmapIcon as IconComponent,
     color: "#51A0D5",
     url: "https://nmap.org",
+    tier: "secondary",
+  },
+] as const;
+
+const TOOLS_AND_AI: readonly TechItem[] = [
+  {
+    label: "Claude",
+    imageSrc: "/71e5edacdced21bdad944b9f545291bf.jpg",
+    color: "#F97316",
+    url: "https://claude.ai",
+    tier: "secondary",
   },
   {
-    label: "Napkin AI",
-    Icon: NapkinIcon as ComponentType<{ className?: string }>,
-    color: "#8B5CF6",
-    url: "https://app.napkin.ai",
+    label: "Docker Desktop",
+    Icon: SiDocker,
+    color: "#2496ED",
+    url: "https://www.docker.com/products/docker-desktop/",
+    tier: "secondary",
   },
   {
-    label: "Perplexity",
-    Icon: PerplexityIcon as ComponentType<{ className?: string }>,
-    color: "#20808D",
-    url: "https://www.perplexity.ai",
-  },
-  {
-    label: "ジュピター",
-    imageSrc: "/jupyter.png",
-    color: "#F37726",
-    url: "https://jupyter.org",
-  },
-  {
-    label: "GitHubコパイロット",
+    label: "GitHub Copilot",
     imageSrc: "/copilot.png",
     color: "#ffffff",
     url: "https://github.com/features/copilot",
+    tier: "primary",
   },
   {
-    label: "VSCode",
+    label: "GitHub",
+    Icon: SiGithub,
+    color: "#ffffff",
+    url: "https://github.com",
+    tier: "primary",
+  },
+  {
+    label: "ChatGPT",
+    Icon: OpenAIIcon as IconComponent,
+    color: "#10A37F",
+    url: "https://openai.com/gpt-4",
+    tier: "secondary",
+  },
+  {
+    label: "Gemini",
+    Icon: GeminiIcon as IconComponent,
+    color: "#8E75B2",
+    url: "https://gemini.google.com",
+    tier: "secondary",
+  },
+  {
+    label: "Perplexity",
+    Icon: PerplexityIcon as IconComponent,
+    color: "#20808D",
+    url: "https://www.perplexity.ai",
+    tier: "secondary",
+  },
+  {
+    label: "NotebookLM",
+    imageSrc: "/notebooklm.png",
+    color: "#ffffff",
+    url: "https://notebooklm.google.com",
+    tier: "secondary",
+  },
+  {
+    label: "Sora",
+    imageSrc: "/sora.png",
+    color: "#3B82F6",
+    url: "https://sora-2.org",
+    tier: "secondary",
+  },
+  {
+    label: "VS Code",
     imageSrc: "/vscode.png",
     color: "#007ACC",
     url: "https://code.visualstudio.com",
+    tier: "secondary",
   },
   {
-    label: "Antigravity",
-    imageSrc: "/antigravity.png",
-    color: "#A855F7",
-    url: "https://blog.google/products/gemini/google-antigravity/",
+    label: "Jupyter",
+    imageSrc: "/jupyter.png",
+    color: "#F37726",
+    url: "https://jupyter.org",
+    tier: "secondary",
   },
   {
-    label: "Youware",
-    imageSrc: "/youware.png",
-    color: "#5C7C51",
-    url: "#",
+    label: "Notion",
+    Icon: SiNotion,
+    color: "#ffffff",
+    url: "https://www.notion.so",
+    tier: "secondary",
   },
 ] as const;
 
@@ -314,6 +339,7 @@ const TechIcon: FC<TechIconProps> = memo(({ item }) => {
         width={ICON_DIMENSIONS.width}
         height={ICON_DIMENSIONS.height}
         className={`${iconClassName} object-contain`}
+        loading="lazy"
       />
     );
   }
@@ -333,18 +359,20 @@ const TechIcon: FC<TechIconProps> = memo(({ item }) => {
 
 TechIcon.displayName = "TechIcon";
 
-const TechLink: FC<{ item: TechItem; index: number }> = memo(
+const TechLink: FC<{ readonly item: TechItem; readonly index: number }> = memo(
   ({ item, index }) => (
     <a
       key={`${item.label}-${index}`}
       href={item.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="shrink-0 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-300 min-w-[50px] sm:min-w-[60px] md:min-w-[70px]"
-      aria-label={`${item.label}のサイトへ移動`}
+      className="shrink-0 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 transition-all duration-300 min-w-[50px] sm:min-w-[60px] md:min-w-[70px]"
+      aria-label={`${item.label} — 公式サイトへ`}
     >
-      <TechIcon item={item} />
-      <span className="text-[8px] sm:text-[10px] md:text-xs font-medium text-gray-400 text-center leading-tight max-w-[60px] sm:max-w-[80px] md:max-w-none truncate">
+      <div className="p-1.5">
+        <TechIcon item={item} />
+      </div>
+      <span className="text-[8px] sm:text-[10px] md:text-xs font-medium text-center leading-tight max-w-[60px] sm:max-w-[80px] md:max-w-none truncate text-white/70">
         {item.label}
       </span>
     </a>
@@ -354,19 +382,28 @@ const TechLink: FC<{ item: TechItem; index: number }> = memo(
 TechLink.displayName = "TechLink";
 
 const MarqueeRow: FC<MarqueeRowProps> = memo(({ items, reverse = false }) => {
-  const repeatedItems = Array.from(
-    { length: MARQUEE_CONFIG.repeatCount },
-    () => items,
-  ).flat();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
-  const animationClass = reverse
-    ? "animate-marquee-reverse"
-    : "animate-marquee";
+  const repeatedItems = prefersReducedMotion
+    ? items
+    : Array.from({ length: MARQUEE_CONFIG.repeatCount }, () => items).flat();
+
+  const animationClass = prefersReducedMotion
+    ? ""
+    : reverse
+      ? "animate-marquee-reverse"
+      : "animate-marquee";
 
   return (
     <div className="w-full overflow-hidden">
       <div
-        className={`flex w-max items-center ${MARQUEE_CONFIG.gap} will-change-transform hover:[animation-play-state:paused] ${animationClass}`}
+        className={`
+          flex items-center ${MARQUEE_CONFIG.gap}
+          will-change-transform hover:[animation-play-state:paused]
+          ${animationClass}
+          ${prefersReducedMotion ? "flex-wrap justify-center w-full" : "w-max"}
+          py-2 px-2 overflow-visible
+        `}
       >
         {repeatedItems.map((item, index) => (
           <TechLink key={`${item.label}-${index}`} item={item} index={index} />
@@ -394,14 +431,14 @@ const TechStackMarquee: FC = () => (
       >
         {SECTION_CONTENT.title}
       </h2>
-      <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-white/50">
+      <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-white/50 max-w-md mx-auto">
         {SECTION_CONTENT.subtitle}
       </p>
     </div>
 
     <div className="space-y-4 sm:space-y-6 md:space-y-10">
-      <MarqueeRow items={TECH_STACK_ROW_1} />
-      <MarqueeRow items={TECH_STACK_ROW_2} reverse />
+      <MarqueeRow items={CORE_STACK} />
+      <MarqueeRow items={TOOLS_AND_AI} reverse />
     </div>
   </section>
 );
