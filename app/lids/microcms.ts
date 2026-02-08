@@ -36,6 +36,7 @@ export interface Profile extends MicroCMSListContent {
   readonly avatar?: MicroCMSImage;
   readonly githubUrl?: string;
   readonly instagramUrl?: string;
+  readonly linkedinUrl?: string;
 }
 
 type MicroCMSClient = ReturnType<typeof createClient>;
@@ -61,6 +62,7 @@ const DEFAULT_PROFILE: Profile = {
     "サイバーセキュリティの専門知識を活かし、より安全なデジタル社会の実現を目指しています",
   githubUrl: "https://github.com/mazikaru492",
   instagramUrl: "https://www.instagram.com/mark_c2c/",
+  linkedinUrl: "https://www.linkedin.com/in/huruya-yuki",
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
   publishedAt: new Date().toISOString(),
