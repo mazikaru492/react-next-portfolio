@@ -9,6 +9,7 @@ import { getProfile } from "@/app/lids/microcms";
 // ==========================================
 
 const DEFAULT_GITHUB_URL = "https://github.com/mazikaru492";
+const DEFAULT_INSTAGRAM_URL = "https://www.instagram.com/mark_c2c/";
 const DEFAULT_LINKEDIN_URL = "https://www.linkedin.com/in/huruya-yuki";
 const AVATAR_SIZE = 200;
 const ICON_SIZE = 20;
@@ -125,6 +126,7 @@ const Avatar: FC<AvatarProps> = ({ avatarUrl, name }) => (
 export default async function Profile() {
   const profile = await getProfile();
   const githubUrl = profile.githubUrl || DEFAULT_GITHUB_URL;
+  const instagramUrl = profile.instagramUrl || DEFAULT_INSTAGRAM_URL;
   const linkedinUrl = profile.linkedinUrl || DEFAULT_LINKEDIN_URL;
 
   return (
@@ -152,20 +154,12 @@ export default async function Profile() {
           <p className={styles.bio}>{BIO_TEXT}</p>
 
           <div className={styles.socials}>
-            {profile.githubUrl && (
-              <SocialLink
-                href={profile.githubUrl}
-                label="GitHub"
-                icon={<GitHubIcon />}
-              />
-            )}
-            {profile.instagramUrl && (
-              <SocialLink
-                href={profile.instagramUrl}
-                label="Instagram"
-                icon={<InstagramIcon />}
-              />
-            )}
+            <SocialLink href={githubUrl} label="GitHub" icon={<GitHubIcon />} />
+            <SocialLink
+              href={instagramUrl}
+              label="Instagram"
+              icon={<InstagramIcon />}
+            />
             <SocialLink
               href={linkedinUrl}
               label="LinkedIn"

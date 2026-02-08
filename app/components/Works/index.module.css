@@ -22,8 +22,30 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(200px, auto);
+  gap: 20px;
+}
+
+/* 最初のプロジェクト - フィーチャード（大きく目立たせる） */
+.card:first-child {
+  grid-column: span 7;
+  grid-row: span 2;
+}
+
+/* 2番目のプロジェクト */
+.card:nth-child(2) {
+  grid-column: span 5;
+}
+
+/* 3番目のプロジェクト */
+.card:nth-child(3) {
+  grid-column: span 5;
+}
+
+/* 4番目以降 */
+.card:nth-child(n + 4) {
+  grid-column: span 4;
 }
 
 .card {
@@ -151,7 +173,16 @@
   }
 
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+  }
+
+  .card:first-child,
+  .card:nth-child(2),
+  .card:nth-child(3),
+  .card:nth-child(n + 4) {
+    grid-column: span 1;
+    grid-row: span 1;
   }
 }
 
@@ -174,6 +205,32 @@
   .grid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .card:first-child,
+  .card:nth-child(2),
+  .card:nth-child(3),
+  .card:nth-child(n + 4) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  /* 最初のカードを目立たせる */
+  .card:first-child {
+    border: 2px solid rgba(0, 255, 204, 0.3);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 255, 204, 0.08) 0%,
+      var(--color-bg-main) 50%
+    );
+  }
+
+  .card:first-child .cardContent {
+    padding: 28px 24px;
+  }
+
+  .card:first-child .cardTitle {
+    font-size: 1.3rem;
   }
 
   /* モバイルでも光るエフェクトを維持 */
