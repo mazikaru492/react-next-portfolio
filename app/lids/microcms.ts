@@ -39,6 +39,15 @@ export interface Profile extends MicroCMSListContent {
   readonly linkedinUrl?: string;
 }
 
+export interface Work extends MicroCMSListContent {
+  readonly title: string;
+  readonly description: string;
+  readonly image?: MicroCMSImage;
+  readonly technologies: readonly string[];
+  readonly githubUrl?: string;
+  readonly demoUrl?: string;
+}
+
 type MicroCMSClient = ReturnType<typeof createClient>;
 
 // ==========================================
@@ -50,6 +59,7 @@ const ENDPOINTS = {
   news: "news",
   categories: "categories",
   profile: "profile",
+  works: "works",
 } as const;
 
 const REVALIDATE_SECONDS = 60;
@@ -223,5 +233,29 @@ export const getProfile = async (): Promise<Profile> => {
       error,
     );
     return DEFAULT_PROFILE;
+  }
+};
+
+// ==========================================
+// API Functions - Works
+// ==========================================
+
+export const getWorksList = async (
+  queries?: MicroCMSQueries,
+): Promise<MicroCMSListResponse<Work>> => {
+  const client = getClient();
+  if (!client) return createEmptyListResponse<Work>();
+
+  try {
+    return await client.getList<Work>({
+      endpoint: ENDPOINTS.works,
+      queries,
+      customRequestInit: {
+        next: { revalidate: REVALIDATE_SECONDS },
+      },
+    });
+  } catch (error) {
+    console.warn("[microcms] Works取得エラー、空データを返します", error);
+    return createEmptyListResponse<Work>();
   }
 };

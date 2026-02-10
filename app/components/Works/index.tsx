@@ -1,20 +1,11 @@
 import styles from "./index.module.css";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import type { FC, ReactNode } from "react";
+import type { Work } from "@/app/lids/microcms";
 
 // ==========================================
 // Type Definitions
 // ==========================================
-
-interface Work {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly image?: string;
-  readonly technologies: readonly string[];
-  readonly githubUrl?: string;
-  readonly demoUrl?: string;
-}
 
 interface ExternalLinkProps {
   readonly href: string;
@@ -27,38 +18,13 @@ interface WorkCardProps {
   readonly work: Work;
 }
 
+interface WorksProps {
+  readonly works: readonly Work[];
+}
+
 // ==========================================
 // Constants
 // ==========================================
-
-const WORKS_DATA: readonly Work[] = [
-  {
-    id: "1",
-    title: "サンプルプロジェクト1",
-    description:
-      "プロジェクトの説明文をここに記載します。どのような機能があるか、何を解決するかなどを書きます。",
-    technologies: ["React", "TypeScript", "Next.js"],
-    githubUrl: "https://github.com/username/project1",
-    demoUrl: "https://demo.example.com",
-  },
-  {
-    id: "2",
-    title: "サンプルプロジェクト2",
-    description:
-      "別のプロジェクトの説明文です。作成した背景や使用した技術について説明します。",
-    technologies: ["Python", "Flask", "PostgreSQL"],
-    githubUrl: "https://github.com/username/project2",
-  },
-  {
-    id: "3",
-    title: "サンプルプロジェクト3",
-    description:
-      "さらに別のプロジェクトです。ユニークな機能や工夫した点をアピールしましょう。",
-    technologies: ["JavaScript", "Node.js", "MongoDB"],
-    githubUrl: "https://github.com/username/project3",
-    demoUrl: "https://demo3.example.com",
-  },
-] as const;
 
 const SECTION_CONTENT = {
   title: "Works",
@@ -128,16 +94,20 @@ const WorkCard: FC<WorkCardProps> = ({ work }) => {
 // Main Component
 // ==========================================
 
-const Works: FC = () => (
+const Works: FC<WorksProps> = ({ works }) => (
   <section className={styles.container}>
     <h2 className={styles.title}>{SECTION_CONTENT.title}</h2>
     <p className={styles.subtitle}>{SECTION_CONTENT.subtitle}</p>
 
-    <div className={styles.grid}>
-      {WORKS_DATA.map((work) => (
-        <WorkCard key={work.id} work={work} />
-      ))}
-    </div>
+    {works.length > 0 ? (
+      <div className={styles.grid}>
+        {works.map((work) => (
+          <WorkCard key={work.id} work={work} />
+        ))}
+      </div>
+    ) : (
+      <p className={styles.subtitle}>現在、制作物はありません</p>
+    )}
   </section>
 );
 
