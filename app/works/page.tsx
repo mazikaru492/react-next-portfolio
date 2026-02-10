@@ -3,6 +3,8 @@ import Works from "@/app/components/Works";
 import { getWorksList } from "@/app/lids/microcms";
 import styles from "./page.module.css";
 
+export const revalidate = 60;
+
 export default async function WorksPage() {
   const { contents: works } = await getWorksList();
 

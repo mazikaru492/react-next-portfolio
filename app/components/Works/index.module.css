@@ -20,45 +20,31 @@
   margin-bottom: 32px;
 }
 
+/* ==========================================
+   Grid - 常に2カラム
+   ========================================== */
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(200px, auto);
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
 
-/* 最初のプロジェクト - フィーチャード（大きく目立たせる） */
-.card:first-child {
-  grid-column: span 7;
-  grid-row: span 2;
-}
-
-/* 2番目のプロジェクト */
-.card:nth-child(2) {
-  grid-column: span 5;
-}
-
-/* 3番目のプロジェクト */
-.card:nth-child(3) {
-  grid-column: span 5;
-}
-
-/* 4番目以降 */
-.card:nth-child(n + 4) {
-  grid-column: span 4;
-}
+/* ==========================================
+   Card
+   ========================================== */
 
 .card {
   background: var(--color-bg-main);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
   position: relative;
-
-  /* 白く光るエフェクト */
   box-shadow:
     0 0 20px rgba(255, 255, 255, 0.15),
     0 0 40px rgba(255, 255, 255, 0.1),
@@ -95,28 +81,43 @@
   animation: none;
 }
 
-.cardContent {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* ==========================================
+   Card Image
+   ========================================== */
 
 .cardImage {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.03);
+}
+
+/* ==========================================
+   Card Content
+   ========================================== */
+
+.cardContent {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
 }
 
 .cardTitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-text-main);
   margin: 0;
@@ -124,34 +125,20 @@
 
 .cardDescription {
   color: var(--color-text-sub);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.88rem;
+  line-height: 1.7;
   margin: 0;
-}
-
-.technologies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.techBadge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 12px;
-  background: rgba(0, 255, 204, 0.1);
-  border: 1px solid rgba(0, 255, 204, 0.2);
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: var(--color-accent-green);
-  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .links {
   display: flex;
   gap: 12px;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 4px;
 }
 
 .link {
@@ -159,47 +146,52 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 255, 204, 0.08);
+  border: 1px solid rgba(0, 255, 204, 0.2);
   border-radius: 8px;
-  color: var(--color-text-main);
+  color: var(--color-accent-green);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
 .link:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(0, 255, 204, 0.15);
+  border-color: rgba(0, 255, 204, 0.4);
   transform: translateY(-1px);
 }
 
 .link svg {
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
-/* タブレット用 */
+.emptyMessage {
+  text-align: center;
+  color: var(--color-text-sub);
+  font-size: 1rem;
+  padding: 40px 0;
+}
+
+/* ==========================================
+   Tablet
+   ========================================== */
+
 @media (max-width: 1000px) {
   .container {
-    width: calc(100% - 160px);
+    width: calc(100% - 80px);
+    padding: 32px;
   }
 
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: auto;
-  }
-
-  .card:first-child,
-  .card:nth-child(2),
-  .card:nth-child(3),
-  .card:nth-child(n + 4) {
-    grid-column: span 1;
-    grid-row: span 1;
+    gap: 20px;
   }
 }
 
-/* モバイル用 */
+/* ==========================================
+   Mobile
+   ========================================== */
+
 @media (max-width: 640px) {
   .container {
     width: calc(100% - 32px);
@@ -220,39 +212,11 @@
     gap: 16px;
   }
 
-  .card:first-child,
-  .card:nth-child(2),
-  .card:nth-child(3),
-  .card:nth-child(n + 4) {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-
-  /* 最初のカードを目立たせる */
-  .card:first-child {
-    border: 2px solid rgba(0, 255, 204, 0.3);
-    background: linear-gradient(
-      135deg,
-      rgba(0, 255, 204, 0.08) 0%,
-      var(--color-bg-main) 50%
-    );
-  }
-
-  .card:first-child .cardContent {
-    padding: 28px 24px;
-  }
-
-  .card:first-child .cardTitle {
-    font-size: 1.3rem;
-  }
-
-  /* モバイルでも光るエフェクトを維持 */
   .card {
     box-shadow:
       0 0 15px rgba(255, 255, 255, 0.12),
       0 0 30px rgba(255, 255, 255, 0.08),
       0 0 45px rgba(255, 255, 255, 0.04);
-    animation: cardGlow 3s ease-in-out infinite;
   }
 
   .card:active {
@@ -264,8 +228,8 @@
   }
 
   .cardContent {
-    padding: 20px;
-    gap: 12px;
+    padding: 16px 20px 20px;
+    gap: 10px;
   }
 
   .cardTitle {
@@ -273,16 +237,8 @@
   }
 
   .cardDescription {
-    font-size: 0.9rem;
-  }
-
-  .technologies {
-    gap: 6px;
-  }
-
-  .techBadge {
-    padding: 3px 10px;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    -webkit-line-clamp: 4;
   }
 
   .links {
@@ -292,11 +248,14 @@
 
   .link {
     padding: 6px 12px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
 
-/* 超小型デバイス用 */
+/* ==========================================
+   Small Mobile
+   ========================================== */
+
 @media (max-width: 360px) {
   .container {
     width: calc(100% - 16px);
@@ -304,6 +263,6 @@
   }
 
   .cardContent {
-    padding: 16px;
+    padding: 14px 16px 16px;
   }
 }

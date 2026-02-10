@@ -5,50 +5,34 @@ import type { FC } from "react";
 import type { Work } from "@/app/lids/microcms";
 
 // ==========================================
-// Type Definitions
+// Types
 // ==========================================
-
-interface WorkCardProps {
-  readonly work: Work;
-}
 
 interface WorksProps {
   readonly works: readonly Work[];
 }
 
 // ==========================================
-// Constants
+// Utilities
 // ==========================================
 
-const SECTION_CONTENT = {
+const SECTION = {
   title: "Works",
   subtitle: "制作したプログラム・プロジェクト",
 } as const;
 
-// ==========================================
-// Utility Functions
-// ==========================================
+/** リッチテキスト HTML → プレーンテキスト */
+const stripHtml = (html: string): string => html.replace(/<[^>]*>/g, "").trim();
 
-/**
- * リッチテキスト HTML からリンク URL を抽出する
- */
-const extractUrl = (html: string): string | null => {
-  const match = html.match(/href=\\?"([^"\\]+)\\?"/);
-  return match ? match[1] : null;
-};
-
-/**
- * リッチテキスト HTML からプレーンテキストを抽出する
- */
-const stripHtml = (html: string): string => {
-  return html.replace(/<[^>]*>/g, "").trim();
-};
+/** リッチテキスト HTML → 最初の href URL */
+const extractUrl = (html: string): string | null =>
+  html.match(/href=\\?"([^"\\]+)\\?"/)?.[1] ?? null;
 
 // ==========================================
-// Sub Components
+// WorkCard
 // ==========================================
 
-const WorkCard: FC<WorkCardProps> = ({ work }) => {
+const WorkCard: FC<{ work: Work }> = ({ work }) => {
   const title = work.name1;
   const image = work.name2;
   const description = work.name3 ? stripHtml(work.name3) : "";
@@ -70,7 +54,6 @@ const WorkCard: FC<WorkCardProps> = ({ work }) => {
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
         {description && <p className={styles.cardDescription}>{description}</p>}
-
         {linkUrl && (
           <div className={styles.links}>
             <a
@@ -91,13 +74,13 @@ const WorkCard: FC<WorkCardProps> = ({ work }) => {
 };
 
 // ==========================================
-// Main Component
+// Works (Main)
 // ==========================================
 
 const Works: FC<WorksProps> = ({ works }) => (
   <section className={styles.container}>
-    <h2 className={styles.title}>{SECTION_CONTENT.title}</h2>
-    <p className={styles.subtitle}>{SECTION_CONTENT.subtitle}</p>
+    <h2 className={styles.title}>{SECTION.title}</h2>
+    <p className={styles.subtitle}>{SECTION.subtitle}</p>
 
     {works.length > 0 ? (
       <div className={styles.grid}>
@@ -106,7 +89,7 @@ const Works: FC<WorksProps> = ({ works }) => (
         ))}
       </div>
     ) : (
-      <p className={styles.subtitle}>現在、制作物はありません</p>
+      <p className={styles.emptyMessage}>現在、制作物はありません</p>
     )}
   </section>
 );
