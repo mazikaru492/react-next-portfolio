@@ -40,12 +40,10 @@ export interface Profile extends MicroCMSListContent {
 }
 
 export interface Work extends MicroCMSListContent {
-  readonly title: string;
-  readonly description: string;
-  readonly image?: MicroCMSImage;
-  readonly technologies: readonly string[];
-  readonly githubUrl?: string;
-  readonly demoUrl?: string;
+  readonly name1: string;
+  readonly name2?: MicroCMSImage;
+  readonly name3?: string;
+  readonly name4?: string;
 }
 
 type MicroCMSClient = ReturnType<typeof createClient>;

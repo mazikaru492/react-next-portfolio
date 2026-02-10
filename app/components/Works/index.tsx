@@ -1,18 +1,12 @@
+import Image from "next/image";
 import styles from "./index.module.css";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-import type { FC, ReactNode } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import type { FC } from "react";
 import type { Work } from "@/app/lids/microcms";
 
 // ==========================================
 // Type Definitions
 // ==========================================
-
-interface ExternalLinkProps {
-  readonly href: string;
-  readonly label: string;
-  readonly icon: ReactNode;
-  readonly text: string;
-}
 
 interface WorkCardProps {
   readonly work: Work;
@@ -32,59 +26,65 @@ const SECTION_CONTENT = {
 } as const;
 
 // ==========================================
+// Utility Functions
+// ==========================================
+
+/**
+ * リッチテキスト HTML からリンク URL を抽出する
+ */
+const extractUrl = (html: string): string | null => {
+  const match = html.match(/href=\\?"([^"\\]+)\\?"/);
+  return match ? match[1] : null;
+};
+
+/**
+ * リッチテキスト HTML からプレーンテキストを抽出する
+ */
+const stripHtml = (html: string): string => {
+  return html.replace(/<[^>]*>/g, "").trim();
+};
+
+// ==========================================
 // Sub Components
 // ==========================================
 
-const ExternalLink: FC<ExternalLinkProps> = ({ href, label, icon, text }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className={styles.link}
-    aria-label={label}
-  >
-    {icon}
-    <span>{text}</span>
-  </a>
-);
-
-const TechBadge: FC<{ tech: string }> = ({ tech }) => (
-  <span className={styles.techBadge}>{tech}</span>
-);
-
 const WorkCard: FC<WorkCardProps> = ({ work }) => {
-  const { title, description, technologies, githubUrl, demoUrl } = work;
+  const title = work.name1;
+  const image = work.name2;
+  const description = work.name3 ? stripHtml(work.name3) : "";
+  const linkUrl = work.name4 ? extractUrl(work.name4) : null;
 
   return (
     <article className={styles.card}>
+      {image && (
+        <div className={styles.cardImage}>
+          <Image
+            src={image.url}
+            alt={title}
+            width={image.width}
+            height={image.height}
+            className={styles.image}
+          />
+        </div>
+      )}
       <div className={styles.cardContent}>
         <h3 className={styles.cardTitle}>{title}</h3>
-        <p className={styles.cardDescription}>{description}</p>
+        {description && <p className={styles.cardDescription}>{description}</p>}
 
-        <div className={styles.technologies}>
-          {technologies.map((tech) => (
-            <TechBadge key={tech} tech={tech} />
-          ))}
-        </div>
-
-        <div className={styles.links}>
-          {githubUrl && (
-            <ExternalLink
-              href={githubUrl}
-              label={`${title}のGitHubリポジトリ`}
-              icon={<FaGithub aria-hidden />}
-              text="GitHub"
-            />
-          )}
-          {demoUrl && (
-            <ExternalLink
-              href={demoUrl}
-              label={`${title}のデモサイト`}
-              icon={<FaExternalLinkAlt aria-hidden />}
-              text="Demo"
-            />
-          )}
-        </div>
+        {linkUrl && (
+          <div className={styles.links}>
+            <a
+              href={linkUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.link}
+              aria-label={`${title}のリンク`}
+            >
+              <FaExternalLinkAlt aria-hidden />
+              <span>サイトを見る</span>
+            </a>
+          </div>
+        )}
       </div>
     </article>
   );
