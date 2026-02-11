@@ -6,7 +6,7 @@
   background-color: var(--color-bg-overlay);
   color: #fff;
   overflow: hidden;
-  padding: 40px 20px;
+  padding: 80px 20px 40px;
 }
 .title {
   font-size: clamp(1.8rem, 5vw, 2.5rem);
@@ -50,4 +50,18 @@
   align-items: center;
   justify-content: center;
   z-index: -1;
+}
+
+/* ==========================================
+   Mobile
+   ========================================== */
+
+@media (max-width: 640px) {
+  .container {
+    padding: 72px 16px 32px;
+  }
+
+  .title {
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+  }
 }
