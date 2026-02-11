@@ -12,10 +12,6 @@ import ContributionSection from "./ContributionSection";
 
 const REVALIDATE_SECONDS = 3600; // 1 hour
 
-const SECTION_CONTENT = {
-  mainTitle: "Developer Profile",
-} as const;
-
 // ==========================================
 // Main Component
 // ==========================================
@@ -49,11 +45,6 @@ export default async function GitHubTechShowcase({ login }: Props) {
 
   return (
     <section className={styles.container}>
-      {/* Header */}
-      <div className={styles.header}>
-        <h2 className={styles.mainTitle}>{SECTION_CONTENT.mainTitle}</h2>
-      </div>
-
       {/* GitHub Contributions Section */}
       <ContributionSection
         login={resolvedLogin}

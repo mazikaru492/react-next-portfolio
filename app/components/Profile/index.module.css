@@ -121,6 +121,7 @@
   margin-bottom: 8px;
   letter-spacing: -0.02em;
   word-break: break-word;
+  color: #e5e5e5;
 }
 
 .verified {
@@ -141,13 +142,13 @@
 }
 
 .title {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(200, 200, 200, 0.95);
   font-size: clamp(0.95rem, 2.5vw, 1.15rem);
   margin-bottom: 20px;
 }
 
 .bio {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(210, 210, 210, 0.95);
   font-size: clamp(0.9rem, 2.2vw, 1.05rem);
   line-height: 1.7;
   max-width: 680px;
