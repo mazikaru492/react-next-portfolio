@@ -257,3 +257,25 @@ export const getWorksList = async (
     return createEmptyListResponse<Work>();
   }
 };
+
+export const getWorkDetail = async (
+  contentId: string,
+  queries?: MicroCMSQueries,
+): Promise<Work | null> => {
+  const client = getClient();
+  if (!client) return null;
+
+  try {
+    return await client.getListDetail<Work>({
+      endpoint: ENDPOINTS.works,
+      contentId,
+      queries,
+      customRequestInit: {
+        next: { revalidate: REVALIDATE_SECONDS },
+      },
+    });
+  } catch (error) {
+    console.warn("[microcms] Work詳細取得エラー", error);
+    return null;
+  }
+};

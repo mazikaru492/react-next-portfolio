@@ -31,6 +31,16 @@
 }
 
 /* ==========================================
+   Card Link
+   ========================================== */
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ==========================================
    Card
    ========================================== */
 
@@ -134,36 +144,19 @@
   overflow: hidden;
 }
 
-.links {
-  display: flex;
-  gap: 12px;
+.readMore {
+  display: inline-block;
   margin-top: auto;
   padding-top: 4px;
-}
-
-.link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: rgba(0, 255, 204, 0.08);
-  border: 1px solid rgba(0, 255, 204, 0.2);
-  border-radius: 8px;
   color: var(--color-accent-green);
-  text-decoration: none;
   font-size: 0.85rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
 }
 
-.link:hover {
-  background: rgba(0, 255, 204, 0.15);
-  border-color: rgba(0, 255, 204, 0.4);
-  transform: translateY(-1px);
-}
-
-.link svg {
-  font-size: 0.85rem;
+.cardLink:hover .readMore {
+  opacity: 1;
 }
 
 .emptyMessage {
@@ -239,16 +232,6 @@
   .cardDescription {
     font-size: 0.85rem;
     -webkit-line-clamp: 4;
-  }
-
-  .links {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .link {
-    padding: 6px 12px;
-    font-size: 0.8rem;
   }
 }
 
