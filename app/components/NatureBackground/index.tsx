@@ -85,7 +85,7 @@ const farTrees = generateRow({
   baseY: 905,
   minH: 90,
   maxH: 170,
-  fill: "#0c2418",
+  fill: "#143a26",
   seed: 1,
 });
 
@@ -94,7 +94,7 @@ const midTrees = generateRow({
   baseY: 970,
   minH: 170,
   maxH: 290,
-  fill: "#081d12",
+  fill: "#0f321f",
   seed: 2,
 });
 
@@ -103,7 +103,7 @@ const nearTrees = generateRow({
   baseY: 1040,
   minH: 250,
   maxH: 420,
-  fill: "#040d08",
+  fill: "#0b1d15",
   seed: 3,
 });
 
@@ -128,10 +128,10 @@ const NatureBackground: FC = () => (
     >
       <defs>
         <linearGradient id="nb-sky" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#020810" />
-          <stop offset="30%" stopColor="#071a2e" />
-          <stop offset="60%" stopColor="#0d2e22" />
-          <stop offset="100%" stopColor="#163d28" />
+          <stop offset="0%" stopColor="#051621" />
+          <stop offset="30%" stopColor="#0d2d45" />
+          <stop offset="60%" stopColor="#174a35" />
+          <stop offset="100%" stopColor="#23613d" />
         </linearGradient>
 
         <linearGradient id="nb-mtn1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -247,7 +247,7 @@ const NatureBackground: FC = () => (
       />
 
       {/* Mist between mountains */}
-      <rect x="0" y="740" width="1920" height="80" fill="rgba(180,220,200,0.045)" filter="url(#nb-mist)" />
+      <rect x="0" y="740" width="1920" height="80" fill="rgba(180,220,200,0.09)" filter="url(#nb-mist)" />
 
       {/* Far conifer band */}
       <TreeRow trees={farTrees} />
@@ -255,20 +255,20 @@ const NatureBackground: FC = () => (
       {/* Near hills */}
       <path
         d="M0 880 C150 850,300 870,450 830 C600 790,750 840,900 810 C1050 780,1200 830,1350 795 C1500 760,1650 820,1800 788 C1860 775,1900 790,1920 785 L1920 1080 L0 1080 Z"
-        fill="#0c1f14"
+        fill="#163530"
       />
 
       {/* Mid conifer band */}
       <TreeRow trees={midTrees} />
 
       {/* Foreground mist */}
-      <rect x="0" y="940" width="1920" height="60" fill="rgba(160,210,180,0.05)" filter="url(#nb-mist)" />
+      <rect x="0" y="940" width="1920" height="60" fill="rgba(160,210,180,0.095)" filter="url(#nb-mist)" />
 
       {/* Near conifer band - foreground */}
       <TreeRow trees={nearTrees} />
 
       {/* Ground */}
-      <rect x="0" y="1040" width="1920" height="40" fill="#020705" />
+      <rect x="0" y="1040" width="1920" height="40" fill="#0a1814" />
     </svg>
   </div>
 );
