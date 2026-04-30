@@ -5,17 +5,24 @@
   width: 300px;
   background:
     url("/arrow-right.svg") no-repeat right 20px center,
-    var(--color-button-primary);
-  color: var(--color-text-unpainted);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+    rgba(74, 222, 128, 0.1);
+  color: #e8f5ee;
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  backdrop-filter: blur(8px);
   transition:
     opacity 0.3s,
-    border-color 0.3s;
+    border-color 0.3s,
+    background 0.3s,
+    box-shadow 0.3s;
 }
 
 .button:hover {
-  opacity: 0.9;
-  border-color: rgba(255, 255, 255, 0.6);
+  opacity: 0.95;
+  border-color: rgba(74, 222, 128, 0.55);
+  background:
+    url("/arrow-right.svg") no-repeat right 20px center,
+    rgba(74, 222, 128, 0.18);
+  box-shadow: 0 4px 20px rgba(74, 222, 128, 0.15);
 }
 @media (max-width: 640px) {
   .button {

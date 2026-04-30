@@ -17,13 +17,6 @@ const ICON_SIZE = 20;
 const BIO_TEXT =
   "私はkyoto-techで学生をしておりホワイトハッカー専攻で学業を学んでいます。";
 
-// cspell:ignore hosizora
-const BACKGROUND_IMAGE = {
-  src: "/hosizora.jpg",
-  width: 4000,
-  height: 1200,
-} as const;
-
 // ==========================================
 // SVG Icon Components
 // ==========================================
@@ -169,14 +162,6 @@ export default async function Profile() {
         </div>
       </div>
 
-      <Image
-        className={styles.bgimg}
-        src={BACKGROUND_IMAGE.src}
-        alt=""
-        width={BACKGROUND_IMAGE.width}
-        height={BACKGROUND_IMAGE.height}
-        priority
-      />
     </section>
   );
 }

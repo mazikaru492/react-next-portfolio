@@ -3,6 +3,7 @@ import type { FC, ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import NatureBackground from "./components/NatureBackground";
 import "./globals.css";
 
 // ==========================================
@@ -50,6 +51,7 @@ export const metadata: Metadata = {
 const RootLayout: FC<RootLayoutProps> = ({ children }) => (
   <html lang="ja">
     <body>
+      <NatureBackground />
       <Header />
       <main>{children}</main>
       <Footer />

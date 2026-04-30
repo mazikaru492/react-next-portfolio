@@ -27,10 +27,10 @@
 .newsItem {
   display: flex;
   flex-direction: column;
-  background: rgba(20, 20, 20, 0.6);
+  background: rgba(4, 14, 8, 0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.1);
   border-radius: 16px;
   overflow: hidden;
   transition:
@@ -60,10 +60,10 @@
 
 .newsItem:hover {
   transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(74, 222, 128, 0.25);
   box-shadow:
     0 12px 24px -10px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+    0 0 20px rgba(74, 222, 128, 0.08);
   z-index: 10;
 }
 
@@ -150,7 +150,7 @@
 @media (max-width: 640px) {
   .newsItem {
     border-radius: 12px;
-    background: rgba(20, 20, 20, 0.8);
+    background: rgba(4, 14, 8, 0.78);
   }
 
   .contents {
