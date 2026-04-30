@@ -10,17 +10,23 @@
 }
 
 .title {
-  color: var(--color-text-error);
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-align: center;
   margin-bottom: 1rem;
+  background: linear-gradient(135deg, #e8f5ee 10%, #6ee7a0 55%, #4ade80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(74, 222, 128, 0.18);
 }
 
 .description {
   color: var(--color-text-sub);
   font-size: 1rem;
   text-align: center;
+  letter-spacing: 0.04em;
 }
 
 .bgimg {
