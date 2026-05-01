@@ -155,6 +155,23 @@ export default async function ProfilePage() {
                 </p>
               </div>
             </div>
+
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>
+                <div className={styles.timelinePeriod}>高校在学中</div>
+                <h4 className={styles.timelineTitle}>
+                  (株)清水合金製作所 インターンシップ
+                </h4>
+                <p className={styles.timelineDesc}>
+                  彦根工業高等学校在学中に、滋賀県彦根市にある、(株)清水合金製作所にてインターンシップを経験。
+                </p>
+                <p className={styles.timelineDesc}>
+                  製造現場での実務を通じ、金属加工・合金製品の製造工程や品質管理の基礎を学ぶ。
+                  ものづくりの現場における協調性・責任感・安全意識を身につけた。
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </div>
