@@ -26,6 +26,15 @@
   animation: moonGlow 8s ease-in-out infinite alternate;
 }
 
+.sun {
+  animation: sunGlow 6s ease-in-out infinite alternate;
+}
+
+@keyframes sunGlow {
+  0% { filter: drop-shadow(0 0 14px rgba(255, 200, 100, 0.7)); }
+  100% { filter: drop-shadow(0 0 28px rgba(255, 220, 140, 1)); }
+}
+
 .stars {
   animation: starTwinkle 6s ease-in-out infinite alternate;
 }
@@ -117,6 +126,7 @@
   .aurora2,
   .aurora3,
   .moon,
+  .sun,
   .stars {
     animation: none;
   }

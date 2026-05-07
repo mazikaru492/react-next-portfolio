@@ -55,12 +55,23 @@ const ALLOWED_TAGS = [
 const ALLOWED_ATTRIBUTES: Record<string, string[]> = {
   a: ["href", "name", "target", "rel"],
   img: ["src", "alt", "width", "height"],
-  "*": ["class", "id", "style"],
+  "*": ["class", "id"],
 };
 
 const SANITIZE_CONFIG = {
   allowedTags: ALLOWED_TAGS,
   allowedAttributes: ALLOWED_ATTRIBUTES,
+  transformTags: {
+    a: (tagName: string, attribs: Record<string, string>) => ({
+      tagName,
+      attribs: {
+        ...attribs,
+        ...(attribs.target === "_blank"
+          ? { rel: "noopener noreferrer" }
+          : {}),
+      },
+    }),
+  },
 };
 
 // ==========================================
