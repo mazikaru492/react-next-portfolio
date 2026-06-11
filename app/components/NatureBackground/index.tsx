@@ -87,7 +87,7 @@ const farTrees = generateRow({
   baseY: 905,
   minH: 90,
   maxH: 170,
-  fill: "#143a26",
+  fill: "#0d3a24",
   seed: 1,
 });
 
@@ -96,7 +96,7 @@ const midTrees = generateRow({
   baseY: 970,
   minH: 170,
   maxH: 290,
-  fill: "#0f321f",
+  fill: "#0a3620",
   seed: 2,
 });
 
@@ -105,7 +105,7 @@ const nearTrees = generateRow({
   baseY: 1040,
   minH: 250,
   maxH: 420,
-  fill: "#0b1d15",
+  fill: "#081f16",
   seed: 3,
 });
 
@@ -272,28 +272,68 @@ const Bear: FC = () => (
 );
 
 // 鷹（左向き・原点が体の中心・羽ばたきつき）
+// 鉤型のくちばし、黄色い目、指状に分かれた風切羽、扇状の尾羽で猛禽らしさを表現
 const Hawk: FC = () => (
   <g>
-    {/* 奥側の翼 */}
-    <g transform="translate(2 -3)">
+    {/* 奥側の翼（指状の風切羽つき） */}
+    <g transform="translate(3 -4)">
       <g className={styles.wingFar}>
-        <path d="M0 0 C10 -10 24 -16 38 -18 C28 -7 14 -1 2 2 Z" fill="#3e2a1a" />
+        <path
+          d="M0 0 C8 -8 18 -13 28 -15 C36 -16.5 44 -16 48 -14
+             L41 -10.5 L47 -9 L39 -5.5 L44 -3.5 L35 -1 L38 1
+             C27 4.5 13 5 2 3.5 Z"
+          fill="#3e2a1a"
+        />
       </g>
     </g>
-    {/* 尾羽 */}
-    <path d="M12 -2 L26 -7 L26 4 L12 3 Z" fill="#4a3424" />
-    {/* 体 */}
-    <ellipse cx="0" cy="0" rx="14" ry="5.5" fill="#5a3e28" />
+    {/* 尾羽（扇状に重ねる） */}
+    <path d="M24 -3 L46 -8 L42 -1 Z" fill="#5d4330" />
+    <path d="M24 -2 L48 -3 L44 3 Z" fill="#4a3424" />
+    <path d="M24 0 L46 5 L38 6 Z" fill="#5d4330" />
+    {/* 体（頭から尾へ流線形） */}
+    <path
+      d="M-20 -3 C-12 -8.5 0 -9.5 10 -7 C18 -5 26 -3 30 -2
+         C26 1 18 3.5 10 4.5 C0 6 -10 5 -16 1 C-19 -0.5 -20 -1.5 -20 -3 Z"
+      fill="#5a3e28"
+    />
+    {/* 胸元の明るい羽毛 */}
+    <path
+      d="M-18 0 C-12 4 -4 5.2 4 4.6 C-4 6.4 -13 5.6 -18 1.5 Z"
+      fill="#c9b08a"
+    />
     {/* 頭 */}
-    <circle cx="-14" cy="-2" r="5" fill="#5a3e28" />
-    {/* くちばし */}
-    <path d="M-22 -2 L-17 -4.5 L-17 0.5 Z" fill="#d8a030" />
-    {/* 目 */}
-    <circle cx="-15.5" cy="-3.2" r="1" fill="#100a06" />
+    <path
+      d="M-20 -3 C-21 -8 -25 -11 -29 -10.5 C-33 -10 -35.5 -7 -36 -4.5
+         L-30 -2 C-27 0.5 -22 0.5 -20 -3 Z"
+      fill="#4a3220"
+    />
+    {/* くちばし（鉤型・基部は黄色いロウ膜） */}
+    <path
+      d="M-33 -5 C-36 -5 -38 -4 -38.5 -2.8 C-38.7 -1.9 -37.6 -1.4 -36.6 -1.7
+         C-37 -0.4 -36 0.2 -34.8 -0.6 L-32 -2.2 Z"
+      fill="#2a1c10"
+    />
+    <path d="M-32 -5 L-34.5 -4.7 L-34 -3 L-32 -3.4 Z" fill="#d8a030" />
+    {/* 目（猛禽の黄色い虹彩） */}
+    <circle cx="-27" cy="-6" r="1.9" fill="#e8b830" />
+    <circle cx="-27.6" cy="-6.2" r="1" fill="#100a06" />
+    {/* たたんだ脚 */}
+    <path d="M-6 4.5 L-1 4.5 L-2 6.5 L-6 6.5 Z" fill="#d8a030" />
     {/* 手前の翼 */}
-    <g transform="translate(0 -3)">
+    <g transform="translate(0 -4)">
       <g className={styles.wingNear}>
-        <path d="M0 0 C12 -12 26 -18 40 -20 C30 -8 16 -2 2 3 Z" fill="#6b4a2e" />
+        <path
+          d="M0 0 C8 -8 18 -13 28 -15 C36 -16.5 44 -16 48 -14
+             L41 -10.5 L47 -9 L39 -5.5 L44 -3.5 L35 -1 L38 1
+             C27 4.5 13 5 2 3.5 Z"
+          fill="#6b4a2e"
+        />
+        {/* 雨覆（うわばね）の濃い帯 */}
+        <path
+          d="M4 -1 C12 -6.5 22 -10.5 32 -12.5 C25 -8.5 14 -3.5 7 0.5 Z"
+          fill="#4a3220"
+          opacity="0.65"
+        />
       </g>
     </g>
   </g>
@@ -701,13 +741,13 @@ const NatureBackground: FC = () => {
           </linearGradient>
 
           <linearGradient id="nb-mtn1" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#1a2d42" />
-            <stop offset="100%" stopColor="#0e1f2e" />
+            <stop offset="0%" stopColor="#2a4558" />
+            <stop offset="100%" stopColor="#1a3244" />
           </linearGradient>
 
           <linearGradient id="nb-mtn2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#1a3d2e" />
-            <stop offset="100%" stopColor="#0d2218" />
+            <stop offset="0%" stopColor="#336655" />
+            <stop offset="100%" stopColor="#224433" />
           </linearGradient>
 
           <radialGradient id="nb-body-glow" cx="50%" cy="50%" r="50%">
@@ -842,7 +882,7 @@ const NatureBackground: FC = () => {
         {/* Near hills */}
         <path
           d="M0 880 C150 850,300 870,450 830 C600 790,750 840,900 810 C1050 780,1200 830,1350 795 C1500 760,1650 820,1800 788 C1860 775,1900 790,1920 785 L1920 1080 L0 1080 Z"
-          fill="#163530"
+          fill="#2f5d52"
         />
 
         {/* Mid conifer band */}
@@ -855,7 +895,7 @@ const NatureBackground: FC = () => {
         <TreeRow trees={nearTrees} />
 
         {/* Ground */}
-        <rect x="0" y="1040" width="1920" height="40" fill="#0a1814" />
+        <rect x="0" y="1040" width="1920" height="40" fill="#2a4a42" />
 
         {/* Animals — 歩き回り、立ち止まり、向きを変え、画面外に出たら再出現する */}
         {agentsRef.current.map((a, i) => (
