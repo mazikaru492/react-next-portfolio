@@ -109,6 +109,82 @@ const nearTrees = generateRow({
   seed: 3,
 });
 
+// 牛のシルエット（左向き・足元が y=0）
+const Cow: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
+  x,
+  y,
+  scale = 1,
+  flip = false,
+}) => (
+  <g transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}>
+    {/* 脚 */}
+    <g fill="#1c2f26">
+      <rect x="-38" y="-28" width="7" height="28" rx="2" />
+      <rect x="-22" y="-28" width="7" height="28" rx="2" />
+      <rect x="16" y="-28" width="7" height="28" rx="2" />
+      <rect x="30" y="-28" width="7" height="28" rx="2" />
+    </g>
+    {/* 胴体（白ベース） */}
+    <ellipse cx="0" cy="-44" rx="45" ry="20" fill="#cfd8d2" />
+    {/* ホルスタイン模様 */}
+    <g fill="#20342a">
+      <ellipse cx="-14" cy="-50" rx="14" ry="9" />
+      <ellipse cx="22" cy="-40" rx="12" ry="8" />
+      <ellipse cx="-30" cy="-36" rx="8" ry="6" />
+    </g>
+    {/* 頭 */}
+    <ellipse cx="-50" cy="-60" rx="13" ry="11" fill="#cfd8d2" />
+    {/* 鼻先 */}
+    <ellipse cx="-59" cy="-56" rx="8" ry="6" fill="#9fb0a6" />
+    {/* 耳 */}
+    <ellipse
+      cx="-42"
+      cy="-70"
+      rx="7"
+      ry="3.5"
+      fill="#20342a"
+      transform="rotate(-25 -42 -70)"
+    />
+    {/* 角 */}
+    <path d="M-54 -69 q-5 -7 1 -10 q-1 5 3 8 Z" fill="#e8e4d8" />
+    {/* しっぽ */}
+    <path d="M43 -52 q11 6 9 26 q-4 -16 -12 -20 Z" fill="#cfd8d2" />
+  </g>
+);
+
+// キツネのシルエット（左向き・座り姿勢・足元が y=0）
+const Fox: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
+  x,
+  y,
+  scale = 1,
+  flip = false,
+}) => (
+  <g transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}>
+    {/* しっぽ */}
+    <ellipse
+      cx="24"
+      cy="-12"
+      rx="17"
+      ry="7.5"
+      fill="#b8643a"
+      transform="rotate(-38 24 -12)"
+    />
+    {/* しっぽの先 */}
+    <circle cx="32" cy="-22" r="5.5" fill="#e8dcc8" />
+    {/* 体・頭・耳 */}
+    <path
+      d="M-20 -33 L-8 -40 L-10 -53 L-2 -42 L5 -51 L6 -38
+         Q18 -30 20 -12 Q21 -4 18 0 L-4 0
+         Q-6 -8 -8 -15 Q-16 -26 -20 -33 Z"
+      fill="#b8643a"
+    />
+    {/* 胸元 */}
+    <path d="M-9 -16 Q-5 -24 -1 -26 Q1 -12 -2 0 L-5 0 Q-7 -8 -9 -16 Z" fill="#e8dcc8" />
+    {/* 前脚 */}
+    <rect x="-6" y="-14" width="4.5" height="14" rx="2" fill="#4a2a18" />
+  </g>
+);
+
 type RowProps = { trees: Tree[] };
 const TreeRow: FC<RowProps> = ({ trees }) => (
   <>
@@ -533,6 +609,11 @@ const NatureBackground: FC = () => {
 
         {/* Ground */}
         <rect x="0" y="1040" width="1920" height="40" fill="#0a1814" />
+
+        {/* Animals */}
+        <Cow x={320} y={1052} scale={1.05} />
+        <Fox x={1010} y={1054} flip />
+        <Fox x={1560} y={1050} scale={0.85} />
       </svg>
     </div>
   );
