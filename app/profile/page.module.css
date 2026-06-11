@@ -10,7 +10,7 @@
 
 /* プロフィールカード */
 .profileCard {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-bg-main);
   /* border: 1px solid rgba(255, 255, 255, 0.1); */
   border-radius: 1.5rem;
   padding: 3rem;
@@ -219,7 +219,7 @@
 }
 
 .skillCard {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-bg-main);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   padding: 2rem 1.5rem;
@@ -227,7 +227,7 @@
 }
 
 .skillCard:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-bg-main);
   border-color: rgba(0, 200, 83, 0.3);
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 200, 83, 0.15);
