@@ -120,6 +120,56 @@
   100% { opacity: 1; }
 }
 
+/* Animals: 画面を横切って歩く */
+.walkLeft {
+  animation: walkLeft 120s linear infinite;
+  will-change: transform;
+}
+
+.walkRight {
+  animation: walkRight 120s linear infinite;
+  will-change: transform;
+}
+
+@keyframes walkLeft {
+  from { transform: translateX(2100px); }
+  to { transform: translateX(-300px); }
+}
+
+@keyframes walkRight {
+  from { transform: translateX(-300px); }
+  to { transform: translateX(2100px); }
+}
+
+/* 脚の振り: 付け根（上端）を支点に前後スイング。対角ペアで位相を半周期ずらす */
+.legA,
+.legB {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: legSwing var(--nb-gait, 0.55s) ease-in-out infinite;
+}
+
+.legB {
+  animation-delay: calc(var(--nb-gait, 0.55s) / -2);
+}
+
+@keyframes legSwing {
+  0%, 100% { transform: rotate(var(--nb-amp, 14deg)); }
+  50% { transform: rotate(calc(-1 * var(--nb-amp, 14deg))); }
+}
+
+/* 歩行に合わせた体の上下動 */
+.bob {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: bodyBob var(--nb-gait, 0.55s) ease-in-out infinite;
+}
+
+@keyframes bodyBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.5px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tree,
   .aurora1,
@@ -127,7 +177,12 @@
   .aurora3,
   .moon,
   .sun,
-  .stars {
+  .stars,
+  .walkLeft,
+  .walkRight,
+  .legA,
+  .legB,
+  .bob {
     animation: none;
   }
 }

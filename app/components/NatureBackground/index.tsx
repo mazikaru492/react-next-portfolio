@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useState, type CSSProperties, type FC } from "react";
 import styles from "./index.module.css";
 
 const SWAY_CLASSES = [
@@ -109,79 +109,134 @@ const nearTrees = generateRow({
   seed: 3,
 });
 
-// 牛のシルエット（左向き・足元が y=0）
+// 牛（左向き・足元が y=0・脚スイング＆体の上下動つき）
 const Cow: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
   x,
   y,
   scale = 1,
   flip = false,
 }) => (
-  <g transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}>
-    {/* 脚 */}
-    <g fill="#1c2f26">
-      <rect x="-38" y="-28" width="7" height="28" rx="2" />
-      <rect x="-22" y="-28" width="7" height="28" rx="2" />
-      <rect x="16" y="-28" width="7" height="28" rx="2" />
-      <rect x="30" y="-28" width="7" height="28" rx="2" />
+  <g
+    transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}
+    style={{ "--nb-gait": "1s", "--nb-amp": "7deg" } as CSSProperties}
+  >
+    {/* 奥側の脚（対角ペアで交互に振る） */}
+    <g transform="translate(-24 -28)">
+      <g className={styles.legB}>
+        <path d="M-3.5 0 L3.5 0 L2.8 28 L-2.8 28 Z" fill="#15241d" />
+      </g>
     </g>
-    {/* 胴体（白ベース） */}
-    <ellipse cx="0" cy="-44" rx="45" ry="20" fill="#cfd8d2" />
-    {/* ホルスタイン模様 */}
-    <g fill="#20342a">
-      <ellipse cx="-14" cy="-50" rx="14" ry="9" />
-      <ellipse cx="22" cy="-40" rx="12" ry="8" />
-      <ellipse cx="-30" cy="-36" rx="8" ry="6" />
+    <g transform="translate(19 -28)">
+      <g className={styles.legA}>
+        <path d="M-3.5 0 L3.5 0 L2.8 28 L-2.8 28 Z" fill="#15241d" />
+      </g>
     </g>
-    {/* 頭 */}
-    <ellipse cx="-50" cy="-60" rx="13" ry="11" fill="#cfd8d2" />
-    {/* 鼻先 */}
-    <ellipse cx="-59" cy="-56" rx="8" ry="6" fill="#9fb0a6" />
-    {/* 耳 */}
-    <ellipse
-      cx="-42"
-      cy="-70"
-      rx="7"
-      ry="3.5"
-      fill="#20342a"
-      transform="rotate(-25 -42 -70)"
-    />
-    {/* 角 */}
-    <path d="M-54 -69 q-5 -7 1 -10 q-1 5 3 8 Z" fill="#e8e4d8" />
-    {/* しっぽ */}
-    <path d="M43 -52 q11 6 9 26 q-4 -16 -12 -20 Z" fill="#cfd8d2" />
+    <g className={styles.bob}>
+      {/* 胴体（白ベース） */}
+      <ellipse cx="0" cy="-44" rx="45" ry="20" fill="#cfd8d2" />
+      {/* ホルスタイン模様 */}
+      <g fill="#20342a">
+        <ellipse cx="-14" cy="-50" rx="14" ry="9" />
+        <ellipse cx="22" cy="-40" rx="12" ry="8" />
+        <ellipse cx="-30" cy="-36" rx="8" ry="6" />
+      </g>
+      {/* 頭 */}
+      <ellipse cx="-50" cy="-60" rx="13" ry="11" fill="#cfd8d2" />
+      {/* 鼻先 */}
+      <ellipse cx="-59" cy="-56" rx="8" ry="6" fill="#9fb0a6" />
+      {/* 耳 */}
+      <ellipse
+        cx="-42"
+        cy="-70"
+        rx="7"
+        ry="3.5"
+        fill="#20342a"
+        transform="rotate(-25 -42 -70)"
+      />
+      {/* 角 */}
+      <path d="M-54 -69 q-5 -7 1 -10 q-1 5 3 8 Z" fill="#e8e4d8" />
+      {/* しっぽ */}
+      <path d="M43 -52 q11 6 9 26 q-4 -16 -12 -20 Z" fill="#cfd8d2" />
+    </g>
+    {/* 手前側の脚 */}
+    <g transform="translate(-34 -28)">
+      <g className={styles.legA}>
+        <path d="M-3.5 0 L3.5 0 L2.8 28 L-2.8 28 Z" fill="#1c2f26" />
+      </g>
+    </g>
+    <g transform="translate(31 -28)">
+      <g className={styles.legB}>
+        <path d="M-3.5 0 L3.5 0 L2.8 28 L-2.8 28 Z" fill="#1c2f26" />
+      </g>
+    </g>
   </g>
 );
 
-// キツネのシルエット（左向き・座り姿勢・足元が y=0）
+// キツネ（左向き・歩行ポーズ・足元が y=0・脚スイング＆体の上下動つき）
 const Fox: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
   x,
   y,
   scale = 1,
   flip = false,
 }) => (
-  <g transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}>
-    {/* しっぽ */}
-    <ellipse
-      cx="24"
-      cy="-12"
-      rx="17"
-      ry="7.5"
-      fill="#b8643a"
-      transform="rotate(-38 24 -12)"
-    />
-    {/* しっぽの先 */}
-    <circle cx="32" cy="-22" r="5.5" fill="#e8dcc8" />
-    {/* 体・頭・耳 */}
-    <path
-      d="M-20 -33 L-8 -40 L-10 -53 L-2 -42 L5 -51 L6 -38
-         Q18 -30 20 -12 Q21 -4 18 0 L-4 0
-         Q-6 -8 -8 -15 Q-16 -26 -20 -33 Z"
-      fill="#b8643a"
-    />
-    {/* 胸元 */}
-    <path d="M-9 -16 Q-5 -24 -1 -26 Q1 -12 -2 0 L-5 0 Q-7 -8 -9 -16 Z" fill="#e8dcc8" />
-    {/* 前脚 */}
-    <rect x="-6" y="-14" width="4.5" height="14" rx="2" fill="#4a2a18" />
+  <g
+    transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}
+    style={{ "--nb-gait": "0.5s", "--nb-amp": "18deg" } as CSSProperties}
+  >
+    {/* 奥側の脚 */}
+    <g transform="translate(-18 -14)">
+      <g className={styles.legB}>
+        <path d="M-2.4 0 L2.4 0 L1.6 14 L-1.6 14 Z" fill="#3a2010" />
+      </g>
+    </g>
+    <g transform="translate(20 -13)">
+      <g className={styles.legA}>
+        <path d="M-2.6 0 L2.6 0 L1.7 13 L-1.7 13 Z" fill="#3a2010" />
+      </g>
+    </g>
+    <g className={styles.bob}>
+      {/* 尻尾（ふさふさ・先端は白） */}
+      <path
+        d="M30 -28 C42 -34 54 -32 60 -22 C64 -14 60 -6 52 -5 C46 -4 41 -8 43 -13 C36 -13 32 -20 28 -22 Z"
+        fill="#c2622f"
+      />
+      <path
+        d="M53 -15 C58 -14 61 -10 57 -6 C53 -3 47 -5 47 -10 C47 -13 50 -15 53 -15 Z"
+        fill="#f2e8d8"
+      />
+      {/* 奥側の耳 */}
+      <path d="M-30 -37 L-27 -51 L-20 -37 Z" fill="#a04f26" />
+      {/* 体・頭（細身の胴、とがった鼻先） */}
+      <path
+        d="M-48 -27 C-41 -31 -36 -33 -30 -34 C-26 -38 -22 -40 -18 -40
+           C-10 -39 -2 -38 6 -38 C16 -40 26 -38 31 -32 C34 -27 34 -21 32 -16
+           L30 -10 C24 -13 18 -15 12 -15 C4 -16 -4 -15 -10 -13
+           C-14 -17 -17 -22 -19 -26 C-28 -24 -38 -25 -48 -27 Z"
+        fill="#c2622f"
+      />
+      {/* 手前の耳（内側は濃い色） */}
+      <path d="M-24 -37 L-19 -55 L-12 -37 Z" fill="#c2622f" />
+      <path d="M-21 -39 L-19 -50 L-16 -39 Z" fill="#5a2a14" />
+      {/* 喉から胸の白毛 */}
+      <path
+        d="M-45 -26 C-36 -23 -28 -20 -22 -15 C-18 -10 -14 -9 -11 -13 L-14 -23 C-24 -26 -34 -26 -45 -26 Z"
+        fill="#f2e8d8"
+      />
+      {/* 鼻先・目 */}
+      <circle cx="-48" cy="-27" r="2" fill="#241208" />
+      <circle cx="-31" cy="-31" r="1.6" fill="#241208" />
+    </g>
+    {/* 手前側の脚 */}
+    <g transform="translate(-13 -14)">
+      <g className={styles.legA}>
+        <path d="M-2.4 0 L2.4 0 L1.6 14 L-1.6 14 Z" fill="#55290f" />
+      </g>
+    </g>
+    <g transform="translate(25 -13)">
+      <g className={styles.legB}>
+        <path d="M-2.6 0 L2.6 0 L1.7 13 L-1.7 13 Z" fill="#55290f" />
+      </g>
+    </g>
   </g>
 );
 
@@ -610,10 +665,22 @@ const NatureBackground: FC = () => {
         {/* Ground */}
         <rect x="0" y="1040" width="1920" height="40" fill="#0a1814" />
 
-        {/* Animals */}
-        <Cow x={320} y={1052} scale={1.05} />
-        <Fox x={1010} y={1054} flip />
-        <Fox x={1560} y={1050} scale={0.85} />
+        {/* Animals — 画面を横切って歩く */}
+        <g className={styles.walkLeft} style={{ animationDuration: "160s" }}>
+          <Cow x={0} y={1052} scale={1.05} />
+        </g>
+        <g
+          className={styles.walkRight}
+          style={{ animationDuration: "90s", animationDelay: "-30s" }}
+        >
+          <Fox x={0} y={1054} flip />
+        </g>
+        <g
+          className={styles.walkLeft}
+          style={{ animationDuration: "110s", animationDelay: "-70s" }}
+        >
+          <Fox x={0} y={1050} scale={0.85} />
+        </g>
       </svg>
     </div>
   );
