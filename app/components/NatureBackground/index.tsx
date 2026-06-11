@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type FC } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FC } from "react";
 import styles from "./index.module.css";
 
 const SWAY_CLASSES = [
@@ -109,17 +109,9 @@ const nearTrees = generateRow({
   seed: 3,
 });
 
-// 牛（左向き・足元が y=0・脚スイング＆体の上下動つき）
-const Cow: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
-  x,
-  y,
-  scale = 1,
-  flip = false,
-}) => (
-  <g
-    transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}
-    style={{ "--nb-gait": "1s", "--nb-amp": "7deg" } as CSSProperties}
-  >
+// 牛（左向き・原点が足元・脚スイング＆体の上下動つき。位置と向きは親の g が制御）
+const Cow: FC = () => (
+  <g style={{ "--nb-gait": "1s", "--nb-amp": "7deg" } as CSSProperties}>
     {/* 奥側の脚（対角ペアで交互に振る） */}
     <g transform="translate(-24 -28)">
       <g className={styles.legB}>
@@ -172,17 +164,9 @@ const Cow: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
   </g>
 );
 
-// キツネ（左向き・歩行ポーズ・足元が y=0・脚スイング＆体の上下動つき）
-const Fox: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
-  x,
-  y,
-  scale = 1,
-  flip = false,
-}) => (
-  <g
-    transform={`translate(${x} ${y}) scale(${flip ? -scale : scale} ${scale})`}
-    style={{ "--nb-gait": "0.5s", "--nb-amp": "18deg" } as CSSProperties}
-  >
+// キツネ（左向き・歩行ポーズ・原点が足元）
+const Fox: FC = () => (
+  <g style={{ "--nb-gait": "0.5s", "--nb-amp": "18deg" } as CSSProperties}>
     {/* 奥側の脚 */}
     <g transform="translate(-18 -14)">
       <g className={styles.legB}>
@@ -239,6 +223,125 @@ const Fox: FC<{ x: number; y: number; scale?: number; flip?: boolean }> = ({
     </g>
   </g>
 );
+
+// 熊（左向き・原点が足元）
+const Bear: FC = () => (
+  <g style={{ "--nb-gait": "0.8s", "--nb-amp": "9deg" } as CSSProperties}>
+    {/* 奥側の脚 */}
+    <g transform="translate(-22 -16)">
+      <g className={styles.legB}>
+        <path d="M-4.5 0 L4.5 0 L3.8 16 L-3.8 16 Z" fill="#2a1a10" />
+      </g>
+    </g>
+    <g transform="translate(24 -16)">
+      <g className={styles.legA}>
+        <path d="M-4.5 0 L4.5 0 L3.8 16 L-3.8 16 Z" fill="#2a1a10" />
+      </g>
+    </g>
+    <g className={styles.bob}>
+      {/* 胴体（背中の盛り上がり） */}
+      <path
+        d="M-44 -14 C-50 -34 -38 -52 -14 -55 C8 -58 30 -52 38 -38 C44 -28 45 -20 40 -14 Z"
+        fill="#4a3020"
+      />
+      {/* しっぽ */}
+      <circle cx="41" cy="-22" r="4" fill="#4a3020" />
+      {/* 耳 */}
+      <circle cx="-56" cy="-56" r="5.5" fill="#4a3020" />
+      <circle cx="-44" cy="-59" r="5.5" fill="#4a3020" />
+      {/* 頭 */}
+      <circle cx="-50" cy="-46" r="13" fill="#4a3020" />
+      {/* 鼻先 */}
+      <ellipse cx="-61" cy="-42" rx="8" ry="5.5" fill="#6a4a32" />
+      <circle cx="-67" cy="-43" r="2.5" fill="#1a0e06" />
+      {/* 目 */}
+      <circle cx="-52" cy="-49" r="1.6" fill="#1a0e06" />
+    </g>
+    {/* 手前側の脚 */}
+    <g transform="translate(-32 -16)">
+      <g className={styles.legA}>
+        <path d="M-4.5 0 L4.5 0 L3.8 16 L-3.8 16 Z" fill="#3a2516" />
+      </g>
+    </g>
+    <g transform="translate(33 -16)">
+      <g className={styles.legB}>
+        <path d="M-4.5 0 L4.5 0 L3.8 16 L-3.8 16 Z" fill="#3a2516" />
+      </g>
+    </g>
+  </g>
+);
+
+// 鷹（左向き・原点が体の中心・羽ばたきつき）
+const Hawk: FC = () => (
+  <g>
+    {/* 奥側の翼 */}
+    <g transform="translate(2 -3)">
+      <g className={styles.wingFar}>
+        <path d="M0 0 C10 -10 24 -16 38 -18 C28 -7 14 -1 2 2 Z" fill="#3e2a1a" />
+      </g>
+    </g>
+    {/* 尾羽 */}
+    <path d="M12 -2 L26 -7 L26 4 L12 3 Z" fill="#4a3424" />
+    {/* 体 */}
+    <ellipse cx="0" cy="0" rx="14" ry="5.5" fill="#5a3e28" />
+    {/* 頭 */}
+    <circle cx="-14" cy="-2" r="5" fill="#5a3e28" />
+    {/* くちばし */}
+    <path d="M-22 -2 L-17 -4.5 L-17 0.5 Z" fill="#d8a030" />
+    {/* 目 */}
+    <circle cx="-15.5" cy="-3.2" r="1" fill="#100a06" />
+    {/* 手前の翼 */}
+    <g transform="translate(0 -3)">
+      <g className={styles.wingNear}>
+        <path d="M0 0 C12 -12 26 -18 40 -20 C30 -8 16 -2 2 3 Z" fill="#6b4a2e" />
+      </g>
+    </g>
+  </g>
+);
+
+// ===== 動物エージェント =====
+// dir: -1 = 左へ進む（コンポーネントのデフォルトの向き）、1 = 右へ進む（左右反転）
+type AnimalSpecies = "cow" | "fox" | "bear" | "hawk";
+
+type Agent = {
+  species: AnimalSpecies;
+  x: number;
+  y: number;
+  dir: 1 | -1;
+  speed: number; // px/秒
+  scale: number;
+  state: "walk" | "idle";
+  timer: number; // 次の行動決定までの秒数
+  baseY: number; // 鷹の基準高度
+  phase: number; // 鷹の上下動の位相
+};
+
+function createAgents(): Agent[] {
+  return [
+    { species: "cow", x: 380, y: 1052, dir: -1, speed: 22, scale: 1.05, state: "walk", timer: 6, baseY: 1052, phase: 0 },
+    { species: "fox", x: 1080, y: 1054, dir: 1, speed: 55, scale: 1, state: "walk", timer: 5, baseY: 1054, phase: 0 },
+    { species: "fox", x: 1620, y: 1050, dir: -1, speed: 50, scale: 0.85, state: "walk", timer: 7, baseY: 1050, phase: 0 },
+    { species: "bear", x: 760, y: 1052, dir: -1, speed: 30, scale: 1, state: "walk", timer: 8, baseY: 1052, phase: 0 },
+    { species: "hawk", x: 1500, y: 320, dir: -1, speed: 85, scale: 1, state: "walk", timer: 0, baseY: 320, phase: 2 },
+  ];
+}
+
+// 画面(viewBox 1920)の外側。ここを越えたら反対側 or ランダムな側から再出現
+const WORLD_LEFT = -160;
+const WORLD_RIGHT = 2080;
+
+const AnimalSprite: FC<{ species: AnimalSpecies }> = ({ species }) => {
+  switch (species) {
+    case "cow":
+      return <Cow />;
+    case "bear":
+      return <Bear />;
+    case "hawk":
+      return <Hawk />;
+    default:
+      return <Fox />;
+  }
+};
 
 type RowProps = { trees: Tree[] };
 const TreeRow: FC<RowProps> = ({ trees }) => (
@@ -487,6 +590,95 @@ const NatureBackground: FC = () => {
     return () => window.clearInterval(id);
   }, []);
 
+  // 動物の行動シミュレーション: 歩く・立ち止まる・方向転換し、
+  // 画面外へ消えたらランダムな側から再出現する。画面内には常に3匹以上を維持
+  const agentsRef = useRef<Agent[]>(null as unknown as Agent[]);
+  if (!agentsRef.current) agentsRef.current = createAgents();
+  const animalRefs = useRef<(SVGGElement | null)[]>([]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const agents = agentsRef.current;
+    let raf = 0;
+    let last = performance.now();
+
+    const respawn = (a: Agent) => {
+      const fromLeft = Math.random() < 0.5;
+      a.x = fromLeft ? WORLD_LEFT + 10 : WORLD_RIGHT - 10;
+      a.dir = fromLeft ? 1 : -1;
+      a.state = "walk";
+      a.timer = 6 + Math.random() * 6;
+      if (a.species === "hawk") a.baseY = 220 + Math.random() * 220;
+    };
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+      const t = now / 1000;
+
+      for (const a of agents) {
+        if (a.species === "hawk") {
+          // 鷹は止まらず羽ばたきながら滑空。上下にゆらぎながら横断する
+          a.x += a.dir * a.speed * dt;
+          a.y = a.baseY + Math.sin(t * 1.4 + a.phase) * 22;
+          if (a.x < WORLD_LEFT || a.x > WORLD_RIGHT) respawn(a);
+          continue;
+        }
+
+        a.timer -= dt;
+        if (a.timer <= 0) {
+          const onScreen = a.x > 40 && a.x < 1880;
+          const r = Math.random();
+          if (!onScreen) {
+            // 画面外では立ち止まらない
+            a.state = "walk";
+            a.timer = 3;
+          } else if (r < 0.5) {
+            a.state = "walk";
+            a.timer = 4 + Math.random() * 6;
+          } else if (r < 0.78) {
+            a.state = "idle";
+            a.timer = 2 + Math.random() * 3.5;
+          } else {
+            // 方向転換して歩き出す
+            a.dir = (a.dir * -1) as 1 | -1;
+            a.state = "walk";
+            a.timer = 5 + Math.random() * 6;
+          }
+        }
+        if (a.state === "walk") a.x += a.dir * a.speed * dt;
+        if (a.x < WORLD_LEFT || a.x > WORLD_RIGHT) respawn(a);
+      }
+
+      // 画面内が3匹未満なら、画面外の個体を画面に向けて歩かせる
+      const visible = agents.filter((a) => a.x > 0 && a.x < 1920).length;
+      if (visible < 3) {
+        for (const a of agents) {
+          if (a.x <= 0 || a.x >= 1920) {
+            a.dir = a.x <= 0 ? 1 : -1;
+            a.state = "walk";
+          }
+        }
+      }
+
+      agents.forEach((a, i) => {
+        const el = animalRefs.current[i];
+        if (!el) return;
+        const sx = a.dir === 1 ? -a.scale : a.scale;
+        el.setAttribute(
+          "transform",
+          `translate(${a.x} ${a.y}) scale(${sx} ${a.scale})`,
+        );
+        el.style.setProperty("--nb-walk", a.state === "walk" ? "running" : "paused");
+      });
+
+      raf = window.requestAnimationFrame(tick);
+    };
+
+    raf = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(raf);
+  }, []);
+
   const palette = getPalette(hours);
   const { cx, cy } = getBodyPosition(hours);
   const isSun = palette.bodyType === "sun";
@@ -665,22 +857,20 @@ const NatureBackground: FC = () => {
         {/* Ground */}
         <rect x="0" y="1040" width="1920" height="40" fill="#0a1814" />
 
-        {/* Animals — 画面を横切って歩く */}
-        <g className={styles.walkLeft} style={{ animationDuration: "160s" }}>
-          <Cow x={0} y={1052} scale={1.05} />
-        </g>
-        <g
-          className={styles.walkRight}
-          style={{ animationDuration: "90s", animationDelay: "-30s" }}
-        >
-          <Fox x={0} y={1054} flip />
-        </g>
-        <g
-          className={styles.walkLeft}
-          style={{ animationDuration: "110s", animationDelay: "-70s" }}
-        >
-          <Fox x={0} y={1050} scale={0.85} />
-        </g>
+        {/* Animals — 歩き回り、立ち止まり、向きを変え、画面外に出たら再出現する */}
+        {agentsRef.current.map((a, i) => (
+          <g
+            key={i}
+            ref={(el) => {
+              animalRefs.current[i] = el;
+            }}
+            transform={`translate(${a.x} ${a.y}) scale(${
+              a.dir === 1 ? -a.scale : a.scale
+            } ${a.scale})`}
+          >
+            <AnimalSprite species={a.species} />
+          </g>
+        ))}
       </svg>
     </div>
   );

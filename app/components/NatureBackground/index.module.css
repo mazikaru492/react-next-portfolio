@@ -120,33 +120,14 @@
   100% { opacity: 1; }
 }
 
-/* Animals: 画面を横切って歩く */
-.walkLeft {
-  animation: walkLeft 120s linear infinite;
-  will-change: transform;
-}
-
-.walkRight {
-  animation: walkRight 120s linear infinite;
-  will-change: transform;
-}
-
-@keyframes walkLeft {
-  from { transform: translateX(2100px); }
-  to { transform: translateX(-300px); }
-}
-
-@keyframes walkRight {
-  from { transform: translateX(-300px); }
-  to { transform: translateX(2100px); }
-}
-
-/* 脚の振り: 付け根（上端）を支点に前後スイング。対角ペアで位相を半周期ずらす */
+/* 脚の振り: 付け根（上端）を支点に前後スイング。対角ペアで位相を半周期ずらす。
+   --nb-walk (running/paused) で立ち止まり中はスイングを停止する */
 .legA,
 .legB {
   transform-box: fill-box;
   transform-origin: 50% 0%;
   animation: legSwing var(--nb-gait, 0.55s) ease-in-out infinite;
+  animation-play-state: var(--nb-walk, running);
 }
 
 .legB {
@@ -163,11 +144,29 @@
   transform-box: fill-box;
   transform-origin: 50% 50%;
   animation: bodyBob var(--nb-gait, 0.55s) ease-in-out infinite;
+  animation-play-state: var(--nb-walk, running);
 }
 
 @keyframes bodyBob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-1.5px); }
+}
+
+/* 鷹の羽ばたき: 肩（左下）を支点に上下 */
+.wingNear,
+.wingFar {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: wingFlap 0.7s ease-in-out infinite;
+}
+
+.wingFar {
+  animation-delay: -0.07s;
+}
+
+@keyframes wingFlap {
+  0%, 100% { transform: rotate(16deg); }
+  50% { transform: rotate(-26deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -178,11 +177,11 @@
   .moon,
   .sun,
   .stars,
-  .walkLeft,
-  .walkRight,
   .legA,
   .legB,
-  .bob {
+  .bob,
+  .wingNear,
+  .wingFar {
     animation: none;
   }
 }
