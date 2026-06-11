@@ -136,7 +136,11 @@
 
 /* セクション */
 .section {
+  background: var(--color-bg-main);
+  border-radius: 1.5rem;
+  padding: 3rem;
   margin-bottom: 3rem;
+  backdrop-filter: blur(10px);
 }
 
 .sectionTitle {
@@ -321,6 +325,10 @@
   }
 
   .profileCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .section {
     padding: 2rem 1.5rem;
   }
 
