@@ -14,10 +14,24 @@
   align-items: center;
   justify-content: center;
   background-color: var(--color-bg-sub);
-  width: 840px;
+  width: min(840px, calc(100% - 32px));
   margin: -40px auto 0;
   padding: 160px 80px;
   border-radius: var(--border-radius);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 80px 40px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 60px 24px;
+    width: calc(100% - 24px);
+  }
 }
 
 .container dl {

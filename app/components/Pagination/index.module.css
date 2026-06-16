@@ -19,6 +19,17 @@
   border-radius: var(--border-radius);
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding: 16px 8px;
+  }
+
+  .item {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 .current {
   color: #000;
   background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
