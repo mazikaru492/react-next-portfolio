@@ -118,12 +118,12 @@ ul {
 }
 
 main {
-  padding-top: 56px;
+  padding-top: calc(68px + env(safe-area-inset-top, 0px));
 }
 
 @media (max-width: 640px) {
   main {
-    padding-top: 60px;
+    padding-top: calc(68px + env(safe-area-inset-top, 0px));
   }
 }
 
