@@ -11,6 +11,7 @@ import { getProfile } from "@/app/lids/microcms";
 const DEFAULT_GITHUB_URL = "https://github.com/mazikaru492";
 const DEFAULT_INSTAGRAM_URL = "https://www.instagram.com/mark_c2c/";
 const DEFAULT_LINKEDIN_URL = "https://www.linkedin.com/in/huruya-yuki";
+const KYOTO_TECH_URL = "https://kyoto-tech.ac.jp/";
 const AVATAR_SIZE = 200;
 const ICON_SIZE = 20;
 
@@ -54,6 +55,33 @@ const LinkedInIcon: FC = () => (
     aria-hidden
   >
     <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+  </svg>
+);
+
+// 京都デザイン＆テクノロジー専門学校（TECH.C. KYOTO）のロゴを
+// 特徴的な3×3グリッドパターンでSVG再現（白系カラー対応）
+const KyotoTechIcon: FC = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width={ICON_SIZE}
+    height={ICON_SIZE}
+    fill="currentColor"
+    aria-hidden
+  >
+    {/* 外枠の角丸正方形 */}
+    <rect x="1" y="1" width="22" height="22" rx="3" ry="3" fill="none" stroke="currentColor" strokeWidth="2" />
+    {/* 3×3グリッド - 上段 */}
+    <rect x="3.5" y="3.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    <rect x="9.5" y="3.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    <rect x="15.5" y="3.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    {/* 3×3グリッド - 中段（中央セルは強調） */}
+    <rect x="3.5" y="9.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    <rect x="9.5" y="9.5" width="5" height="5" rx="0.5" />
+    <rect x="15.5" y="9.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    {/* 3×3グリッド - 下段 */}
+    <rect x="3.5" y="15.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    <rect x="9.5" y="15.5" width="5" height="5" rx="0.5" opacity="0.3" />
+    <rect x="15.5" y="15.5" width="5" height="5" rx="0.5" opacity="0.9" />
   </svg>
 );
 
@@ -157,6 +185,11 @@ export default async function Profile() {
               href={linkedinUrl}
               label="LinkedIn"
               icon={<LinkedInIcon />}
+            />
+            <SocialLink
+              href={KYOTO_TECH_URL}
+              label="京都デザイン＆テクノロジー専門学校"
+              icon={<KyotoTechIcon />}
             />
           </div>
         </div>
