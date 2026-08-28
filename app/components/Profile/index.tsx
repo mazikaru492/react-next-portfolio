@@ -59,50 +59,39 @@ const LinkedInIcon: FC = () => (
 );
 
 // 京都デザイン＆テクノロジー専門学校（TECH.C. KYOTO）のロゴ
-// 外枠・グリッド線を他のアイコンと同系色の白（#FFFFFF）にし、公式の赤・グレー配色を保持
+// 他のソーシャルアイコンと完全統一された白単色（currentColor）・高視認性グリッドデザイン
 const KyotoTechIcon: FC = () => (
   <svg
-    viewBox="0 0 100 100"
+    viewBox="0 0 24 24"
     width={ICON_SIZE}
     height={ICON_SIZE}
+    fill="currentColor"
     aria-hidden
   >
-    <defs>
-      <mask id="kyoto-tech-white-frame-mask">
-        {/* 外枠全体を白 */}
-        <rect x="2" y="2" width="96" height="96" rx="14" fill="#FFFFFF" />
-        {/* 9つのマス目をくり抜いて白フレーム（外枠＋グリッド線）のみを残す */}
-        <rect x="10" y="10" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="38" y="10" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="66" y="10" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="10" y="38" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="38" y="38" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="66" y="38" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="10" y="66" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="38" y="66" width="24" height="24" rx="3" fill="#000000" />
-        <rect x="66" y="66" width="24" height="24" rx="3" fill="#000000" />
-      </mask>
-    </defs>
-
-    {/* 白い外枠フレーム＆グリッド線 */}
+    {/* 外枠フレーム（角丸四角） */}
     <rect
-      x="2"
-      y="2"
-      width="96"
-      height="96"
-      rx="14"
-      fill="#FFFFFF"
-      mask="url(#kyoto-tech-white-frame-mask)"
+      x="1.5"
+      y="1.5"
+      width="21"
+      height="21"
+      rx="4.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
     />
-
-    {/* 中段：グレー・赤・グレー */}
-    <rect x="10" y="38" width="24" height="24" rx="3" fill="#9CA3AF" />
-    <rect x="38" y="38" width="24" height="24" rx="3" fill="#E60012" />
-    <rect x="66" y="38" width="24" height="24" rx="3" fill="#9CA3AF" />
-
-    {/* 下段：グレー・（透過）・グレー */}
-    <rect x="10" y="66" width="24" height="24" rx="3" fill="#9CA3AF" />
-    <rect x="66" y="66" width="24" height="24" rx="3" fill="#9CA3AF" />
+    {/* 3×3 グリッド（1.8px均等間隔のクッキリした白マス目） */}
+    {/* 上段 */}
+    <rect x="4.2" y="4.2" width="4" height="4" rx="0.8" />
+    <rect x="10" y="4.2" width="4" height="4" rx="0.8" />
+    <rect x="15.8" y="4.2" width="4" height="4" rx="0.8" />
+    {/* 中段 */}
+    <rect x="4.2" y="10" width="4" height="4" rx="0.8" />
+    <rect x="10" y="10" width="4" height="4" rx="0.8" />
+    <rect x="15.8" y="10" width="4" height="4" rx="0.8" />
+    {/* 下段 */}
+    <rect x="4.2" y="15.8" width="4" height="4" rx="0.8" />
+    <rect x="10" y="15.8" width="4" height="4" rx="0.8" />
+    <rect x="15.8" y="15.8" width="4" height="4" rx="0.8" />
   </svg>
 );
 
