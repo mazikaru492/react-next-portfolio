@@ -59,39 +59,52 @@ const LinkedInIcon: FC = () => (
 );
 
 // 京都デザイン＆テクノロジー専門学校（TECH.C. KYOTO）のロゴ
-// 他のソーシャルアイコンと完全統一された白単色（currentColor）・高視認性グリッドデザイン
+// viewBox 100×100で余裕あるレイアウト（セル20px・ギャップ6px・外枠余白10px）
+// 二層構造: ①マスクで外枠+グリッド線のみ白描画 → ②ロゴパターンの5セルを白で重ねる
 const KyotoTechIcon: FC = () => (
   <svg
-    viewBox="0 0 24 24"
+    viewBox="0 0 100 100"
     width={ICON_SIZE}
     height={ICON_SIZE}
     fill="currentColor"
     aria-hidden
   >
-    {/* 外枠フレーム（角丸四角） */}
-    <rect
-      x="1.5"
-      y="1.5"
-      width="21"
-      height="21"
-      rx="4.5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-    />
-    {/* 3×3 グリッド（1.8px均等間隔のクッキリした白マス目） */}
-    {/* 上段 */}
-    <rect x="4.2" y="4.2" width="4" height="4" rx="0.8" />
-    <rect x="10" y="4.2" width="4" height="4" rx="0.8" />
-    <rect x="15.8" y="4.2" width="4" height="4" rx="0.8" />
-    {/* 中段 */}
-    <rect x="4.2" y="10" width="4" height="4" rx="0.8" />
-    <rect x="10" y="10" width="4" height="4" rx="0.8" />
-    <rect x="15.8" y="10" width="4" height="4" rx="0.8" />
-    {/* 下段 */}
-    <rect x="4.2" y="15.8" width="4" height="4" rx="0.8" />
-    <rect x="10" y="15.8" width="4" height="4" rx="0.8" />
-    <rect x="15.8" y="15.8" width="4" height="4" rx="0.8" />
+    <defs>
+      {/*
+        マスク: 外枠(4,4)〜(96,96) の塗りから9つのセル穴を抜く
+        → 外枠フレームとグリッド線（セル間の余白）だけが白で残る
+        セル配置: x=14,40,66 / y=14,40,66 各20×20px（ギャップ6px、枠余白10px）
+      */}
+      <mask id="kyoto-tech-frame-mask">
+        <rect x="0" y="0" width="100" height="100" fill="white" />
+        <rect x="14" y="14" width="20" height="20" rx="3" fill="black" />
+        <rect x="40" y="14" width="20" height="20" rx="3" fill="black" />
+        <rect x="66" y="14" width="20" height="20" rx="3" fill="black" />
+        <rect x="14" y="40" width="20" height="20" rx="3" fill="black" />
+        <rect x="40" y="40" width="20" height="20" rx="3" fill="black" />
+        <rect x="66" y="40" width="20" height="20" rx="3" fill="black" />
+        <rect x="14" y="66" width="20" height="20" rx="3" fill="black" />
+        <rect x="40" y="66" width="20" height="20" rx="3" fill="black" />
+        <rect x="66" y="66" width="20" height="20" rx="3" fill="black" />
+      </mask>
+    </defs>
+
+    {/* 外枠 + グリッド線（マスクで9セル分を穴抜き → 枠とグリッド線のみ白） */}
+    <rect x="4" y="4" width="92" height="92" rx="14" mask="url(#kyoto-tech-frame-mask)" />
+
+    {/*
+      ロゴ実物パターンに合わせた白塗りセル:
+        上段 → 3セルとも空（白ベース → ロゴで白いマス）
+        中段 → 左:グレー、中:赤、右:グレー → すべて塗り
+        下段 → 左:グレー、中:白(空)、右:グレー → 左右のみ塗り
+    */}
+    {/* 中段 左・中・右 */}
+    <rect x="14" y="40" width="20" height="20" rx="3" />
+    <rect x="40" y="40" width="20" height="20" rx="3" />
+    <rect x="66" y="40" width="20" height="20" rx="3" />
+    {/* 下段 左・右（中央は空） */}
+    <rect x="14" y="66" width="20" height="20" rx="3" />
+    <rect x="66" y="66" width="20" height="20" rx="3" />
   </svg>
 );
 
