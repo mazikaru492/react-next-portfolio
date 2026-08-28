@@ -59,7 +59,7 @@ const LinkedInIcon: FC = () => (
 );
 
 // 京都デザイン＆テクノロジー専門学校（TECH.C. KYOTO）のロゴを
-// 特徴的な3×3グリッドパターンでSVG再現（白系カラー対応）
+// SVGマスクで実際に穴を抜き、他のアイコンと同じ currentColor 単色で統一
 const KyotoTechIcon: FC = () => (
   <svg
     viewBox="0 0 24 24"
@@ -68,20 +68,21 @@ const KyotoTechIcon: FC = () => (
     fill="currentColor"
     aria-hidden
   >
-    {/* 外枠の角丸正方形 */}
-    <rect x="1" y="1" width="22" height="22" rx="3" ry="3" fill="none" stroke="currentColor" strokeWidth="2" />
-    {/* 3×3グリッド - 上段 */}
-    <rect x="3.5" y="3.5" width="5" height="5" rx="0.5" opacity="0.9" />
-    <rect x="9.5" y="3.5" width="5" height="5" rx="0.5" opacity="0.9" />
-    <rect x="15.5" y="3.5" width="5" height="5" rx="0.5" opacity="0.9" />
-    {/* 3×3グリッド - 中段（中央セルは強調） */}
-    <rect x="3.5" y="9.5" width="5" height="5" rx="0.5" opacity="0.9" />
-    <rect x="9.5" y="9.5" width="5" height="5" rx="0.5" />
-    <rect x="15.5" y="9.5" width="5" height="5" rx="0.5" opacity="0.9" />
-    {/* 3×3グリッド - 下段 */}
-    <rect x="3.5" y="15.5" width="5" height="5" rx="0.5" opacity="0.9" />
-    <rect x="9.5" y="15.5" width="5" height="5" rx="0.5" opacity="0.3" />
-    <rect x="15.5" y="15.5" width="5" height="5" rx="0.5" opacity="0.9" />
+    <defs>
+      <mask id="kyoto-tech-mask">
+        {/* 外枠全体を白（表示領域）として設定 */}
+        <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" fill="white" />
+        {/* 上段3セル：黒（非表示）で穴抜き */}
+        <rect x="2.5" y="2.5" width="5.5" height="5.5" rx="0.5" fill="black" />
+        <rect x="9.25" y="2.5" width="5.5" height="5.5" rx="0.5" fill="black" />
+        <rect x="16" y="2.5" width="5.5" height="5.5" rx="0.5" fill="black" />
+        {/* 下段左右セル：黒で穴抜き（中央は塔りのまま） */}
+        <rect x="2.5" y="16" width="5.5" height="5.5" rx="0.5" fill="black" />
+        <rect x="16" y="16" width="5.5" height="5.5" rx="0.5" fill="black" />
+      </mask>
+    </defs>
+    {/* マスク適用された善り履きロゴ形状 — currentColorを動的に受け取る */}
+    <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" mask="url(#kyoto-tech-mask)" />
   </svg>
 );
 
