@@ -58,31 +58,51 @@ const LinkedInIcon: FC = () => (
   </svg>
 );
 
-// 京都デザイン＆テクノロジー専門学校（TECH.C. KYOTO）のロゴを
-// SVGマスクで実際に穴を抜き、他のアイコンと同じ currentColor 単色で統一
+// 京都デザイン＆テクノロジー専門学校（TECH.C. KYOTO）のロゴ
+// 外枠・グリッド線を他のアイコンと同系色の白（#FFFFFF）にし、公式の赤・グレー配色を保持
 const KyotoTechIcon: FC = () => (
   <svg
-    viewBox="0 0 24 24"
+    viewBox="0 0 100 100"
     width={ICON_SIZE}
     height={ICON_SIZE}
-    fill="currentColor"
     aria-hidden
   >
     <defs>
-      <mask id="kyoto-tech-mask">
-        {/* 外枠全体を白（表示領域）として設定 */}
-        <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" fill="white" />
-        {/* 上段3セル：黒（非表示）で穴抜き */}
-        <rect x="2.5" y="2.5" width="5.5" height="5.5" rx="0.5" fill="black" />
-        <rect x="9.25" y="2.5" width="5.5" height="5.5" rx="0.5" fill="black" />
-        <rect x="16" y="2.5" width="5.5" height="5.5" rx="0.5" fill="black" />
-        {/* 下段左右セル：黒で穴抜き（中央は塔りのまま） */}
-        <rect x="2.5" y="16" width="5.5" height="5.5" rx="0.5" fill="black" />
-        <rect x="16" y="16" width="5.5" height="5.5" rx="0.5" fill="black" />
+      <mask id="kyoto-tech-white-frame-mask">
+        {/* 外枠全体を白 */}
+        <rect x="2" y="2" width="96" height="96" rx="14" fill="#FFFFFF" />
+        {/* 9つのマス目をくり抜いて白フレーム（外枠＋グリッド線）のみを残す */}
+        <rect x="10" y="10" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="38" y="10" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="66" y="10" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="10" y="38" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="38" y="38" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="66" y="38" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="10" y="66" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="38" y="66" width="24" height="24" rx="3" fill="#000000" />
+        <rect x="66" y="66" width="24" height="24" rx="3" fill="#000000" />
       </mask>
     </defs>
-    {/* マスク適用された善り履きロゴ形状 — currentColorを動的に受け取る */}
-    <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" mask="url(#kyoto-tech-mask)" />
+
+    {/* 白い外枠フレーム＆グリッド線 */}
+    <rect
+      x="2"
+      y="2"
+      width="96"
+      height="96"
+      rx="14"
+      fill="#FFFFFF"
+      mask="url(#kyoto-tech-white-frame-mask)"
+    />
+
+    {/* 中段：グレー・赤・グレー */}
+    <rect x="10" y="38" width="24" height="24" rx="3" fill="#9CA3AF" />
+    <rect x="38" y="38" width="24" height="24" rx="3" fill="#E60012" />
+    <rect x="66" y="38" width="24" height="24" rx="3" fill="#9CA3AF" />
+
+    {/* 下段：グレー・（透過）・グレー */}
+    <rect x="10" y="66" width="24" height="24" rx="3" fill="#9CA3AF" />
+    <rect x="66" y="66" width="24" height="24" rx="3" fill="#9CA3AF" />
   </svg>
 );
 
