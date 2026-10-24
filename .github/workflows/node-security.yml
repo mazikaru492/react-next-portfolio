@@ -1,0 +1,60 @@
+name: Node.js security checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.nvmrc'
+      - '.node-version'
+      - 'scripts/**'
+      - 'instrumentation.js'
+      - '.github/workflows/node-security.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      MICROCMS_SERVICE_DOMAIN: ci-node-security
+      MICROCMS_API_KEY: ci-test-value
+      NODE_OPTIONS: '--require ./tests/fixtures/microcms.cjs'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - run: npm run check:node
+      - run: npm run test:node-security
+      - run: npm ci
+      - run: npm run build
+      - name: Check production server startup
+        shell: bash
+        run: |
+          npm start -- --hostname 127.0.0.1 > "$RUNNER_TEMP/next-server.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 60); do
+            http_code=$(curl --silent --output /dev/null --write-out '%{http_code}' --max-time 2 http://127.0.0.1:3000 || true)
+            case "$http_code" in
+              2??|3??|401|403)
+                cat "$RUNNER_TEMP/next-server.log"
+                exit 0
+                ;;
+            esac
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              cat "$RUNNER_TEMP/next-server.log"
+              exit 1
+            fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/next-server.log"
+          exit 1

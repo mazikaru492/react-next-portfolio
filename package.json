@@ -3,14 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=20 <25"
+    "node": ">=22.23.4 <23"
   },
   "scripts": {
     "dev": "node --max-old-space-size=2048 node_modules/next/dist/bin/next dev --webpack --disable-source-maps",
     "dev:turbo": "node --max-old-space-size=2048 node_modules/next/dist/bin/next dev --turbo --disable-source-maps",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "preinstall": "node scripts/check-node-security.cjs",
+    "predev": "node scripts/check-node-security.cjs",
+    "prebuild": "node scripts/check-node-security.cjs",
+    "prestart": "node scripts/check-node-security.cjs",
+    "predev:turbo": "node scripts/check-node-security.cjs",
+    "check:node": "node scripts/check-node-security.cjs",
+    "test:node-security": "node --test scripts/check-node-security.test.mjs"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.0",
