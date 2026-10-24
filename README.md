@@ -15,7 +15,7 @@ MicroCMS と GitHub API を連携し、ニュース・作品・プロフィー�
 | 外部 API | GitHub API |
 | ホスティング | Vercel |
 | パッケージマネージャー | npm |
-| Node.js | >=20 <25 |
+| Node.js | 22.23.4以降の22.x |
 
 ## 主な機能
 
@@ -32,10 +32,12 @@ MicroCMS と GitHub API を連携し、ニュース・作品・プロフィー�
 
 ## セットアップ
 
-### 1. 依存関係のインストール
+### 1. Node.jsと依存関係のインストール
 
 ```bash
-npm install
+nvm install
+nvm use
+npm ci
 ```
 
 ### 2. 環境変数の設定
@@ -154,3 +156,22 @@ Vercel へのデプロイを推奨します。
 ## ライセンス
 
 Private repository — 無断転用禁止。
+
+## Node.jsのセキュリティ更新（CVE-2026-111497）
+
+Node.jsは22.23.4以降の22系列を使用してください。`.nvmrc`／`.node-version`と`engines.node`を合わせ、インストール・開発・ビルド・本番起動の前に実行版を検査します。Next.jsのNode.jsサーバー起動時にも検査し、未修正のランタイムでは要求処理を開始しません。
+
+既存環境では最新コードを取得し、次を実行します。
+
+```bash
+git pull --ff-only
+nvm install
+nvm use
+npm ci
+npm run build
+npm start
+```
+
+Windowsなどでnvmを使用しない場合は、Node.js 22.23.4以降の22系列を別途インストールしてから、`npm run check:node`で確認してください。
+
+VercelではNode.js Versionを22.xにし、最新コミットで再デプロイします。パッチ版はVercelが管理するため、設定変更だけで修正済みとは判断せず、デプロイのログと稼働状況を確認してください。直接`next start`を実行する運用でも、古いサービスプロセスを終了して再起動する必要があります。Next.jsやnpmパッケージだけの更新ではNode.js本体は更新されません。
