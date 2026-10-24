@@ -25,7 +25,6 @@ jobs:
       NEXT_TELEMETRY_DISABLED: '1'
       MICROCMS_SERVICE_DOMAIN: ci-node-security
       MICROCMS_API_KEY: ci-test-value
-      NODE_OPTIONS: '--require ./tests/fixtures/microcms.cjs'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,8 +35,12 @@ jobs:
       - run: npm run test:node-security
       - run: npm ci
       - run: npm run build
+        env:
+          NODE_OPTIONS: '--require ./tests/fixtures/microcms.cjs'
       - name: Check production server startup
         shell: bash
+        env:
+          NODE_OPTIONS: '--require ./tests/fixtures/microcms.cjs'
         run: |
           npm start -- --hostname 127.0.0.1 > "$RUNNER_TEMP/next-server.log" 2>&1 &
           server_pid=$!
